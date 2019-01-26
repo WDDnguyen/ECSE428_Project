@@ -1,0 +1,25 @@
+language: android
+jdk: oraclejdk8
+android:
+    components:
+        - tools
+        - platform-tools
+        # SDK version to compile application
+        - android-28
+        # Build version of applicatio
+        - build-tools-28.0.3
+        # extra components
+        - extra-android-m2repository
+        - extra-google-google_play_services
+        - extra-google-m2repository
+        - addon-google_apis-google-28
+before_install:
+    - yes | sdkmanager "platforms;android-28"
+
+before_script:
+    - chmod +x gradlew
+script:
+    - ./gradlew build --stacktrace
+branches:
+    only:
+        - master

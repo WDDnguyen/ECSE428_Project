@@ -1,2 +1,2 @@
 # ECSE428_Project
-Shredit
+ShredIt
