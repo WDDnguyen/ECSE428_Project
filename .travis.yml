@@ -6,7 +6,7 @@ android:
         - platform-tools
         # SDK version to compile application
         - android-28
-        # Build version of applicatio
+        # Build version of application
         - build-tools-28.0.3
         # extra components
         - extra-android-m2repository
