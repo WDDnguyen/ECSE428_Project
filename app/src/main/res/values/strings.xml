@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Shredit</string>
+    <string name="home_customize_gym">Customize Gym</string>
+    <string name="home_generate_workout_text">Generate a New Workout</string>
+    <string name="home_search_gyms">Search Gyms</string>
+    <string name="home_manage_workouts">Manage Workouts</string>
+    <string name="home_load_workout">Load Workout</string>
+    <string name="home_saved_workouts">Saved Workouts</string>
 </resources>

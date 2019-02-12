@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".HomeActivity">
+
+    <TextView
+        android:id="@+id/home_textView_generateWorkout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_generate_workout_text"
+        android:textSize="18sp"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/home_button_searchGyms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home_search_gyms"
+        android:onClick="onSearchGymsClick"/>
+
+    <Button
+        android:id="@+id/home_button_customizeGym"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home_customize_gym"
+        android:textAllCaps="true"
+        android:onClick="onCustomizeGymClick"/>
+
+    <View
+        android:id="@+id/home_divider"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="?android:attr/listDivider"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/home_textView_savedWorkouts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_saved_workouts"
+        android:textSize="18sp"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/home_button_loadWorkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home_load_workout"
+        android:onClick="onLoadWorkoutClick"/>
+
+    <Button
+        android:id="@+id/home_button_manageWorkouts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home_manage_workouts"
+        android:onClick="onManageWorkoutsClick"/>
+
+</LinearLayout>
