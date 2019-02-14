@@ -6,4 +6,6 @@
     <string name="home_manage_workouts">Manage Workouts</string>
     <string name="home_load_workout">Load Workout</string>
     <string name="home_saved_workouts">Saved Workouts</string>
+    <string name="home_login">Login</string>
 </resources>
+
