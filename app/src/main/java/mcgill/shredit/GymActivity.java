@@ -1,7 +1,9 @@
 package mcgill.shredit;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -17,24 +19,10 @@ public class GymActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gym);
     }
 
-    // TO DO : Create Gyms using mock data
-    public void generateGyms(){
-
-    }
-
-    // TO DO : search function based based on input given from user.
-    public void searchGym(){
-
-    }
-
-    // TO DO : Display gyms list based on the gym view design
-    public void displayGyms(){
-
-    }
-
-    // TO DO : Pass gym's equipment list to muscle group Activity
-    public void sendIntent(){
-
+    // TO DO : Need to pass gym's equipment list to muscle group activity
+    public void onGymConfirmClick(View view) {
+        Intent intent = new Intent(this, MuscleGroupActivity.class);
+        startActivity(intent);
     }
 
 }

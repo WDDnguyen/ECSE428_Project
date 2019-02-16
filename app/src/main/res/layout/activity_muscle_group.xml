@@ -6,4 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MuscleGroupActivity">
 
+    <Button
+        android:id="@+id/muscle_group_confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="onMuscleGroupConfirmClick"
+        android:text="Confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

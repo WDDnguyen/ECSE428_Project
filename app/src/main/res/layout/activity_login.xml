@@ -32,9 +32,10 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onLoginClick"
         android:text="Log In" />
 
     <Button

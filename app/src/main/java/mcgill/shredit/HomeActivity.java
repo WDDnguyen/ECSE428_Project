@@ -1,5 +1,6 @@
 package mcgill.shredit;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,12 +11,14 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
     }
+
 
     public void onSearchGymsClick(View view) {
-        //TODO: Link with List of Gyms Activity
+        Intent intent = new Intent(this, GymActivity.class);
+        startActivity(intent);
     }
-
     public void onCustomizeGymClick(View view) {
         //TODO: Link with List of Equipment Activity
     }
