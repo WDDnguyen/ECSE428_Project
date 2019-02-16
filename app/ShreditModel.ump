@@ -1,0 +1,30 @@
+namespace mcgill.shredit.model;
+
+class Gym {
+  1 Gym -> * Equipment equipments;
+  String name;
+  Integer id;
+}
+
+class Equipment {
+  String name;
+  Integer id;
+}
+
+class Exercise {
+  String muscleGroup;
+  String name;
+  String description;
+  Integer id;
+}
+
+class Workout {
+  1 Workout -> * Exercise exercises;
+  String name;
+  Integer id;
+}
+
+class User {
+  String username;
+  String password;
+}
