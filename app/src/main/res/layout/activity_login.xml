@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".HomeActivity">
+    tools:context=".LoginActivity">
 
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onLoginClick"
-        android:text="Log In" />
+        android:text="Login" />
 
     <Button
         android:id="@+id/button5"
