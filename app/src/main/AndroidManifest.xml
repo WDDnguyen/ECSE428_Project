@@ -12,8 +12,8 @@
         <activity android:name=".WorkoutActivity"></activity>
         <activity android:name=".MuscleGroupActivity" />
         <activity android:name=".GymActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".HomeActivity">
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
