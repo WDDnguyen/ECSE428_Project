@@ -4,7 +4,7 @@
 package mcgill.shredit.model;
 import java.util.*;
 
-// line 21 "../../../../../../ShreditModel.ump"
+// line 23 "../../../../../../ShreditModel.ump"
 public class Workout
 {
 

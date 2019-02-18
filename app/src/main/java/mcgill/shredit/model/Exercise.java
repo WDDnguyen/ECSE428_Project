@@ -3,7 +3,7 @@
 
 package mcgill.shredit.model;
 
-// line 14 "../../../../../../ShreditModel.ump"
+// line 15 "../../../../../../ShreditModel.ump"
 public class Exercise
 {
 
@@ -17,16 +17,23 @@ public class Exercise
   private String description;
   private int id;
 
+  //Exercise Associations
+  private Equipment equipement;
+
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Exercise(String aMuscleGroup, String aName, String aDescription, int aId)
+  public Exercise(String aMuscleGroup, String aName, String aDescription, int aId, Equipment aEquipement)
   {
     muscleGroup = aMuscleGroup;
     name = aName;
     description = aDescription;
     id = aId;
+    if (!setEquipement(aEquipement))
+    {
+      throw new RuntimeException("Unable to create Exercise due to aEquipement");
+    }
   }
 
   //------------------------
@@ -84,9 +91,27 @@ public class Exercise
   {
     return id;
   }
+  /* Code from template association_GetOne */
+  public Equipment getEquipement()
+  {
+    return equipement;
+  }
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setEquipement(Equipment aNewEquipement)
+  {
+    boolean wasSet = false;
+    if (aNewEquipement != null)
+    {
+      equipement = aNewEquipement;
+      wasSet = true;
+    }
+    return wasSet;
+  }
 
   public void delete()
-  {}
+  {
+    equipement = null;
+  }
 
 
   public String toString()
@@ -95,6 +120,7 @@ public class Exercise
             "muscleGroup" + ":" + getMuscleGroup()+ "," +
             "name" + ":" + getName()+ "," +
             "description" + ":" + getDescription()+ "," +
-            "id" + ":" + getId()+ "]";
+            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "equipement = "+(getEquipement()!=null?Integer.toHexString(System.identityHashCode(getEquipement())):"null");
   }
 }
