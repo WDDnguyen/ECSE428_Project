@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class MockGymEquip {
+	private final static String csvFile = "./src/main/java/mcgill/shreddit/data/MockGymEquipmentData.csv";
+	
 	public static String[] getEquipmentByID(int equipmentID) throws Exception {
-		String csvFile = "./MockGymEquipmentData.csv";
 		String line = "";
 		BufferedReader br = new BufferedReader(new FileReader(csvFile));
 		String[] cols = new String[3];
@@ -23,7 +24,6 @@ public class MockGymEquip {
 	}
 
 	public static String[] getEquipmentByEquipment(String equipmentName) throws Exception {
-		String csvFile = "./MockGymEquipmentData.csv";
 		String line = "";
 		BufferedReader br = new BufferedReader(new FileReader(csvFile));
 		String[] cols = new String[3];
@@ -41,7 +41,6 @@ public class MockGymEquip {
 	}
 
 	public static String[] getEquipmentByMuscle(String muscleName) throws Exception {
-		String csvFile = "./MockGymEquipmentData.csv";
 		String line = "";
 		BufferedReader br = new BufferedReader(new FileReader(csvFile));
 		String[] cols = new String[3];
