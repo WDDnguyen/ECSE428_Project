@@ -7,11 +7,13 @@ class Gym {
 }
 
 class Equipment {
+  isA Serializable;
   String name;
   Integer id;
 }
 
 class Exercise {
+  1 Exercise -> 1 Equipment equipement;
   String muscleGroup;
   String name;
   String description;
