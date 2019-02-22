@@ -56,4 +56,21 @@ public class MockGymEquip {
 		}
 		return cols;
 	}
+	
+	public static String[] getEquipmentByExercise(String exerciseName) throws Exception {
+		String line = "";
+		BufferedReader br = new BufferedReader(new FileReader(csvFile));
+		String[] cols = new String[3];
+		boolean idFound = false;
+		while (!idFound) {
+			line = br.readLine();
+
+			// use comma as separator
+			cols = line.split(",");
+			if (0 == cols[3].compareTo(exerciseName)) {
+				idFound = true;
+			}
+		}
+		return cols;
+	}
 }
