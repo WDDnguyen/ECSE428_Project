@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class MockGymEquip {
-	private final static String csvFile = "./src/main/java/mcgill/shreddit/data/MockGymEquipmentData.csv";
+	private final static String csvFile = "./app/src/main/java/mcgill/shreddit/data/MockGymEquipmentData.csv";
 	
 	public static String[] getEquipmentByID(int equipmentID) throws Exception {
 		String line = "";
