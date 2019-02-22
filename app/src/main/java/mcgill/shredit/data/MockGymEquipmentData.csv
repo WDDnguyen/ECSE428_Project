@@ -1,10 +1,39 @@
-1,testEquipmentName1,testMuscleName1
-2,testEquipmentName2,testMuscleName2
-3,testEquipmentName3,testMuscleName3
-4,testEquipmentName4,testMuscleName4
-5,testEquipmentName5,testMuscleName5
-6,testEquipmentName6,testMuscleName6
-7,testEquipmentName7,testMuscleName7
-8,testEquipmentName8,testMuscleName8
-9,testEquipmentName9,testMuscleName9
-10,testEquipmentName10,testMuscleName10
+1,Bands,Adductors,Band Hip Adductions
+2,Bands,Triceps,Band Skull Crusher
+3,Bands,Hamstrings,Band Good Morning (Pull Through)
+4,Foam Roll,Adbuctors,Iliotibial Tract-SMR
+5,Foam Roll,Glutes,Piriformis-SMR
+6,Foam Roll,Calves,Peroneals-SMR
+7,Barbells,Forearms,Wrist Rotation with Straight Bar
+8,Barbells,Shoulders,Single-Arm Linear Jammer
+9,Barbells,Middle Back,T-Bar Row with Handle
+10,Kettlebells,Shoulders,One-Arm Kettlebell Push Press
+11,Kettlebells,Quadriceps,Front Squats With Two Keddlebells
+12,Kettlebells,Quadriceps,Kettlebell Pistol Squat
+13,Body Only,Triceps,Dips - Triceps Version
+14,Body Only,Abdominals,Plank
+15,Body Only,Abdominals,Bottoms Up
+16,Machine,Quadriceps,Single-Leg Press
+17,Machine,Traps,Smith Machien Shrug
+18,Machine,Calves,Smith Machine Calf Raise
+19,Cable,Abdominals,Standing Cable Lift
+20,Cable,Forearms,Seated Two-Arm Pamls-Up Low-Pulley Wrist Curl
+21,Cable,Triceps,Triceps Pushdown - V-Bar Attachment
+22,Medicine Ball,Abdominals,One-Arm Medicine Ball Slam
+23,Medicine Ball,Abdominals,Weighted Suitcase Crunch
+24,Medicine Ball,Abdominals,Weighted Crunches
+25,Dumbbell,Biceps,Incline Hammer Curl
+26,Dumbbell,Shoulders,Side Lateral to Front Raise
+27,Dumbbell,Shoulders,Standing Palm-In One-Arm Dumbbell Press
+28,None,Hamstrings,Floor Glute-Ham Raise
+29,None,Quadriceps,Montain Climbers
+30,None,Quadriceps,Trail Running/Walking
+31,E-Z Curl Ball,Biceps,Spider Curl
+32,E-Z Curl Ball,Biceps,EZ-Bar Curl
+33,E-Z Curl Ball,Chest,Bodyweight Flyes
+34,Other,Forearms,Rickshaw Carry
+35,Other,Lower Back,Atlas Stones
+36,Other,Lats,Weighted Pull Ups
+37,Exercise Ball,Abdominals,Exercise Ball Pull-In
+38,Exercise Ball,Hamstrings,Ball Leg Curl
+39,Exercise Ball,Chest,Push-Ups With Feet On An Exercise Ball
