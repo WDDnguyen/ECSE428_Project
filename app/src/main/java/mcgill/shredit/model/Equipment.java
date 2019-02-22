@@ -12,30 +12,22 @@ public class Equipment
   //------------------------
 
   //Equipment Attributes
-  private String name;
   private int id;
+  private String name;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Equipment(String aName, int aId)
+  public Equipment(int aId, String aName)
   {
-    name = aName;
     id = aId;
+    name = aName;
   }
 
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setName(String aName)
-  {
-    boolean wasSet = false;
-    name = aName;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setId(int aId)
   {
@@ -45,14 +37,22 @@ public class Equipment
     return wasSet;
   }
 
-  public String getName()
+  public boolean setName(String aName)
   {
-    return name;
+    boolean wasSet = false;
+    name = aName;
+    wasSet = true;
+    return wasSet;
   }
 
   public int getId()
   {
     return id;
+  }
+
+  public String getName()
+  {
+    return name;
   }
 
   public void delete()
@@ -62,7 +62,7 @@ public class Equipment
   public String toString()
   {
     return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "id" + ":" + getId()+ "]";
+            "id" + ":" + getId()+ "," +
+            "name" + ":" + getName()+ "]";
   }
 }

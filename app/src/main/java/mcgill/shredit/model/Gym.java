@@ -13,8 +13,8 @@ public class Gym
   //------------------------
 
   //Gym Attributes
-  private String name;
   private int id;
+  private String name;
 
   //Gym Associations
   private List<Equipment> equipments;
@@ -23,24 +23,16 @@ public class Gym
   // CONSTRUCTOR
   //------------------------
 
-  public Gym(String aName, int aId)
+  public Gym(int aId, String aName)
   {
-    name = aName;
     id = aId;
+    name = aName;
     equipments = new ArrayList<Equipment>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setName(String aName)
-  {
-    boolean wasSet = false;
-    name = aName;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setId(int aId)
   {
@@ -50,14 +42,22 @@ public class Gym
     return wasSet;
   }
 
-  public String getName()
+  public boolean setName(String aName)
   {
-    return name;
+    boolean wasSet = false;
+    name = aName;
+    wasSet = true;
+    return wasSet;
   }
 
   public int getId()
   {
     return id;
+  }
+
+  public String getName()
+  {
+    return name;
   }
   /* Code from template association_GetMany */
   public Equipment getEquipment(int index)
@@ -156,7 +156,7 @@ public class Gym
   public String toString()
   {
     return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "id" + ":" + getId()+ "]";
+            "id" + ":" + getId()+ "," +
+            "name" + ":" + getName()+ "]";
   }
 }

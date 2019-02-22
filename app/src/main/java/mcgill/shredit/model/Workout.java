@@ -4,7 +4,7 @@
 package mcgill.shredit.model;
 import java.util.*;
 
-// line 21 "../../../../../../ShreditModel.ump"
+// line 22 "../../../../../../ShreditModel.ump"
 public class Workout
 {
 
@@ -13,8 +13,8 @@ public class Workout
   //------------------------
 
   //Workout Attributes
-  private String name;
   private int id;
+  private String name;
 
   //Workout Associations
   private List<Exercise> exercises;
@@ -23,24 +23,16 @@ public class Workout
   // CONSTRUCTOR
   //------------------------
 
-  public Workout(String aName, int aId)
+  public Workout(int aId, String aName)
   {
-    name = aName;
     id = aId;
+    name = aName;
     exercises = new ArrayList<Exercise>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setName(String aName)
-  {
-    boolean wasSet = false;
-    name = aName;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setId(int aId)
   {
@@ -50,14 +42,22 @@ public class Workout
     return wasSet;
   }
 
-  public String getName()
+  public boolean setName(String aName)
   {
-    return name;
+    boolean wasSet = false;
+    name = aName;
+    wasSet = true;
+    return wasSet;
   }
 
   public int getId()
   {
     return id;
+  }
+
+  public String getName()
+  {
+    return name;
   }
   /* Code from template association_GetMany */
   public Exercise getExercise(int index)
@@ -156,7 +156,7 @@ public class Workout
   public String toString()
   {
     return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "id" + ":" + getId()+ "]";
+            "id" + ":" + getId()+ "," +
+            "name" + ":" + getName()+ "]";
   }
 }
