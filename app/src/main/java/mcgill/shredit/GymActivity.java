@@ -16,15 +16,12 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import mcgill.shredit.model.Equipment;
 import mcgill.shredit.model.Gym;
 
 public class GymActivity extends AppCompatActivity {
-
-    // TODO : generate gym data; Remove this when completed.
-    Gym selectedGym = new Gym("FlexBoi", 1);
-    Equipment gymEquipment = new Equipment("treadmill", 1);
 
     ListView search_gym;
     ArrayAdapter<String> adapter;
@@ -88,9 +85,11 @@ public class GymActivity extends AppCompatActivity {
 
     // TODO : Need to pass actual generated gym equipment data to MuscleGroupActivity
     public void onGymConfirmClick(View view) {
+        Gym selectedGym = new Gym("FlexBoi", 1);
+        Equipment gymEquipment = new Equipment("treadmill", 1);
 
         selectedGym.addEquipment(gymEquipment);
-        ArrayList<Equipment> gymEquipments = (ArrayList<Equipment>) selectedGym.getEquipments();
+        List<Equipment> gymEquipments = selectedGym.getEquipments();
 
         if(!gymEquipments.isEmpty()){
             Intent intent = new Intent(this, MuscleGroupActivity.class);
