@@ -69,5 +69,41 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+    
+    public boolean signUpUser () {
+        final String username = editTextUsername.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
 
+        if (TextUtils.isEmpty(username) && TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter username and password",Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+        else if(TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+            Toast.makeText(this, "Please enter username ",Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+        else if(TextUtils.isEmpty(password) && !TextUtils.isEmpty(username)){
+            Toast.makeText(this, "Please enter password",Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+
+        else if(true){// register
+            Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
+            return true;
+        }else{
+            Toast.makeText(this, "Username already exists",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+    }
+
+    
+    public void onSignUpClick(View view){
+            if(signUpUser()) {
+                Toast.makeText(this, "Click lOGIN to log in",Toast.LENGTH_SHORT).show();
+            }
+    }
 }
