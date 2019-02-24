@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-import mcgill.shredit.model.Equipment;
+import mcgill.shredit.model.*;
 
 public class WorkoutActivity extends AppCompatActivity {
 
@@ -47,5 +47,31 @@ public class WorkoutActivity extends AppCompatActivity {
     public void onWorkoutDoneClick(View view){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    public static Workout generateWorkout(List<Exercise> exercises, String name, int id) {
+        Workout wo = new Workout(name, id);
+
+        for (Exercise ex : exercises) {
+            wo.addExercise(ex);
+        }
+
+        return wo;
+    }
+
+    public static boolean addExToWorkout(Workout wo, Exercise ex) {
+        boolean wasAdded = false;
+
+        wasAdded = wo.addExercise(ex);
+
+        return wasAdded;
+    }
+
+    public static boolean removeExFromWorkout(Workout wo, Exercise ex) {
+        boolean wasRemoved = false;
+
+        wasRemoved = wo.removeExercise(ex);
+
+        return wasRemoved;
     }
 }
