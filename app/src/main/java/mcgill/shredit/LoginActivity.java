@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import mcgill.shredit.data.mockUser;
 
 public class LoginActivity extends AppCompatActivity {
 
     private Button buttonRegister;
     private EditText editTextUsername;
     private EditText editTextPassword;
+    mockUser mu =new mockUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     
-    public boolean signUpUser () {
+    public boolean signUpUser ()throws Exception  {
         final String username = editTextUsername.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+
 
         if (TextUtils.isEmpty(username) && TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please enter username and password",Toast.LENGTH_SHORT).show();
@@ -90,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        else if(true){// register
+        else if(mu.registerUser(username,password)){// register
             Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
             return true;
         }else{
@@ -101,9 +104,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     
-    public void onSignUpClick(View view){
+    public void onSignUpClick(View view)throws Exception {
             if(signUpUser()) {
-                Toast.makeText(this, "Click lOGIN to log in",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Click LOGIN to log in",Toast.LENGTH_SHORT).show();
             }
     }
 }
