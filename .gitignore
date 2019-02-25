@@ -33,4 +33,4 @@ output.json
 
 #NDK
 obj/
-.externalNativeBuild
+app/src/main/res/layout/activity_workout.xml
