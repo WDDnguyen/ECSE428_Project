@@ -33,7 +33,7 @@ public class GymActivity extends AppCompatActivity {
 
         // Search bar
         search_gym = findViewById(R.id.search_gym);
-        ArrayList<String> arrayGyms = queryGyms();
+        final ArrayList<String> arrayGyms = queryGyms(); //Made final for now so that onItemClick can access this ArrayList. May need to find alternative solution
 
         adapter = new ArrayAdapter<String>(
                 GymActivity.this,
@@ -45,8 +45,11 @@ public class GymActivity extends AppCompatActivity {
         search_gym.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                onGymConfirmClick(arg1);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //onGymConfirmClick(arg1);
+                Intent intent = new Intent(getApplication(), GymPresetActivity.class);
+                intent.putExtra("item_gym_name", arrayGyms.get(position)); //pass the gym name onto the next activity
+                startActivity(intent);
             }
         });
 
@@ -78,28 +81,8 @@ public class GymActivity extends AppCompatActivity {
 
     // TODO query gym data
     private ArrayList<String> queryGyms() {
-        String[] array = {"McGill Fitness Center", "Economofitness St Catherine", "Economofitness Atwater"};
+        String[] array = {"McGill Fitness Center", "Econofitness St Catherine", "Econofitness Atwater"};
         ArrayList<String> gyms = new ArrayList<>(Arrays.asList(array));
         return gyms;
-    }
-
-    // TODO : Need to pass actual generated gym equipment data to MuscleGroupActivity
-    public void onGymConfirmClick(View view) {
-        Gym selectedGym = new Gym("FlexBoi", 1);
-        Equipment gymEquipment = new Equipment("treadmill", 1);
-
-        selectedGym.addEquipment(gymEquipment);
-        List<Equipment> gymEquipments = selectedGym.getEquipments();
-
-        if(!gymEquipments.isEmpty()){
-            Intent intent = new Intent(this, MuscleGroupActivity.class);
-            intent.putExtra("EQUIPMENT_LIST", (Serializable) gymEquipments);
-            startActivity(intent);
-        } else {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "A GYM HAS TO BE SELECTED",
-                    Toast.LENGTH_SHORT);
-            toast.show();
-        }
     }
 }
