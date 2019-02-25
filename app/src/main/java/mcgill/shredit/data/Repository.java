@@ -40,4 +40,9 @@ public class Repository {
         //TODO
         return null;
     }
+
+    public boolean checkPassword(String username,String password){
+        //TODO
+        return true;
+    }
 }

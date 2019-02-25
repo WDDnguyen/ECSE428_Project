@@ -9,14 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import mcgill.shredit.data.mockUser;
+import mcgill.shredit.data.Repository;
+
 
 public class LoginActivity extends AppCompatActivity {
 
     private Button buttonRegister;
     private EditText editTextUsername;
     private EditText editTextPassword;
-    mockUser mu =new mockUser();
+    Repository rp =new Repository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        else if(mu.registerUser(username,password)){// register
+        else if(rp.checkPassword(username,password)){// register
             Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
             return true;
         }else{
