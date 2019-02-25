@@ -59,6 +59,14 @@ public class WorkoutActivity extends AppCompatActivity {
         return wo;
     }
 
+    public static boolean swapExercise(Workout wo, Exercise orig, Exercise newex){
+        boolean success_rm=false;
+        boolean success_add=false;
+        success_rm = wo.removeExercise(orig);
+        success_add = wo.addExercise(newex);
+        return (success_rm && success_add);
+    }
+
     public static boolean addExToWorkout(Workout wo, Exercise ex) {
         boolean wasAdded = false;
 

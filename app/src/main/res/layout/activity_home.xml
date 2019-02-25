@@ -61,4 +61,10 @@
         android:text="@string/home_manage_workouts"
         android:onClick="onManageWorkoutsClick"/>
 
+    <Button
+        android:id="@+id/signout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Out" />
+
 </LinearLayout>

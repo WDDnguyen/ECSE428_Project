@@ -27,6 +27,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onManageWorkoutsClick(View view) {
-        //TODO: Link with Manage Workouts Activity
+        Intent intent = new Intent(this, WorkoutActivity.class);
+        startActivity(intent);
     }
 }
