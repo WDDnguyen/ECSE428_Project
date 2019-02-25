@@ -9,12 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import mcgill.shredit.data.Repository;
+
 
 public class LoginActivity extends AppCompatActivity {
 
     private Button buttonRegister;
     private EditText editTextUsername;
     private EditText editTextPassword;
+    Repository rp =new Repository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,5 +72,42 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+    
+    public boolean signUpUser ()throws Exception  {
+        final String username = editTextUsername.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
 
+
+        if (TextUtils.isEmpty(username) && TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter username and password",Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+        else if(TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+            Toast.makeText(this, "Please enter username ",Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+        else if(TextUtils.isEmpty(password) && !TextUtils.isEmpty(username)){
+            Toast.makeText(this, "Please enter password",Toast.LENGTH_SHORT).show();
+
+            return false;
+        }
+
+        else if(rp.checkPassword(username,password)){// register
+            Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
+            return true;
+        }else{
+            Toast.makeText(this, "Username already exists",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+    }
+
+    
+    public void onSignUpClick(View view)throws Exception {
+            if(signUpUser()) {
+                Toast.makeText(this, "Click LOGIN to log in",Toast.LENGTH_SHORT).show();
+            }
+    }
 }
