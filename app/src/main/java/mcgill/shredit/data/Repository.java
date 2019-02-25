@@ -15,7 +15,7 @@ public final class Repository {
     private static final String EQUIPMENT_ID = "eqid";
     private static final String EQUIPMENT_NAME = "name";
 
-    private static final String EXERCISE_TABLE = "Equipment";
+    private static final String EXERCISE_TABLE = "Exercises";
     private static final String EXERCISE_ID = "exid";
     private static final String EXERCISE_NAME = "name";
     private static final String EXERCISE_DESCRIPTION = "description";
@@ -24,14 +24,14 @@ public final class Repository {
     private static final String GYM_TABLE = "Gyms";
     private static final String GYM_ID = "gid";
     private static final String GYM_NAME = "name";
-    private static final String GYM_EQUIPMENT_TABLE = "Gym Equipment";
+    private static final String GYM_EQUIPMENT_TABLE = "GymEquipment";
 
-    private static final String WORKOUT_TABLE = "Workout";
+    private static final String WORKOUT_TABLE = "Workouts";
     private static final String WORKOUT_ID = "wid";
     private static final String WORKOUT_NAME = "name";
-    private static final String WORKOUT_EXERCISE_TABLE = "Workout Exercise";
+    private static final String WORKOUT_EXERCISE_TABLE = "WorkoutExercise";
 
-    private static final String USER_TABLE = "Gyms";
+    private static final String USER_TABLE = "Users";
     private static final String USER_USERNAME = "username";
     private static final String USER_PASSWORD = "password";
 
@@ -53,11 +53,9 @@ public final class Repository {
         ArrayList<Equipment> equipmentList= new ArrayList<>();
         ResultSet rs;
 
-        String query =
-                "SELECT "
-                + EQUIPMENT_ID + ","
-                + EQUIPMENT_NAME
-                + " FROM " + EQUIPMENT_TABLE + ";";
+
+        String query = String.format("SELECT %s, %s FROM %s;",
+                EQUIPMENT_ID, EQUIPMENT_NAME, EQUIPMENT_TABLE);
 
         try {
             rs = dbs.query(query);
@@ -78,24 +76,24 @@ public final class Repository {
         HashMap<Integer, Equipment> equipmentSet = new HashMap<>();
         ResultSet rs;
 
-        String query = String.format("SELECT %s, %s, %s, %s, %s.%s, %s FROM %s JOIN %s ",
+        String query = String.format("SELECT %s, %s, %s, %s, ex_t.%s, %s FROM AS ex_t %s "
+                +"INNER JOIN %s AS eq_t ON ext_t.%s=eq_t.%s",
                 EXERCISE_ID, EXERCISE_NAME, EXERCISE_DESCRIPTION, EXERCISE_MUSCLE_GROUP,
-                EXERCISE_TABLE, EQUIPMENT_ID, EQUIPMENT_NAME, EXERCISE_TABLE, EQUIPMENT_TABLE);
+                EQUIPMENT_ID, EQUIPMENT_NAME, EXERCISE_TABLE, EQUIPMENT_TABLE, EQUIPMENT_ID, EQUIPMENT_ID);
 
         if(gymID >= 0) {
-            query += String.format("JOIN %s ", GYM_EQUIPMENT_TABLE);
+            query += String.format(" INNER JOIN %s AS ge_t ON ex_t.%s=ge_t.%s",
+                    GYM_EQUIPMENT_TABLE, EXERCISE_ID, EXERCISE_ID);
         }
 
-        query += String.format("ON %s.%s=%s.%s;", EXERCISE_TABLE, EQUIPMENT_ID, EQUIPMENT_TABLE, EQUIPMENT_ID);
-
         if (muscleGroup != null) {
-           query += String.format("WHERE %s='%s'", EXERCISE_MUSCLE_GROUP, muscleGroup);
+           query += String.format(" WHERE %s='%s'", EXERCISE_MUSCLE_GROUP, muscleGroup);
            if (gymID >= 0) {
                query += String.format(" AND %s=%d", GYM_ID, gymID);
            }
 
         } else if (gymID >= 0) {
-            query += String.format("WHERE %s='%s'", GYM_ID, gymID);
+            query += String.format(" WHERE %s='%s'", GYM_ID, gymID);
         }
 
         query += ";";
@@ -125,8 +123,8 @@ public final class Repository {
 
     public List<Gym> getGymList(String username) {
 
-        String query = String.format("SELECT %s.%s, %s, %s.%s, %s,  FROM %s JOIN %s JOIN %s "
-                +"WHERE %s='%s';",
+        String query = String.format("SELECT %s.%s, %s, %s.%s, %s, "
+                +"FROM %s INNER JOIN %s INNER JOIN %s WHERE %s='%s';",
                 EQUIPMENT_TABLE, EQUIPMENT_ID, EQUIPMENT_NAME, GYM_TABLE, GYM_ID, GYM_NAME,
                 EXERCISE_TABLE, GYM_EQUIPMENT_TABLE, GYM_TABLE, USER_USERNAME, username);
 
@@ -160,11 +158,14 @@ public final class Repository {
     }
 
     public List<Workout> getWorkoutList(String username) {
-        String query = String.format("SELECT %s.%s, %s, %s.%s, %s, %s, %s, %s.%s, %s "
-                + "FROM %s, %s JOIN %s JOIN %s WHERE %s='%s'",
-                EQUIPMENT_TABLE, EQUIPMENT_ID, EQUIPMENT_NAME, EXERCISE_TABLE, EXERCISE_NAME,
-                EXERCISE_NAME, EXERCISE_DESCRIPTION, EXERCISE_MUSCLE_GROUP, WORKOUT_TABLE,
-                WORKOUT_ID, WORKOUT_NAME, EQUIPMENT_TABLE, EXERCISE_TABLE, WORKOUT_EXERCISE_TABLE, WORKOUT_TABLE);
+        String query = String.format("SELECT eq_t.%s, %s, ex_t.%s, %s, %s, %s, w_t.%s, %s "
+                + "FROM %s AS eq_t INNER JOIN %s AS ex_t INNER JOIN %s AS w_t INNER JOIN %s we_t WHERE %s='%s';",
+                EQUIPMENT_ID, EQUIPMENT_NAME, EXERCISE_NAME, EXERCISE_NAME, EXERCISE_DESCRIPTION,
+                EXERCISE_MUSCLE_GROUP, WORKOUT_ID, WORKOUT_NAME,
+                EQUIPMENT_TABLE, EXERCISE_TABLE, EQUIPMENT_ID, EQUIPMENT_ID,
+                WORKOUT_EXERCISE_TABLE, EXERCISE_ID, EXERCISE_ID,
+                WORKOUT_TABLE, WORKOUT_ID, WORKOUT_ID,
+                USER_USERNAME, username);
 
         HashMap<Integer, Workout> workoutSet = new HashMap<>();
         HashMap<Integer, Exercise> exerciseSet = new HashMap<>();

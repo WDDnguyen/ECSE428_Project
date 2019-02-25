@@ -9,34 +9,22 @@ import java.util.Properties;
 
 public class DBService {
 
-    private static final String DB_USERNAME = "";
-    private static final String DB_PASSWORD = "";
-    private static final String DB_SERVER_NAME = "";
-    private static final String DB_PORT = "";
+    private static final String DB_USERNAME = "shreditpostgre";
+    private static final String DB_PASSWORD = "shreditpostgre";
+    private static final String DB_SERVER_URL = "jdbc:postgresql://shreditpostgre.caqrxjkfzeba.us-east-2.rds.amazonaws.com:5432/shreditpostgre";
 
     public ResultSet query(String query) throws SQLException {
         Connection con = null;
         Statement stmt = null;
-        ResultSet rs;
+        ResultSet rs = null;
         try {
             con = getConnection();
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                String coffeeName = rs.getString("COF_NAME");
-                int supplierID = rs.getInt("SUP_ID");
-                float price = rs.getFloat("PRICE");
-                int sales = rs.getInt("SALES");
-                int total = rs.getInt("TOTAL");
-                System.out.println(coffeeName + "\t" + supplierID +
-                        "\t" + price + "\t" + sales +
-                        "\t" + total);
-            }
         } finally {
             if (con != null) { con.close(); }
             if (stmt != null) { stmt.close(); }
         }
-
         return rs;
     }
 
@@ -46,15 +34,7 @@ public class DBService {
         connectionProps.put("user", DB_USERNAME);
         connectionProps.put("password", DB_PASSWORD);
 
-        con = DriverManager.getConnection(
-                    "jdbc:" +
-                            "postgresql" +
-                            "://" +
-                            DB_SERVER_NAME +
-                            ":" +
-                            DB_PORT +
-                            "/",
-                    connectionProps);
+        con = DriverManager.getConnection(DB_SERVER_URL, connectionProps);
         return con;
     }
 }
