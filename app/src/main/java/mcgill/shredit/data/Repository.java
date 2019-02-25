@@ -221,4 +221,9 @@ public final class Repository {
             return password;
         }
     }
+
+    public boolean checkPassword(String username,String password){
+        //TODO
+        return true;
+    }
 }

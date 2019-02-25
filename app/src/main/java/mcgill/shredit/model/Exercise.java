@@ -3,7 +3,7 @@
 
 package mcgill.shredit.model;
 
-// line 14 "../../../../../../ShreditModel.ump"
+// line 15 "../../../../../../ShreditModel.ump"
 public class Exercise
 {
 
@@ -19,6 +19,9 @@ public class Exercise
 
   //Exercise Associations
   private Equipment equipment;
+
+  //Exercise Associations
+  private Equipment equipement;
 
   //------------------------
   // CONSTRUCTOR
@@ -103,6 +106,22 @@ public class Exercise
     if (aNewEquipment != null)
     {
       equipment = aNewEquipment;
+      wasSet = true;
+    }
+    return wasSet;
+  }
+  /* Code from template association_GetOne */
+  public Equipment getEquipement()
+  {
+    return equipement;
+  }
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setEquipement(Equipment aNewEquipement)
+  {
+    boolean wasSet = false;
+    if (aNewEquipement != null)
+    {
+      equipement = aNewEquipement;
       wasSet = true;
     }
     return wasSet;

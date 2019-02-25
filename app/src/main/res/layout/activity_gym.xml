@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GymActivity">
+
+    <ListView
+        android:id="@+id/search_gym"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="15dp" />
+
+    <!--<Button-->
+        <!--android:id="@+id/gym_confirm_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:onClick="onGymConfirmClick"-->
+        <!--android:layout_marginStart="160dp"-->
+        <!--android:layout_marginLeft="160dp"-->
+        <!--android:layout_marginBottom="48dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--android:text="Confirm" />-->
+
+</LinearLayout>
