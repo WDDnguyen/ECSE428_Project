@@ -17,7 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonRegister;
     private EditText editTextUsername;
     private EditText editTextPassword;
-    Repository rp =new Repository();
+    Repository rp = Repository.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

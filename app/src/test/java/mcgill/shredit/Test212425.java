@@ -24,7 +24,7 @@ public class Test212425 {
         Workout wo = woTestData();
         boolean verif = checkValidEx(wo, 2, 4);
 
-        Exercise newEx = new Exercise("Cardio", "Bike", "Pedal on the stationary bike", 5, new Equipment("StatBike", 6));
+        Exercise newEx = new Exercise(5, "Cardio", "Bike", "Pedal on the stationary bike",new Equipment(6,"StatBike"));
         wo.addExercise(newEx);
 
         verif = verif && checkValidEx(wo, 3, 5);
@@ -44,7 +44,7 @@ public class Test212425 {
 
     private static Workout woTestData() {
 
-        Workout controlWO = new Workout("Control WO", 1);
+        Workout controlWO = new Workout(1,"Control WO");
         List<Exercise> exTestData = exTestData();
         for (Exercise ex : exTestData) {
             controlWO.addExercise(ex);
@@ -55,8 +55,8 @@ public class Test212425 {
 
     private static List<Exercise> exTestData() {
         List<Exercise> exs = new ArrayList<Exercise>();
-        exs.add(new Exercise("Biceps", "Dumbbells", "Lift a db", 2, new Equipment("dumbbells", 3)));
-        exs.add(new Exercise("Cardio", "Treadmill", "Run on treadmill", 4, new Equipment("treadmill", 5)));
+        exs.add(new Exercise(3, "Biceps", "Dumbbells", "Lift a db", new Equipment(3, "dumbbells")));
+        exs.add(new Exercise(4, "Cardio", "Treadmill", "Run on treadmill",new Equipment(5, "treadmill")));
         return exs;
     }
 
@@ -102,7 +102,7 @@ public class Test212425 {
             return false;
         }
 
-        if (!equipmentsAreEqual(e1.getEquipement(), e2.getEquipement())) {
+        if (!equipmentsAreEqual(e1.getEquipment(), e2.getEquipment())) {
             return false;
         }
 

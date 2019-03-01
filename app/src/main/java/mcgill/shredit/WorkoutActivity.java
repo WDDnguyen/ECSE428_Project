@@ -71,7 +71,7 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
     public static Workout generateWorkout(List<Exercise> exercises, String name, int id) {
-        Workout wo = new Workout(name, id);
+        Workout wo = new Workout(id, name);
 
         for (Exercise ex : exercises) {
             wo.addExercise(ex);

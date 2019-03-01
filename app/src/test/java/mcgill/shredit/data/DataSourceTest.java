@@ -14,88 +14,39 @@ import mcgill.shredit.model.Exercise;
 import mcgill.shredit.model.Gym;
 import mcgill.shredit.model.Workout;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class RepositoryTest {
+public class DataSourceTest {
+
+    private static final String USERNAME = "User1";
+    private static final String PASSWORD = "password";
+    private static final int equipmentID = 0;
+    private static final String equipmentName = "Dumbbells";
+    private static final int exerciseID = 0;
+    private static final String exerciseName = "Curls";
+    private static final String exerciseDescription = "TODO";
+    private static final String exerciseMuscleGroup = MuscleGroup.BICEPS;
+    private static final int gymID = 0;
+    private static final String gymName = "Gym1";
+    private static final int workoutID = 0;
+    private static final String workoutName = "Workout1";
+
+    private static final String filterMuscleGroup = MuscleGroup.BICEPS;
 
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                {"User1", "password",
-                        0, "Dumbbells", 0,
-                        "Curls", "TODO", MuscleGroup.BICEPS,
-                        0, "Gym1",
-                        0, "Workout1",
-                        MuscleGroup.BICEPS, true},
-                {"User1", "password",
-                        0, "Dumbbells", 0,
-                        "Curls", "TODO", MuscleGroup.BICEPS,
-                        0, "Gym1",
-                        0, "Workout1",
-                        MuscleGroup.CHEST, true},
+                {new DBService()},
+                {Repository.getInstance()},
         });
     }
 
-    private String username;
+    private DataSource dataSource;
 
-    private String password;
-
-    private int equipmentID;
-
-    private String equipmentName;
-
-    private int exerciseID;
-
-    private String exerciseName;
-
-    private String exerciseDescription;
-
-    private String exerciseMuscleGroup;
-
-    private int gymID;
-
-    private String gymName;
-
-    private int workoutID;
-
-    private String workoutName;
-
-    private String filterMuscleGroup;
-
-    private boolean equipmentAvailable;
-
-    public RepositoryTest(String username,
-                          String password,
-                          int equipmentID,
-                          String equipmentName,
-                          int exerciseID,
-                          String exerciseName,
-                          String exerciseDescription,
-                          String exerciseMuscleGroup,
-                          int gymID,
-                          String gymName,
-                          int workoutID,
-                          String workoutName,
-                          String filterMuscleGroup,
-                          boolean equipmentAvailable) {
-        this.username = username;
-        this.password = password;
-        this.equipmentID = equipmentID;
-        this.equipmentName = equipmentName;
-        this.exerciseID = exerciseID;
-        this.exerciseName = exerciseName;
-        this.exerciseDescription = exerciseDescription;
-        this.exerciseMuscleGroup = exerciseMuscleGroup;
-        this.gymID = gymID;
-        this.gymName = gymName;
-        this.workoutID = workoutID;
-        this.workoutName = workoutName;
-        this.filterMuscleGroup = filterMuscleGroup;
-        this.equipmentAvailable = equipmentAvailable;
+    public DataSourceTest(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     private boolean isTestEquipment(Equipment equipment) {
@@ -126,8 +77,7 @@ public class RepositoryTest {
 
     @Test
     public void testGetEquipment() {
-        Repository repo = Repository.getInstance();
-        List<Equipment> equipmentList = repo.getEquipmentList();
+        List<Equipment> equipmentList = dataSource.getEquipmentList();
         assertNotNull(equipmentList);
         boolean found = false;
         for (Equipment equipment : equipmentList) {
@@ -141,8 +91,7 @@ public class RepositoryTest {
 
     @Test
     public void testGetExerciseListNoFilter() {
-        Repository repo = Repository.getInstance();
-        List<Exercise> exerciseList = repo.getExerciseList(null, -1);
+        List<Exercise> exerciseList = dataSource.getExerciseList(null, -1);
         assertNotNull(exerciseList);
         boolean found = false;
         for (Exercise exercise : exerciseList) {
@@ -156,8 +105,7 @@ public class RepositoryTest {
 
     @Test
     public void testGetExerciseListMuscleGroupFilter() {
-        Repository repo = Repository.getInstance();
-        List<Exercise> exerciseList = repo.getExerciseList(filterMuscleGroup, -1);
+        List<Exercise> exerciseList = dataSource.getExerciseList(filterMuscleGroup, -1);
         assertNotNull(exerciseList);
         boolean found = false;
         for (Exercise exercise : exerciseList) {
@@ -166,17 +114,12 @@ public class RepositoryTest {
                 break;
             }
         }
-        if (exerciseMuscleGroup.equals(filterMuscleGroup)) {
-            assertTrue(found);
-        } else {
-            assertFalse(found);
-        }
+        assertTrue(found);
     }
 
     @Test
     public void testGetExerciseListGymFilter() {
-        Repository repo = Repository.getInstance();
-        List<Exercise> exerciseList = repo.getExerciseList(null, gymID);
+        List<Exercise> exerciseList = dataSource.getExerciseList(null, gymID);
         assertNotNull(exerciseList);
         boolean found = false;
         for (Exercise exercise : exerciseList) {
@@ -185,17 +128,12 @@ public class RepositoryTest {
                 break;
             }
         }
-        if (equipmentAvailable) {
-            assertTrue(found);
-        } else {
-            assertFalse(found);
-        }
+        assertTrue(found);
     }
 
     @Test
     public void testGetExerciseListMuscleGroupAndGymFilter() {
-        Repository repo = Repository.getInstance();
-        List<Exercise> exerciseList = repo.getExerciseList(filterMuscleGroup, gymID);
+        List<Exercise> exerciseList = dataSource.getExerciseList(filterMuscleGroup, gymID);
         assertNotNull(exerciseList);
         boolean found = false;
         for (Exercise exercise : exerciseList) {
@@ -204,17 +142,12 @@ public class RepositoryTest {
                 break;
             }
         }
-        if (exerciseMuscleGroup.equals(filterMuscleGroup) && equipmentAvailable) {
-            assertTrue(found);
-        } else {
-            assertFalse(found);
-        }
+        assertTrue(found);
     }
 
     @Test
     public void testGetGymList() {
-        Repository repo = Repository.getInstance();
-        List<Gym> gymList = repo.getGymList(username);
+        List<Gym> gymList = dataSource.getGymList(USERNAME);
         assertNotNull(gymList);
         boolean found = false;
         for(Gym gym: gymList) {
@@ -228,8 +161,7 @@ public class RepositoryTest {
 
     @Test
     public void testGetWorkoutList() {
-        Repository repo = Repository.getInstance();
-        List<Workout> workoutList = repo.getWorkoutList(username);
+        List<Workout> workoutList = dataSource.getWorkoutList(USERNAME);
         assertNotNull(workoutList);
         boolean found = false;
         for(Workout workout: workoutList) {
@@ -242,8 +174,8 @@ public class RepositoryTest {
     }
 
     @Test
-    public void testGetPassword() {
+    public void testCheckPassword() {
         Repository repo = Repository.getInstance();
-        assertEquals(password, repo.getPassword(username));
+        assertTrue(repo.checkPassword(USERNAME, PASSWORD));
     }
 }
