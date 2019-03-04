@@ -12,38 +12,32 @@ import java.util.List;
 import mcgill.shredit.model.Equipment;
 import mcgill.shredit.model.Exercise;
 import mcgill.shredit.model.Gym;
+import mcgill.shredit.model.User;
 import mcgill.shredit.model.Workout;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class DataSourceTest {
 
-    private static final String USERNAME = "User1";
-    private static final String PASSWORD = "password";
-    private static final int equipmentID = 0;
-    private static final String equipmentName = "Dumbbells";
-    private static final int exerciseID = 0;
-    private static final String exerciseName = "Curls";
-    private static final String exerciseDescription = "TODO";
-    private static final String exerciseMuscleGroup = MuscleGroup.BICEPS;
-    private static final int gymID = 0;
-    private static final String gymName = "Gym1";
-    private static final int workoutID = 0;
-    private static final String workoutName = "Workout1";
-
-    private static final String filterMuscleGroup = MuscleGroup.BICEPS;
-
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                {new DBService()},
-                {Repository.getInstance()},
+                //{new DBService()},
+                {Repository.getInstance()}
         });
     }
 
     private DataSource dataSource;
+
+    private static final User testUser = TestData.testUser;
+    private static final Equipment testEquipment = TestData.testEquipment[0];
+    private static final Exercise testExercise = TestData.testExercises[0];
+    private static final Gym testGym = TestData.testGyms[0];
+    private static final Workout testWorkout = TestData.testWorkouts[0];
+    private static final String muscleGroupFilter = MuscleGroup.BICEPS;
 
     public DataSourceTest(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -51,34 +45,31 @@ public class DataSourceTest {
 
     private boolean isTestEquipment(Equipment equipment) {
         return equipment != null &&
-                equipment.getId() == equipmentID &&
-                equipment.getName().equals(equipmentName);
+                equipment.getName().equals(testEquipment.getName());
     }
     private boolean isTestExercise(Exercise exercise) {
         return exercise != null &&
-                exercise.getId() == exerciseID &&
-                exercise.getName().equals(exerciseName) &&
-                exercise.getDescription().equals(exerciseDescription) &&
-                exercise.getMuscleGroup().equals(exerciseMuscleGroup) &&
+                exercise.getName().equals(testExercise.getName()) &&
+                exercise.getDescription().equals(testExercise.getDescription()) &&
+                exercise.getMuscleGroup().equals(testExercise.getMuscleGroup()) &&
                 isTestEquipment(exercise.getEquipment());
     }
 
     private boolean isTestGym(Gym gym) {
         return gym != null &&
-                gym.getId() == gymID &&
-                gym.getName().equals(gymName);
+                gym.getName().equals(testGym.getName());
     }
 
     private boolean isTestWorkout(Workout workout) {
         return workout != null &&
-                workout.getId() == workoutID &&
-                workout.getName().equals(workoutName);
+                workout.getName().equals(testWorkout.getName());
     }
 
     @Test
     public void testGetEquipment() {
         List<Equipment> equipmentList = dataSource.getEquipmentList();
         assertNotNull(equipmentList);
+        assertFalse(equipmentList.isEmpty());
         boolean found = false;
         for (Equipment equipment : equipmentList) {
             if (isTestEquipment(equipment)) {
@@ -91,8 +82,9 @@ public class DataSourceTest {
 
     @Test
     public void testGetExerciseListNoFilter() {
-        List<Exercise> exerciseList = dataSource.getExerciseList(null, -1);
+        List<Exercise> exerciseList = dataSource.getExerciseList(null, null);
         assertNotNull(exerciseList);
+        assertFalse(exerciseList.isEmpty());
         boolean found = false;
         for (Exercise exercise : exerciseList) {
             if (isTestExercise(exercise)) {
@@ -105,8 +97,9 @@ public class DataSourceTest {
 
     @Test
     public void testGetExerciseListMuscleGroupFilter() {
-        List<Exercise> exerciseList = dataSource.getExerciseList(filterMuscleGroup, -1);
+        List<Exercise> exerciseList = dataSource.getExerciseList(muscleGroupFilter, null);
         assertNotNull(exerciseList);
+        assertFalse(exerciseList.isEmpty());
         boolean found = false;
         for (Exercise exercise : exerciseList) {
             if (isTestExercise(exercise)) {
@@ -119,8 +112,9 @@ public class DataSourceTest {
 
     @Test
     public void testGetExerciseListGymFilter() {
-        List<Exercise> exerciseList = dataSource.getExerciseList(null, gymID);
+        List<Exercise> exerciseList = dataSource.getExerciseList(null, testGym.getName());
         assertNotNull(exerciseList);
+        assertFalse(exerciseList.isEmpty());
         boolean found = false;
         for (Exercise exercise : exerciseList) {
             if (isTestExercise(exercise)) {
@@ -133,8 +127,9 @@ public class DataSourceTest {
 
     @Test
     public void testGetExerciseListMuscleGroupAndGymFilter() {
-        List<Exercise> exerciseList = dataSource.getExerciseList(filterMuscleGroup, gymID);
+        List<Exercise> exerciseList = dataSource.getExerciseList(muscleGroupFilter, testGym.getName());
         assertNotNull(exerciseList);
+        assertFalse(exerciseList.isEmpty());
         boolean found = false;
         for (Exercise exercise : exerciseList) {
             if (isTestExercise(exercise)) {
@@ -147,8 +142,9 @@ public class DataSourceTest {
 
     @Test
     public void testGetGymList() {
-        List<Gym> gymList = dataSource.getGymList(USERNAME);
+        List<Gym> gymList = dataSource.getGymList(testUser.getUsername());
         assertNotNull(gymList);
+        assertFalse(gymList.isEmpty());
         boolean found = false;
         for(Gym gym: gymList) {
             if (isTestGym(gym)) {
@@ -161,8 +157,9 @@ public class DataSourceTest {
 
     @Test
     public void testGetWorkoutList() {
-        List<Workout> workoutList = dataSource.getWorkoutList(USERNAME);
+        List<Workout> workoutList = dataSource.getWorkoutList(testUser.getUsername());
         assertNotNull(workoutList);
+        assertFalse(workoutList.isEmpty());
         boolean found = false;
         for(Workout workout: workoutList) {
             if (isTestWorkout(workout)) {
@@ -175,7 +172,6 @@ public class DataSourceTest {
 
     @Test
     public void testCheckPassword() {
-        Repository repo = Repository.getInstance();
-        assertTrue(repo.checkPassword(USERNAME, PASSWORD));
+        assertTrue(dataSource.checkPassword(testUser.getUsername(), testUser.getPassword()));
     }
 }

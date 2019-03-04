@@ -4,6 +4,8 @@ import mcgill.shredit.model.*;
 import java.util.List;
 import java.util.ArrayList;
 
+import static mcgill.shredit.data.TestData.testExercises;
+
 public class Test212425 {
     public static void main(String[] args) {
         System.out.println("Test generation of workout : " + passFail(testGenWO()));
@@ -22,12 +24,12 @@ public class Test212425 {
     public static boolean testAddEx() {
 
         Workout wo = woTestData();
-        boolean verif = checkValidEx(wo, 2, 4);
+        boolean verif = checkValidEx(wo, 2, testExercises[1].getName());
 
-        Exercise newEx = new Exercise(5, "Cardio", "Bike", "Pedal on the stationary bike",new Equipment(6,"StatBike"));
+        Exercise newEx = testExercises[2];
         wo.addExercise(newEx);
 
-        verif = verif && checkValidEx(wo, 3, 5);
+        verif = verif && checkValidEx(wo, 3, testExercises[2].getName());
         return verif;
 
     }
@@ -36,15 +38,15 @@ public class Test212425 {
 
         Workout wo = woTestData();
         Exercise toRemove = wo.getExercise(wo.getExercises().size() - 1);
-        boolean verif = checkValidEx(wo, 2, 4);
+        boolean verif = checkValidEx(wo, 2, testExercises[1].getName());
         wo.removeExercise(toRemove);
-        verif = verif && checkValidEx(wo, 1, 2);
+        verif = verif && checkValidEx(wo, 1, testExercises[0].getName());
         return verif;
     }
 
     private static Workout woTestData() {
 
-        Workout controlWO = new Workout(1,"Control WO");
+        Workout controlWO = new Workout("Control WO");
         List<Exercise> exTestData = exTestData();
         for (Exercise ex : exTestData) {
             controlWO.addExercise(ex);
@@ -55,18 +57,14 @@ public class Test212425 {
 
     private static List<Exercise> exTestData() {
         List<Exercise> exs = new ArrayList<Exercise>();
-        exs.add(new Exercise(3, "Biceps", "Dumbbells", "Lift a db", new Equipment(3, "dumbbells")));
-        exs.add(new Exercise(4, "Cardio", "Treadmill", "Run on treadmill",new Equipment(5, "treadmill")));
+        exs.add(testExercises[0]);
+        exs.add(testExercises[1]);
         return exs;
     }
 
     private static boolean workoutsAreEqual(Workout w1, Workout w2) {
 
         if (!w1.getName().equals(w2.getName())) {
-            return false;
-        }
-
-        if (w1.getId() != w2.getId()) {
             return false;
         }
 
@@ -98,10 +96,6 @@ public class Test212425 {
             return false;
         }
 
-        if (e1.getId() != e2.getId()) {
-            return false;
-        }
-
         if (!equipmentsAreEqual(e1.getEquipment(), e2.getEquipment())) {
             return false;
         }
@@ -116,16 +110,12 @@ public class Test212425 {
             return false;
         }
 
-        if (e1.getId() != e2.getId()) {
-            return false;
-        }
-
         return true;
     }
 
-    private static boolean checkValidEx(Workout wo, int expNumOfEx, int expIDOfLast) {
+    private static boolean checkValidEx(Workout wo, int expNumOfEx, String expNameOfLast) {
         boolean check = wo.getExercises().size() == expNumOfEx;
-        check = check && wo.getExercises().get(wo.getExercises().size() - 1).getId() == expIDOfLast;
+        check = check && wo.getExercises().get(wo.getExercises().size() - 1).getName().equals(expNameOfLast);
         return check;
     }
 

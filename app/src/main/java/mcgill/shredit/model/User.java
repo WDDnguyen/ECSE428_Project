@@ -3,7 +3,7 @@
 
 package mcgill.shredit.model;
 
-// line 28 "../../../../../../ShreditModel.ump"
+// line 24 "../../../../../../ShreditModel.ump"
 public class User
 {
 

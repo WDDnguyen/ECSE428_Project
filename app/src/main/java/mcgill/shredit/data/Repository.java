@@ -24,8 +24,8 @@ public final class Repository implements DataSource {
         return dbs.getEquipmentList();
     }
 
-    public List<Exercise> getExerciseList(String muscleGroup, int gymID) {
-        return dbs.getExerciseList(muscleGroup, gymID);
+    public List<Exercise> getExerciseList(String muscleGroup, String gymName) {
+        return dbs.getExerciseList(muscleGroup, gymName);
     }
 
     public List<Gym> getGymList(String username) {

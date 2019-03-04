@@ -4,7 +4,7 @@
 package mcgill.shredit.model;
 import java.util.*;
 
-// line 22 "../../../../../../ShreditModel.ump"
+// line 19 "../../../../../../ShreditModel.ump"
 public class Workout
 {
 
@@ -13,7 +13,6 @@ public class Workout
   //------------------------
 
   //Workout Attributes
-  private int id;
   private String name;
 
   //Workout Associations
@@ -23,9 +22,8 @@ public class Workout
   // CONSTRUCTOR
   //------------------------
 
-  public Workout(int aId, String aName)
+  public Workout(String aName)
   {
-    id = aId;
     name = aName;
     exercises = new ArrayList<Exercise>();
   }
@@ -34,25 +32,12 @@ public class Workout
   // INTERFACE
   //------------------------
 
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
-
   public boolean setName(String aName)
   {
     boolean wasSet = false;
     name = aName;
     wasSet = true;
     return wasSet;
-  }
-
-  public int getId()
-  {
-    return id;
   }
 
   public String getName()
@@ -156,7 +141,6 @@ public class Workout
   public String toString()
   {
     return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
             "name" + ":" + getName()+ "]";
   }
 }

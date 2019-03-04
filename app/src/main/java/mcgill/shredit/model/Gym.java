@@ -13,7 +13,6 @@ public class Gym
   //------------------------
 
   //Gym Attributes
-  private int id;
   private String name;
 
   //Gym Associations
@@ -23,9 +22,8 @@ public class Gym
   // CONSTRUCTOR
   //------------------------
 
-  public Gym(int aId, String aName)
+  public Gym(String aName)
   {
-    id = aId;
     name = aName;
     equipments = new ArrayList<Equipment>();
   }
@@ -34,25 +32,12 @@ public class Gym
   // INTERFACE
   //------------------------
 
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
-
   public boolean setName(String aName)
   {
     boolean wasSet = false;
     name = aName;
     wasSet = true;
     return wasSet;
-  }
-
-  public int getId()
-  {
-    return id;
   }
 
   public String getName()
@@ -156,7 +141,6 @@ public class Gym
   public String toString()
   {
     return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
             "name" + ":" + getName()+ "]";
   }
 }

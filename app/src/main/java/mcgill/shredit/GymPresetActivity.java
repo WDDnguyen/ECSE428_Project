@@ -69,8 +69,8 @@ public class GymPresetActivity extends AppCompatActivity {
     // TODO : Need to pass actual generated gym equipment data to MuscleGroupActivity
     public void onGymConfirmClick(View view) {
         //dummy data
-        Gym selectedGym = new Gym(1, "FlexBoi");
-        Equipment gymEquipment = new Equipment(1,"treadmill");
+        Gym selectedGym = new Gym("FlexBoi");
+        Equipment gymEquipment = new Equipment("treadmill");
 
         selectedGym.addEquipment(gymEquipment);
         List<Equipment> gymEquipments = selectedGym.getEquipments();

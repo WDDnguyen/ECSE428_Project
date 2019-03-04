@@ -3,7 +3,7 @@
 
 package mcgill.shredit.model;
 
-// line 14 "../../../../../../ShreditModel.ump"
+// line 12 "../../../../../../ShreditModel.ump"
 public class Exercise
 {
 
@@ -12,7 +12,6 @@ public class Exercise
   //------------------------
 
   //Exercise Attributes
-  private int id;
   private String name;
   private String description;
   private String muscleGroup;
@@ -24,9 +23,8 @@ public class Exercise
   // CONSTRUCTOR
   //------------------------
 
-  public Exercise(int aId, String aName, String aDescription, String aMuscleGroup, Equipment aEquipment)
+  public Exercise(String aName, String aDescription, String aMuscleGroup, Equipment aEquipment)
   {
-    id = aId;
     name = aName;
     description = aDescription;
     muscleGroup = aMuscleGroup;
@@ -39,14 +37,6 @@ public class Exercise
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setName(String aName)
   {
@@ -70,11 +60,6 @@ public class Exercise
     muscleGroup = aMuscleGroup;
     wasSet = true;
     return wasSet;
-  }
-
-  public int getId()
-  {
-    return id;
   }
 
   public String getName()
@@ -117,7 +102,6 @@ public class Exercise
   public String toString()
   {
     return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
             "name" + ":" + getName()+ "," +
             "description" + ":" + getDescription()+ "," +
             "muscleGroup" + ":" + getMuscleGroup()+ "]" + System.getProperties().getProperty("line.separator") +

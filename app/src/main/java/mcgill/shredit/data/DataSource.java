@@ -11,7 +11,7 @@ public interface DataSource {
 
     List<Equipment> getEquipmentList();
 
-    List<Exercise> getExerciseList(String muscleGroup, int gymID);
+    List<Exercise> getExerciseList(String muscleGroup, String gymName);
 
     List<Gym> getGymList(String username);
 

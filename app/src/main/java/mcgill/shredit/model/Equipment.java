@@ -3,7 +3,7 @@
 
 package mcgill.shredit.model;
 
-// line 9 "../../../../../../ShreditModel.ump"
+// line 8 "../../../../../../ShreditModel.ump"
 public class Equipment
 {
 
@@ -12,16 +12,14 @@ public class Equipment
   //------------------------
 
   //Equipment Attributes
-  private int id;
   private String name;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Equipment(int aId, String aName)
+  public Equipment(String aName)
   {
-    id = aId;
     name = aName;
   }
 
@@ -29,25 +27,12 @@ public class Equipment
   // INTERFACE
   //------------------------
 
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
-
   public boolean setName(String aName)
   {
     boolean wasSet = false;
     name = aName;
     wasSet = true;
     return wasSet;
-  }
-
-  public int getId()
-  {
-    return id;
   }
 
   public String getName()
@@ -62,7 +47,6 @@ public class Equipment
   public String toString()
   {
     return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
             "name" + ":" + getName()+ "]";
   }
 }

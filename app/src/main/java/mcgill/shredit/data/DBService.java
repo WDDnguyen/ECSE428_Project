@@ -22,23 +22,19 @@ public class DBService implements DataSource{
     private static final String DB_SERVER_URL = "jdbc:postgresql://shreditpostgre.caqrxjkfzeba.us-east-2.rds.amazonaws.com:5432/shreditpostgre";
 
     private static final String EQUIPMENT_TABLE = "Equipment";
-    private static final String EQUIPMENT_ID = "eqid";
-    private static final String EQUIPMENT_NAME = "name";
+    private static final String EQUIPMENT_NAME = "eq_name";
 
     private static final String EXERCISE_TABLE = "Exercises";
-    private static final String EXERCISE_ID = "exid";
-    private static final String EXERCISE_NAME = "name";
+    private static final String EXERCISE_NAME = "ex_name";
     private static final String EXERCISE_DESCRIPTION = "description";
     private static final String EXERCISE_MUSCLE_GROUP = "musclegroup";
 
     private static final String GYM_TABLE = "Gyms";
-    private static final String GYM_ID = "gid";
-    private static final String GYM_NAME = "name";
+    private static final String GYM_NAME = "g_name";
     private static final String GYM_EQUIPMENT_TABLE = "GymEquipment";
 
     private static final String WORKOUT_TABLE = "Workouts";
-    private static final String WORKOUT_ID = "wid";
-    private static final String WORKOUT_NAME = "name";
+    private static final String WORKOUT_NAME = "w_name";
     private static final String WORKOUT_EXERCISE_TABLE = "WorkoutExercise";
 
     private static final String USER_TABLE = "Users";
@@ -62,8 +58,8 @@ public class DBService implements DataSource{
         Connection con = null;
         Statement stmt = null;
 
-        String query = String.format("SELECT %s, %s FROM %s;",
-                EQUIPMENT_ID, EQUIPMENT_NAME, EQUIPMENT_TABLE);
+        String query = String.format("SELECT DISTINCT %s FROM %s;",
+                EQUIPMENT_NAME, EQUIPMENT_TABLE);
 
         try {
             con = getConnection();
@@ -71,12 +67,10 @@ public class DBService implements DataSource{
             ResultSet rs = stmt.executeQuery(query);
             if (rs != null) {
                 while (rs.next()) {
-                    equipmentList.add(new Equipment(
-                            rs.getInt(EQUIPMENT_ID),
-                            rs.getString(EQUIPMENT_NAME)));
+                    equipmentList.add(new Equipment(rs.getString(EQUIPMENT_NAME)));
                 }
             }
-        } catch (SQLException e) {}
+        } catch (SQLException e) {System.out.println(e.getMessage());}
         finally {
             try {
                 if (con != null) {
@@ -90,30 +84,32 @@ public class DBService implements DataSource{
         return equipmentList;
     }
 
-    public List<Exercise> getExerciseList(String muscleGroup, int gymID) {
+    public List<Exercise> getExerciseList(String muscleGroup, String gymName) {
         ArrayList<Exercise> exerciseList= new ArrayList<>();
-        HashMap<Integer, Equipment> equipmentSet = new HashMap<>();
+        HashMap<String, Equipment> equipmentSet = new HashMap<>();
         Connection con = null;
         Statement stmt = null;
 
-        String query = String.format("SELECT %s, %s, %s, %s, ex_t.%s, %s FROM AS ex_t %s "
-                        +"INNER JOIN %s AS eq_t ON ext_t.%s=eq_t.%s",
-                EXERCISE_ID, EXERCISE_NAME, EXERCISE_DESCRIPTION, EXERCISE_MUSCLE_GROUP,
-                EQUIPMENT_ID, EQUIPMENT_NAME, EXERCISE_TABLE, EQUIPMENT_TABLE, EQUIPMENT_ID, EQUIPMENT_ID);
+        String query = String.format("SELECT DISTINCT %s, %s, %s, ex_t.%s\n"
+                        + "FROM %s AS ex_t\n"
+                        +"INNER JOIN %s AS eq_t ON ex_t.%s=eq_t.%s",
+                EXERCISE_NAME, EXERCISE_DESCRIPTION, EXERCISE_MUSCLE_GROUP, EQUIPMENT_NAME,
+                EXERCISE_TABLE,
+                EQUIPMENT_TABLE, EQUIPMENT_NAME, EQUIPMENT_NAME);
 
-        if(gymID >= 0) {
-            query += String.format(" INNER JOIN %s AS ge_t ON ex_t.%s=ge_t.%s",
-                    GYM_EQUIPMENT_TABLE, EXERCISE_ID, EXERCISE_ID);
+        if(gymName != null) {
+            query += String.format("\nINNER JOIN %s AS ge_t ON eq_t.%s=ge_t.%s",
+                    GYM_EQUIPMENT_TABLE, EQUIPMENT_NAME, EQUIPMENT_NAME);
         }
 
         if (muscleGroup != null) {
-            query += String.format(" WHERE %s='%s'", EXERCISE_MUSCLE_GROUP, muscleGroup);
-            if (gymID >= 0) {
-                query += String.format(" AND %s=%d", GYM_ID, gymID);
+            query += String.format("\nWHERE %s='%s'", EXERCISE_MUSCLE_GROUP, muscleGroup);
+            if (gymName != null) {
+                query += String.format(" AND %s='%s'", GYM_NAME, gymName);
             }
 
-        } else if (gymID >= 0) {
-            query += String.format(" WHERE %s='%s'", GYM_ID, gymID);
+        } else if (gymName != null) {
+            query += String.format("\nWHERE %s='%s'", GYM_NAME, gymName);
         }
 
         query += ";";
@@ -124,21 +120,19 @@ public class DBService implements DataSource{
             ResultSet rs = stmt.executeQuery(query);
             if (rs != null) {
                 while (rs.next()) {
-                    if (!equipmentSet.containsKey(rs.getInt(EQUIPMENT_ID))) {
-                        equipmentSet.put(rs.getInt(EQUIPMENT_ID), new Equipment(
-                                rs.getInt(EQUIPMENT_ID),
-                                rs.getString(EQUIPMENT_NAME)
-                        ));
+                    if (!equipmentSet.containsKey(rs.getString(EQUIPMENT_NAME))) {
+                        equipmentSet.put(rs.getString(EQUIPMENT_NAME), new Equipment(
+                                rs.getString(EQUIPMENT_NAME)));
                     }
                     exerciseList.add(new Exercise(
-                            rs.getInt(EXERCISE_ID),
                             rs.getString(EXERCISE_NAME),
                             rs.getString(EXERCISE_DESCRIPTION),
                             rs.getString(EXERCISE_MUSCLE_GROUP),
-                            equipmentSet.get(rs.getInt(EQUIPMENT_ID))));
+                            equipmentSet.get(rs.getString(EQUIPMENT_NAME))));
                 }
             }
-        } finally {
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
             try {
                 if (con != null) {
                     con.close();
@@ -153,13 +147,19 @@ public class DBService implements DataSource{
 
     public List<Gym> getGymList(String username) {
 
-        String query = String.format("SELECT %s.%s, %s, %s.%s, %s, "
-                        +"FROM %s INNER JOIN %s INNER JOIN %s WHERE %s='%s';",
-                EQUIPMENT_TABLE, EQUIPMENT_ID, EQUIPMENT_NAME, GYM_TABLE, GYM_ID, GYM_NAME,
-                EXERCISE_TABLE, GYM_EQUIPMENT_TABLE, GYM_TABLE, USER_USERNAME, username);
+        String query = String.format("SELECT DISTINCT eq_t.%s, ge_t.%s\n"
+                        + "FROM %s AS eq_t\n"
+                        + "INNER JOIN %s AS ge_t ON eq_t.%s=ge_t.%s\n"
+                        + "INNER JOIN %s AS g_t ON ge_t.%s=g_t.%s\n"
+                        + "WHERE %s='%s';",
+                EQUIPMENT_NAME, GYM_NAME,
+                EXERCISE_TABLE,
+                GYM_EQUIPMENT_TABLE, EQUIPMENT_NAME, EQUIPMENT_NAME,
+                GYM_TABLE, GYM_NAME, GYM_NAME,
+                USER_USERNAME, username);
 
-        HashMap<Integer, Gym> gymSet = new HashMap<>();
-        HashMap<Integer, Equipment> equipmentSet = new HashMap<>();
+        HashMap<String, Gym> gymSet = new HashMap<>();
+        HashMap<String, Equipment> equipmentSet = new HashMap<>();
         ArrayList<Gym> gymList = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
@@ -170,23 +170,22 @@ public class DBService implements DataSource{
             ResultSet rs = stmt.executeQuery(query);
             if (rs != null) {
                 while (rs.next()) {
-                    int equipmentID = rs.getInt(EQUIPMENT_ID);
-                    int gymID = rs.getInt(GYM_ID);
-                    if (!equipmentSet.containsKey(equipmentID)) {
-                        equipmentSet.put(equipmentID, new Equipment(
-                                equipmentID,
-                                rs.getString(EQUIPMENT_NAME)
-                        ));
+                    String equipmentName = rs.getString(EQUIPMENT_NAME);
+                    String gymName = rs.getString(GYM_NAME);
+                    if (!equipmentSet.containsKey(equipmentName)) {
+                        equipmentSet.put(equipmentName, new Equipment(
+                                equipmentName));
                     }
-                    if (!gymSet.containsKey(gymID)) {
-                        Gym newGym = new Gym(gymID, rs.getString(GYM_NAME));
-                        gymSet.put(gymID, newGym);
+                    if (!gymSet.containsKey(gymName)) {
+                        Gym newGym = new Gym(gymName);
+                        gymSet.put(gymName, newGym);
                         gymList.add(newGym);
                     }
-                    gymSet.get(gymID).addEquipment(equipmentSet.get(equipmentID));
+                    gymSet.get(gymName).addEquipment(equipmentSet.get(equipmentName));
                 }
             }
-        } finally {
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
             try {
                 if (con != null) {
                     con.close();
@@ -200,18 +199,22 @@ public class DBService implements DataSource{
     }
 
     public List<Workout> getWorkoutList(String username) {
-        String query = String.format("SELECT eq_t.%s, %s, ex_t.%s, %s, %s, %s, w_t.%s, %s "
-                        + "FROM %s AS eq_t INNER JOIN %s AS ex_t INNER JOIN %s AS w_t INNER JOIN %s we_t WHERE %s='%s';",
-                EQUIPMENT_ID, EQUIPMENT_NAME, EXERCISE_NAME, EXERCISE_NAME, EXERCISE_DESCRIPTION,
-                EXERCISE_MUSCLE_GROUP, WORKOUT_ID, WORKOUT_NAME,
-                EQUIPMENT_TABLE, EXERCISE_TABLE, EQUIPMENT_ID, EQUIPMENT_ID,
-                WORKOUT_EXERCISE_TABLE, EXERCISE_ID, EXERCISE_ID,
-                WORKOUT_TABLE, WORKOUT_ID, WORKOUT_ID,
+        String query = String.format("SELECT DISTINCT eq_t.%s, ex_t.%s, %s, %s, w_t.%s\n"
+                        + "FROM %s AS eq_t\n"
+                        + "INNER JOIN %s AS ex_t ON eq_t.%s=ex_t.%s\n"
+                        + "INNER JOIN %s AS we_t ON ex_t.%s=we_t.%s\n"
+                        + "INNER JOIN %s AS w_t ON we_t.%s=w_t.%s\n"
+                        + "WHERE %s='%s';",
+                EQUIPMENT_NAME, EXERCISE_NAME, EXERCISE_DESCRIPTION, EXERCISE_MUSCLE_GROUP, WORKOUT_NAME,
+                EQUIPMENT_TABLE,
+                EXERCISE_TABLE, EQUIPMENT_NAME, EQUIPMENT_NAME,
+                WORKOUT_EXERCISE_TABLE, EXERCISE_NAME, EXERCISE_NAME,
+                WORKOUT_TABLE, WORKOUT_NAME, WORKOUT_NAME,
                 USER_USERNAME, username);
 
-        HashMap<Integer, Workout> workoutSet = new HashMap<>();
-        HashMap<Integer, Exercise> exerciseSet = new HashMap<>();
-        HashMap<Integer, Equipment> equipmentSet = new HashMap<>();
+        HashMap<String, Workout> workoutSet = new HashMap<>();
+        HashMap<String, Exercise> exerciseSet = new HashMap<>();
+        HashMap<String, Equipment> equipmentSet = new HashMap<>();
         ArrayList<Workout> workoutList = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
@@ -222,32 +225,30 @@ public class DBService implements DataSource{
             ResultSet rs = stmt.executeQuery(query);
             if (rs != null) {
                 while (rs.next()) {
-                    int workoutID = rs.getInt(WORKOUT_ID);
-                    int exerciseID = rs.getInt(EQUIPMENT_ID);
-                    int equipmentID = rs.getInt(EQUIPMENT_ID);
-                    if (!equipmentSet.containsKey(equipmentID)) {
-                        equipmentSet.put(equipmentID, new Equipment(
-                                equipmentID,
-                                rs.getString(EQUIPMENT_NAME)
-                        ));
+                    String workoutName = rs.getString(WORKOUT_NAME);
+                    String exerciseName = rs.getString(EQUIPMENT_NAME);
+                    String equipmentName = rs.getString(EQUIPMENT_NAME);
+                    if (!equipmentSet.containsKey(equipmentName)) {
+                        equipmentSet.put(equipmentName, new Equipment(
+                                rs.getString(EQUIPMENT_NAME)));
                     }
-                    if (!exerciseSet.containsKey(exerciseID)) {
-                        exerciseSet.put(exerciseID, new Exercise(
-                                exerciseID,
+                    if (!exerciseSet.containsKey(exerciseName)) {
+                        exerciseSet.put(exerciseName, new Exercise(
                                 rs.getString(EXERCISE_NAME),
                                 rs.getString(EXERCISE_DESCRIPTION),
                                 rs.getString(EXERCISE_MUSCLE_GROUP),
-                                equipmentSet.get(equipmentID)));
+                                equipmentSet.get(equipmentName)));
                     }
-                    if (!workoutSet.containsKey(workoutID)) {
-                        Workout newWorkout = new Workout(workoutID, rs.getString(WORKOUT_NAME));
-                        workoutSet.put(workoutID, newWorkout);
+                    if (!workoutSet.containsKey(workoutName)) {
+                        Workout newWorkout = new Workout(rs.getString(WORKOUT_NAME));
+                        workoutSet.put(workoutName, newWorkout);
                         workoutList.add(newWorkout);
                     }
-                    workoutSet.get(workoutID).addExercise(exerciseSet.get(exerciseID));
+                    workoutSet.get(workoutName).addExercise(exerciseSet.get(exerciseName));
                 }
             }
-        } finally {
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
             try {
                 if (con != null) {
                     con.close();
@@ -263,7 +264,7 @@ public class DBService implements DataSource{
     public boolean checkPassword(String username, String password) {
         Connection con = null;
         Statement stmt = null;
-        String query = String.format("SELECT %s FROM %s WHERE %s='%s';",
+        String query = String.format("SELECT DISTINCT %s FROM %s WHERE %s='%s';",
                 USER_PASSWORD, USER_TABLE, USER_USERNAME, username);
         String truePassword = null;
 
@@ -275,7 +276,8 @@ public class DBService implements DataSource{
                 rs.next();
                 truePassword = rs.getString(USER_PASSWORD);
             }
-        } finally {
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
             try {
                 if (con != null) {
                     con.close();
