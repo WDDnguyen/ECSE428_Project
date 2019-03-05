@@ -3,7 +3,7 @@
 
 package mcgill.shredit.model;
 
-// line 15 "../../../../../../ShreditModel.ump"
+// line 12 "../../../../../../ShreditModel.ump"
 public class Exercise
 {
 
@@ -12,41 +12,31 @@ public class Exercise
   //------------------------
 
   //Exercise Attributes
-  private String muscleGroup;
   private String name;
   private String description;
-  private int id;
+  private String muscleGroup;
 
   //Exercise Associations
-  private Equipment equipement;
+  private Equipment equipment;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Exercise(String aMuscleGroup, String aName, String aDescription, int aId, Equipment aEquipement)
+  public Exercise(String aName, String aDescription, String aMuscleGroup, Equipment aEquipment)
   {
-    muscleGroup = aMuscleGroup;
     name = aName;
     description = aDescription;
-    id = aId;
-    if (!setEquipement(aEquipement))
+    muscleGroup = aMuscleGroup;
+    if (!setEquipment(aEquipment))
     {
-      throw new RuntimeException("Unable to create Exercise due to aEquipement");
+      throw new RuntimeException("Unable to create Exercise due to aEquipment");
     }
   }
 
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setMuscleGroup(String aMuscleGroup)
-  {
-    boolean wasSet = false;
-    muscleGroup = aMuscleGroup;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setName(String aName)
   {
@@ -64,17 +54,12 @@ public class Exercise
     return wasSet;
   }
 
-  public boolean setId(int aId)
+  public boolean setMuscleGroup(String aMuscleGroup)
   {
     boolean wasSet = false;
-    id = aId;
+    muscleGroup = aMuscleGroup;
     wasSet = true;
     return wasSet;
-  }
-
-  public String getMuscleGroup()
-  {
-    return muscleGroup;
   }
 
   public String getName()
@@ -87,22 +72,22 @@ public class Exercise
     return description;
   }
 
-  public int getId()
+  public String getMuscleGroup()
   {
-    return id;
+    return muscleGroup;
   }
   /* Code from template association_GetOne */
-  public Equipment getEquipement()
+  public Equipment getEquipment()
   {
-    return equipement;
+    return equipment;
   }
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setEquipement(Equipment aNewEquipement)
+  public boolean setEquipment(Equipment aNewEquipment)
   {
     boolean wasSet = false;
-    if (aNewEquipement != null)
+    if (aNewEquipment != null)
     {
-      equipement = aNewEquipement;
+      equipment = aNewEquipment;
       wasSet = true;
     }
     return wasSet;
@@ -110,17 +95,16 @@ public class Exercise
 
   public void delete()
   {
-    equipement = null;
+    equipment = null;
   }
 
 
   public String toString()
   {
     return super.toString() + "["+
-            "muscleGroup" + ":" + getMuscleGroup()+ "," +
             "name" + ":" + getName()+ "," +
             "description" + ":" + getDescription()+ "," +
-            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "equipement = "+(getEquipement()!=null?Integer.toHexString(System.identityHashCode(getEquipement())):"null");
+            "muscleGroup" + ":" + getMuscleGroup()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "equipment = "+(getEquipment()!=null?Integer.toHexString(System.identityHashCode(getEquipment())):"null");
   }
 }

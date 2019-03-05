@@ -3,27 +3,22 @@ namespace mcgill.shredit.model;
 class Gym {
   1 Gym -> * Equipment equipments;
   String name;
-  Integer id;
 }
 
 class Equipment {
-  isA Serializable;
   String name;
-  Integer id;
 }
 
 class Exercise {
-  1 Exercise -> 1 Equipment equipement;
-  String muscleGroup;
+  1 Exercise -> 1 Equipment equipment;
   String name;
   String description;
-  Integer id;
+  String muscleGroup;
 }
 
 class Workout {
   1 Workout -> * Exercise exercises;
   String name;
-  Integer id;
 }
 
 class User {

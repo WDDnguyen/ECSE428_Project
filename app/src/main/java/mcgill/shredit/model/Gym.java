@@ -14,7 +14,6 @@ public class Gym
 
   //Gym Attributes
   private String name;
-  private int id;
 
   //Gym Associations
   private List<Equipment> equipments;
@@ -23,10 +22,9 @@ public class Gym
   // CONSTRUCTOR
   //------------------------
 
-  public Gym(String aName, int aId)
+  public Gym(String aName)
   {
     name = aName;
-    id = aId;
     equipments = new ArrayList<Equipment>();
   }
 
@@ -42,22 +40,9 @@ public class Gym
     return wasSet;
   }
 
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
-
   public String getName()
   {
     return name;
-  }
-
-  public int getId()
-  {
-    return id;
   }
   /* Code from template association_GetMany */
   public Equipment getEquipment(int index)
@@ -156,7 +141,6 @@ public class Gym
   public String toString()
   {
     return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "id" + ":" + getId()+ "]";
+            "name" + ":" + getName()+ "]";
   }
 }

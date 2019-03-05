@@ -4,45 +4,39 @@ import java.util.List;
 
 import mcgill.shredit.model.*;
 
-public class Repository {
+public final class Repository implements DataSource {
+
+    private static Repository instance;
+
+    private DataSource dbs;
+
+    private Repository() {
+        dbs = new DBService();
+    }
+
+    public static Repository getInstance() {
+        if (instance == null)
+            instance = new Repository();
+        return instance;
+    }
 
     public List<Equipment> getEquipmentList() {
-        //TODO
-        return null;
+        return dbs.getEquipmentList();
     }
 
-    public List<Exercise> getExerciseList(String muscleGroup, List<Equipment> equipment) {
-        //TODO
-        return null;
+    public List<Exercise> getExerciseList(String muscleGroup, String gymName) {
+        return dbs.getExerciseList(muscleGroup, gymName);
     }
 
-    public Workout getWorkout(int workoutID) {
-        //TODO
-        return null;
+    public List<Gym> getGymList(String username) {
+        return dbs.getGymList(username);
     }
 
-    public List<Workout> getWorkoutList(int userID) {
-        //TODO
-        return null;
+    public List<Workout> getWorkoutList(String username) {
+        return dbs.getWorkoutList(username);
     }
 
-    public Gym getGym(int gymID) {
-        //TODO
-        return null;
-    }
-
-    public List<Gym> getGymList(int userID) {
-        //TODO
-        return null;
-    }
-
-    public String getPassword(String username) {
-        //TODO
-        return null;
-    }
-
-    public boolean checkPassword(String username,String password){
-        //TODO
-        return true;
+    public boolean checkPassword(String username, String password) {
+        return dbs.checkPassword(username, password);
     }
 }

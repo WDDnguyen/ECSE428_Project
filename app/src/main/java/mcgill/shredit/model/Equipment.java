@@ -5,7 +5,7 @@ package mcgill.shredit.model;
 
 import java.io.Serializable;
 
-// line 9 "../../../../../../ShreditModel.ump"
+// line 8 "../../../../../../ShreditModel.ump"
 public class Equipment implements Serializable
 {
 
@@ -15,16 +15,14 @@ public class Equipment implements Serializable
 
   //Equipment Attributes
   private String name;
-  private int id;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Equipment(String aName, int aId)
+  public Equipment(String aName)
   {
     name = aName;
-    id = aId;
   }
 
   //------------------------
@@ -39,22 +37,9 @@ public class Equipment implements Serializable
     return wasSet;
   }
 
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
-
   public String getName()
   {
     return name;
-  }
-
-  public int getId()
-  {
-    return id;
   }
 
   public void delete()
@@ -64,7 +49,6 @@ public class Equipment implements Serializable
   public String toString()
   {
     return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "id" + ":" + getId()+ "]";
+            "name" + ":" + getName()+ "]";
   }
 }
