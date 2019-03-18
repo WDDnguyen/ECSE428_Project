@@ -8,22 +8,21 @@ import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
-
-
-import mcgill.shredit.MuscleGroupActivity;
+import mcgill.shredit.data.DBService;
 import mcgill.shredit.model.*;
 
 public class WorkoutActivity extends AppCompatActivity {
 
     List<Equipment> equipments;
     HashMap<String, Integer> muscleGroups;
-    List<Exercise> allExercises;
+    HashMap<Exercise, String> allExercises;   //format exercise, muscle group
+    Map<String, List<Exercise>> exercisesWithMuslces;   //inverse of allExercises
     List<Exercise> chosenExercises;
     Workout workout;
 
@@ -38,19 +37,43 @@ public class WorkoutActivity extends AppCompatActivity {
         ListView listview = (ListView) findViewById(R.id.list_workout);
 
         // generate workouts
-        String exerciseName = "Workout:";
-        List<Exercise> workout_exercises;
-
         // set a name
+        String exerciseName = "Workout:";
         for (String muscleGroup : muscleGroups.keySet()) {
             exerciseName = exerciseName + " " + muscleGroup;
         }
 
-        //TODO get all valid exercises
-        allExercises = queryValidExercises(equipments, muscleGroups);
+        //TODO send gym name through activities
+        //TODO fix db querying
+        allExercises = queryValidExercises(equipments, muscleGroups, "");
 
-        //TODO select subset of exercises
-        chosenExercises = allExercises;
+        // invert hashmap allExercises
+        exercisesWithMuslces = new HashMap<String, List<Exercise>>();   //muslce, exercises
+        for(Map.Entry<Exercise, String> entry : allExercises.entrySet()){
+            List<Exercise> list = new ArrayList<>();
+
+            if(exercisesWithMuslces.containsKey(entry.getValue()))
+                list = exercisesWithMuslces.get(entry.getValue());
+
+            list.add(entry.getKey());
+
+            exercisesWithMuslces.put(entry.getValue(), list);
+        }
+
+
+        // for each muscle group entry, get random exercises of the muscle group
+        Random rand = new Random();
+        chosenExercises = new ArrayList<>();
+        for (String muscleGroup : muscleGroups.keySet()) {
+            //Get exercises for muscle group
+            List<Exercise> availableExercises = new ArrayList<>();
+            availableExercises.addAll(exercisesWithMuslces.get(muscleGroup));
+
+            // select exercises from provided list
+            for(int i = 0; i < muscleGroups.get(muscleGroup); i++) {
+                chosenExercises.add(availableExercises.get(rand.nextInt(availableExercises.size())));
+            }
+        }
 
         Workout generatedWorkout =  generateWorkout(chosenExercises, exerciseName);
 
@@ -107,18 +130,29 @@ public class WorkoutActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // TODO query database. Don't forget to randomly select from list based on musclegroup integer's
-    // specifications
-    public static List<Exercise> queryValidExercises(List<Equipment> equipmentList, HashMap<String, Integer> muscleGroup) {
-        List<Exercise> res;
+    //TODO Restore proper database querying
+    public static HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
+        HashMap<String, Integer> muscleGroup, String gymName) {
+
+        HashMap<Exercise, String> res = new HashMap<>();
         Equipment none = new Equipment("None");
-
-        res =  Arrays.asList(
-            new Exercise("test1", "description", "Muscle group", none),
-            new Exercise("test2", "description", "Muscle group", none)
-        );
-
+        res.put(new Exercise("test1", "description", "Abs", none), "Abs");
+        res.put(new Exercise("test2", "description", "Abs", none), "Abs");
         return res;
+
+//        DBService db = new DBService();
+//
+//        HashMap<Exercise, String> validExercises = new HashMap<>();
+//
+//        // for each muscle
+//        for(String muscle : muscleGroup.keySet()) {
+//            List<Exercise> groupExercises = db.getExerciseList(muscle, gymName=="" ? null : gymName);
+//            for(Exercise exercise: groupExercises) {
+//                validExercises.put(exercise, muscle);
+//            }
+//        }
+//
+//        return validExercises;
     }
 
     public static Workout generateWorkout(List<Exercise> exercises, String name) {
