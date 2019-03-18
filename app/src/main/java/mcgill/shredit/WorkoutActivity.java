@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -31,17 +32,50 @@ public class WorkoutActivity extends AppCompatActivity {
         printEquipments();
         printMuscleGroups();
 
-        final ListView listview = (ListView) findViewById(R.id.listview);
-        ArrayList<String> list = new ArrayList<String>();
+        ListView listview = (ListView) findViewById(R.id.listview);
 
+        // generate workouts
+        String exercise_name = "Workout:";
+        List<Exercise> workout_exercises;
+
+        // set a name
+        for (String muscleGroup : muscleGroups.keySet()) {
+            exercise_name = exercise_name + " " + muscleGroup;
+        }
+
+        //TODO get all valid exercises
+        workout_exercises = queryValidExercises(equipments, muscleGroups);
+
+        Workout generatedWorkout =  generateWorkout(workout_exercises, exercise_name);
+
+        // set values to display
+        ArrayList<String> list = new ArrayList<String>();
         String display;
-        for (String muscleGroup : muscleGroups.keySet()){
-            display="MUSCLE GROUP : " + muscleGroup  + " NUMBER OF EXERCISES : " + muscleGroups.get(muscleGroup);
+//        ListView display;
+//        for (String muscleGroup : muscleGroups.keySet()){
+//            display="MUSCLE GROUP : " + muscleGroup  + " NUMBER OF EXERCISES : " + muscleGroups.get(muscleGroup);
+
+        for (Exercise exercise : workout_exercises){
+//            display="MUSCLE GROUP : " + muscleGroup  + " NUMBER OF EXERCISES : " + muscleGroups.get(muscleGroup);
+            display = exercise.getName();
+
+//            display.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    //onGymConfirmClick(arg1);
+//                    Intent intent = new Intent(getApplication(), GymPresetActivity.class);
+//                    intent.putExtra("item_gym_name", arrayGyms.get(position)); //pass the gym name onto the next activity
+//                    startActivity(intent);
+//                }
+//            })
+
             list.add(display);
         }
 
-        final ArrayAdapter adapter = new ArrayAdapter(this,
+        ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
+
         listview.setAdapter(adapter);
 
     }
@@ -70,7 +104,21 @@ public class WorkoutActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public static Workout generateWorkout(List<Exercise> exercises, String name, int id) {
+    // TODO query database. Don't forget to randomly select from list based on musclegroup integer's
+    // specifications
+    public static List<Exercise> queryValidExercises(List<Equipment> equipmentList, HashMap<String, Integer> muscleGroup) {
+        List<Exercise> res;
+        Equipment none = new Equipment("None");
+
+        res =  Arrays.asList(
+            new Exercise("test1", "description", "Muscle group", none),
+            new Exercise("test2", "description", "Muscle group", none)
+        );
+
+        return res;
+    }
+
+    public static Workout generateWorkout(List<Exercise> exercises, String name) {
         Workout wo = new Workout(name);
 
         for (Exercise ex : exercises) {
