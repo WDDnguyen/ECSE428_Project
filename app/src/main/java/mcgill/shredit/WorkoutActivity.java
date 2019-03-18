@@ -23,6 +23,9 @@ public class WorkoutActivity extends AppCompatActivity {
 
     List<Equipment> equipments;
     HashMap<String, Integer> muscleGroups;
+    List<Exercise> allExercises;
+    List<Exercise> chosenExercises;
+    Workout workout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,24 +38,27 @@ public class WorkoutActivity extends AppCompatActivity {
         ListView listview = (ListView) findViewById(R.id.list_workout);
 
         // generate workouts
-        String exercise_name = "Workout:";
+        String exerciseName = "Workout:";
         List<Exercise> workout_exercises;
 
         // set a name
         for (String muscleGroup : muscleGroups.keySet()) {
-            exercise_name = exercise_name + " " + muscleGroup;
+            exerciseName = exerciseName + " " + muscleGroup;
         }
 
         //TODO get all valid exercises
-        workout_exercises = queryValidExercises(equipments, muscleGroups);
+        allExercises = queryValidExercises(equipments, muscleGroups);
 
-        Workout generatedWorkout =  generateWorkout(workout_exercises, exercise_name);
+        //TODO select subset of exercises
+        chosenExercises = allExercises;
+
+        Workout generatedWorkout =  generateWorkout(chosenExercises, exerciseName);
 
         // set values to display
         ArrayList<String> list = new ArrayList<String>();
         String display;
 
-        for (Exercise exercise : workout_exercises){
+        for (Exercise exercise : chosenExercises){
             display = exercise.getName();
             list.add(display);
         }
@@ -62,7 +68,11 @@ public class WorkoutActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // open popup on-click
-                openDialog();
+                //get workoutname
+                String exerciseName;
+                exerciseName = chosenExercises.get(position).getName();
+
+                randomWorkout(exerciseName);
             }
         });
 
@@ -140,8 +150,8 @@ public class WorkoutActivity extends AppCompatActivity {
     /**
      * Dialog for randomly generating new exercise
      */
-    public void openDialog() {
-        WorkoutSwapPopupActivity popup = new WorkoutSwapPopupActivity();
+    public void randomWorkout(String exerciseName) {
+        WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exerciseName);
         popup.show(getSupportFragmentManager(), "Dialog");
     }
 }
