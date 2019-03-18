@@ -32,7 +32,7 @@ public class WorkoutActivity extends AppCompatActivity {
         printEquipments();
         printMuscleGroups();
 
-        ListView listview = (ListView) findViewById(R.id.listview);
+        ListView listview = (ListView) findViewById(R.id.list_workout);
 
         // generate workouts
         String exercise_name = "Workout:";
@@ -51,27 +51,20 @@ public class WorkoutActivity extends AppCompatActivity {
         // set values to display
         ArrayList<String> list = new ArrayList<String>();
         String display;
-//        ListView display;
-//        for (String muscleGroup : muscleGroups.keySet()){
-//            display="MUSCLE GROUP : " + muscleGroup  + " NUMBER OF EXERCISES : " + muscleGroups.get(muscleGroup);
 
         for (Exercise exercise : workout_exercises){
-//            display="MUSCLE GROUP : " + muscleGroup  + " NUMBER OF EXERCISES : " + muscleGroups.get(muscleGroup);
             display = exercise.getName();
-
-//            display.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    //onGymConfirmClick(arg1);
-//                    Intent intent = new Intent(getApplication(), GymPresetActivity.class);
-//                    intent.putExtra("item_gym_name", arrayGyms.get(position)); //pass the gym name onto the next activity
-//                    startActivity(intent);
-//                }
-//            })
-
             list.add(display);
         }
+
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // open popup on-click
+                openDialog();
+            }
+        });
 
         ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
@@ -142,5 +135,13 @@ public class WorkoutActivity extends AppCompatActivity {
         wasRemoved = wo.removeExercise(ex);
 
         return wasRemoved;
+    }
+
+    /**
+     * Dialog for randomly generating new exercise
+     */
+    public void openDialog() {
+        WorkoutSwapPopupActivity popup = new WorkoutSwapPopupActivity();
+        popup.show(getSupportFragmentManager(), "Dialog");
     }
 }

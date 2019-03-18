@@ -45,7 +45,7 @@
     tools:context=".WorkoutActivity">
 
     <ListView
-        android:id="@+id/search_gym"
+        android:id="@+id/list_workout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
