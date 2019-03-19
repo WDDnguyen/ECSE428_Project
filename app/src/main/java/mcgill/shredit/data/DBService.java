@@ -84,7 +84,8 @@ public class DBService implements DataSource{
         return equipmentList;
     }
 
-    public List<Exercise> getExerciseList(String muscleGroup, String gymName) {
+    @Override
+    public List<Exercise> getExerciseList(String muscleGroup, String username, String gymName) {
         ArrayList<Exercise> exerciseList= new ArrayList<>();
         HashMap<String, Equipment> equipmentSet = new HashMap<>();
         Connection con = null;
@@ -288,5 +289,50 @@ public class DBService implements DataSource{
             } catch (SQLException e) {}
             return truePassword != null && truePassword.equals(password);
         }
+    }
+
+    @Override
+    public boolean addUser(String username, String password) {
+        return false;
+    }
+
+    @Override
+    public boolean addEquipment(Equipment equipment) {
+        return false;
+    }
+
+    @Override
+    public boolean removeEquipment(Equipment equipment) {
+        return false;
+    }
+
+    @Override
+    public boolean addExercise(Exercise exercise) {
+        return false;
+    }
+
+    @Override
+    public boolean removeExercise(Exercise exercise) {
+        return false;
+    }
+
+    @Override
+    public boolean addGym(String username, Gym gym) {
+        return false;
+    }
+
+    @Override
+    public boolean removeGym(String username, Gym gym) {
+        return false;
+    }
+
+    @Override
+    public boolean addWorkout(String username, Workout workout) {
+        return false;
+    }
+
+    @Override
+    public boolean removeWorkout(String username, Workout workout) {
+        return false;
     }
 }
