@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Random;
 
 import mcgill.shredit.data.DBService;
+import mcgill.shredit.data.MuscleGroup;
 import mcgill.shredit.model.*;
 
 public class WorkoutActivity extends AppCompatActivity {
@@ -75,7 +76,7 @@ public class WorkoutActivity extends AppCompatActivity {
             }
         }
 
-        Workout generatedWorkout =  generateWorkout(chosenExercises, exerciseName);
+        Workout generatedWorkout =  generateWorkout(chosenExercises, exerciseName, 1);
 
         // set values to display
         ArrayList<String> list = new ArrayList<String>();
@@ -155,7 +156,7 @@ public class WorkoutActivity extends AppCompatActivity {
 //        return validExercises;
     }
 
-    public static Workout generateWorkout(List<Exercise> exercises, String name) {
+    public static Workout generateWorkout(List<Exercise> exercises, String name, int id) {
         Workout wo = new Workout(name);
 
         for (Exercise ex : exercises) {
