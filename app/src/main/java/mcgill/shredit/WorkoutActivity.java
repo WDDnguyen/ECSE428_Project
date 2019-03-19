@@ -188,5 +188,15 @@ public class WorkoutActivity extends AppCompatActivity {
     public void randomWorkout(String exerciseName) {
         WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exerciseName);
         popup.show(getSupportFragmentManager(), "Dialog");
+
+
+//        String muscle = allExercises.get(exerciseName);
+//        HashMap<String, Integer> group = new HashMap<>();
+//        group.put(muscle,0);
+//        HashMap<Exercise, String> possibleReplacements = queryValidExercises(equipments, group, "");
+//
+//        //select a random one
+//        List<Exercise> exercises = (ArrayList<Exercise>) (possibleReplacements.keySet());
+//        Exercise chosenExercise =
     }
 }
