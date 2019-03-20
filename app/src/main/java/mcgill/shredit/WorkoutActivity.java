@@ -9,19 +9,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
-
-
-import mcgill.shredit.MuscleGroupActivity;
+import mcgill.shredit.data.DBService;
+import mcgill.shredit.data.MuscleGroup;
 import mcgill.shredit.model.*;
 
 public class WorkoutActivity extends AppCompatActivity {
 
     List<Equipment> equipments;
     HashMap<String, Integer> muscleGroups;
+    HashMap<Exercise, String> allExercises;   //format exercise, muscle group
+    Map<String, List<Exercise>> exercisesWithMuslces;   //inverse of allExercises
+    List<Exercise> chosenExercises;
+    Workout workout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +35,74 @@ public class WorkoutActivity extends AppCompatActivity {
         printEquipments();
         printMuscleGroups();
 
-        final ListView listview = (ListView) findViewById(R.id.listview);
-        ArrayList<String> list = new ArrayList<String>();
+        ListView listview = (ListView) findViewById(R.id.list_workout);
 
+        // generate workouts
+        // set a name
+        String exerciseName = "Workout:";
+        for (String muscleGroup : muscleGroups.keySet()) {
+            exerciseName = exerciseName + " " + muscleGroup;
+        }
+
+        //TODO send gym name through activities
+        //TODO fix db querying
+        allExercises = queryValidExercises(equipments, muscleGroups, "");
+
+        // invert hashmap allExercises
+        exercisesWithMuslces = new HashMap<String, List<Exercise>>();   //muslce, exercises
+        for(Map.Entry<Exercise, String> entry : allExercises.entrySet()){
+            List<Exercise> list = new ArrayList<>();
+
+            if(exercisesWithMuslces.containsKey(entry.getValue()))
+                list = exercisesWithMuslces.get(entry.getValue());
+
+            list.add(entry.getKey());
+
+            exercisesWithMuslces.put(entry.getValue(), list);
+        }
+
+
+        // for each muscle group entry, get random exercises of the muscle group
+        Random rand = new Random();
+        chosenExercises = new ArrayList<>();
+        for (String muscleGroup : muscleGroups.keySet()) {
+            //Get exercises for muscle group
+            List<Exercise> availableExercises = new ArrayList<>();
+            availableExercises.addAll(exercisesWithMuslces.get(muscleGroup));
+
+            // select exercises from provided list
+            for(int i = 0; i < muscleGroups.get(muscleGroup); i++) {
+                chosenExercises.add(availableExercises.get(rand.nextInt(availableExercises.size())));
+            }
+        }
+
+        Workout generatedWorkout =  generateWorkout(chosenExercises, exerciseName, 1);
+
+        // set values to display
+        ArrayList<String> list = new ArrayList<String>();
         String display;
-        for (String muscleGroup : muscleGroups.keySet()){
-            display="MUSCLE GROUP : " + muscleGroup  + " NUMBER OF EXERCISES : " + muscleGroups.get(muscleGroup);
+
+        for (Exercise exercise : chosenExercises){
+            display = exercise.getName();
             list.add(display);
         }
 
-        final ArrayAdapter adapter = new ArrayAdapter(this,
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // open popup on-click
+                //get workoutname
+                String exerciseName;
+                exerciseName = chosenExercises.get(position).getName();
+
+                randomWorkout(exerciseName);
+            }
+        });
+
+        ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, list);
+
         listview.setAdapter(adapter);
 
     }
@@ -70,6 +131,31 @@ public class WorkoutActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //TODO Restore proper database querying
+    public static HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
+        HashMap<String, Integer> muscleGroup, String gymName) {
+
+        HashMap<Exercise, String> res = new HashMap<>();
+        Equipment none = new Equipment("None");
+        res.put(new Exercise("test1", "description", "Abs", none), "Abs");
+        res.put(new Exercise("test2", "description", "Abs", none), "Abs");
+        return res;
+
+//        DBService db = new DBService();
+//
+//        HashMap<Exercise, String> validExercises = new HashMap<>();
+//
+//        // for each muscle
+//        for(String muscle : muscleGroup.keySet()) {
+//            List<Exercise> groupExercises = db.getExerciseList(muscle, gymName=="" ? null : gymName);
+//            for(Exercise exercise: groupExercises) {
+//                validExercises.put(exercise, muscle);
+//            }
+//        }
+//
+//        return validExercises;
+    }
+
     public static Workout generateWorkout(List<Exercise> exercises, String name, int id) {
         Workout wo = new Workout(name);
 
@@ -94,5 +180,13 @@ public class WorkoutActivity extends AppCompatActivity {
         wasRemoved = wo.removeExercise(ex);
 
         return wasRemoved;
+    }
+
+    /**
+     * Dialog for randomly generating new exercise
+     */
+    public void randomWorkout(String exerciseName) {
+        WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exerciseName);
+        popup.show(getSupportFragmentManager(), "Dialog");
     }
 }
