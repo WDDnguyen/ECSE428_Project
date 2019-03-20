@@ -12,7 +12,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:listSelector="#D3D3D3"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/load_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_weight="0.5"
+            android:text="Load"
+            android:onClick="onLoadButtonClick"
+            />
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Delete"
+            android:onClick="onDeleteButtonClick"
+            />
+    </LinearLayout>
 
     <!--<Button-->
     <!--android:id="@+id/gym_confirm_button"-->
