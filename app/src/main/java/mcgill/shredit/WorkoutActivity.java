@@ -1,12 +1,15 @@
 package mcgill.shredit;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.Random;
 
 import mcgill.shredit.data.DBService;
 import mcgill.shredit.data.MuscleGroup;
+import mcgill.shredit.data.Repository;
 import mcgill.shredit.model.*;
 
 public class WorkoutActivity extends AppCompatActivity {
@@ -26,6 +30,9 @@ public class WorkoutActivity extends AppCompatActivity {
     Map<String, List<Exercise>> exercisesWithMuslces;   //inverse of allExercises
     List<Exercise> chosenExercises;
     Workout workout;
+    ArrayAdapter adapter;
+    ArrayList<String> exerciseList;
+    ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +42,7 @@ public class WorkoutActivity extends AppCompatActivity {
         printEquipments();
         printMuscleGroups();
 
-        ListView listview = (ListView) findViewById(R.id.list_workout);
+        listview = (ListView) findViewById(R.id.list_workout);
 
         // generate workouts
         // set a name
@@ -57,7 +64,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 list = exercisesWithMuslces.get(entry.getValue());
 
             list.add(entry.getKey());
-
             exercisesWithMuslces.put(entry.getValue(), list);
         }
 
@@ -79,12 +85,12 @@ public class WorkoutActivity extends AppCompatActivity {
         Workout generatedWorkout =  generateWorkout(chosenExercises, exerciseName, 1);
 
         // set values to display
-        ArrayList<String> list = new ArrayList<String>();
+        exerciseList = new ArrayList<String>();
         String display;
 
         for (Exercise exercise : chosenExercises){
             display = exercise.getName();
-            list.add(display);
+            exerciseList.add(display);
         }
 
 
@@ -92,18 +98,39 @@ public class WorkoutActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // open popup on-click
-                //get workoutname
+                // get workoutname
                 String exerciseName;
                 exerciseName = chosenExercises.get(position).getName();
+                Exercise replacement = replaceWorkout(exerciseName);
+                chosenExercises.remove(position);
+                chosenExercises.add(position, replacement);
 
-                randomWorkout(exerciseName);
+//                for(Exercise x:chosenExercises. ) {
+//                    System.out.println(x.getName() + )
+//                }
+
+                // Update list displaying to screen
+                exerciseList = new ArrayList<String>();
+                String display;
+                for (Exercise exercise : chosenExercises){
+                    display = exercise.getName();
+                    exerciseList.add(display);
+                }
+
+                adapter.notifyDataSetChanged();
+                listview.setAdapter(adapter);
             }
         });
 
-        ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, exerciseList);
 
         listview.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
     }
 
@@ -141,19 +168,23 @@ public class WorkoutActivity extends AppCompatActivity {
         res.put(new Exercise("test2", "description", "Abs", none), "Abs");
         return res;
 
-//        DBService db = new DBService();
+
+        //todo replace with actual values
+//        Repository repo = Repository.getInstance();
+//        List<Exercise> exercises = repo.getExerciseList("Gym name", "", "");
+//        exercises.addAll(repo.getExerciseList("Gym name", "public", ""));
 //
 //        HashMap<Exercise, String> validExercises = new HashMap<>();
 //
 //        // for each muscle
 //        for(String muscle : muscleGroup.keySet()) {
-//            List<Exercise> groupExercises = db.getExerciseList(muscle, gymName=="" ? null : gymName);
-//            for(Exercise exercise: groupExercises) {
+//            for(Exercise exercise: exercises) {
 //                validExercises.put(exercise, muscle);
 //            }
 //        }
-//
 //        return validExercises;
+
+
     }
 
     public static Workout generateWorkout(List<Exercise> exercises, String name, int id) {
@@ -185,18 +216,20 @@ public class WorkoutActivity extends AppCompatActivity {
     /**
      * Dialog for randomly generating new exercise
      */
-    public void randomWorkout(String exerciseName) {
+    public Exercise replaceWorkout(String exerciseName) {
         WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exerciseName);
         popup.show(getSupportFragmentManager(), "Dialog");
 
+        String muscle = allExercises.get(exerciseName);
+        HashMap<String, Integer> group = new HashMap<>();
+        group.put(muscle,0);
+        HashMap<Exercise, String> possibleReplacements = queryValidExercises(equipments, group, "");
 
-//        String muscle = allExercises.get(exerciseName);
-//        HashMap<String, Integer> group = new HashMap<>();
-//        group.put(muscle,0);
-//        HashMap<Exercise, String> possibleReplacements = queryValidExercises(equipments, group, "");
-//
-//        //select a random one
-//        List<Exercise> exercises = (ArrayList<Exercise>) (possibleReplacements.keySet());
-//        Exercise chosenExercise =
+        //select a random one
+        List<Exercise> exercises = new ArrayList<>();
+        exercises.addAll(possibleReplacements.keySet());
+        Random rand = new Random();
+        Exercise chosenExercise = exercises.get(rand.nextInt(exercises.size()));
+        return chosenExercise;
     }
 }
