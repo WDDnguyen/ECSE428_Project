@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import mcgill.shredit.data.Repository;
@@ -22,6 +26,28 @@ public class AdminModifyExerciseActivity extends AppCompatActivity {
 
         ArrayList<Exercise> exercises = createMockExercises();
 
+        ListView exerciseList = (ListView) findViewById(R.id.exercise_list);
+        ArrayList<String> exerciseName = new ArrayList<>();
+        for (Exercise exercise : exercises){
+            exerciseName.add(exercise.getName());
+        }
+
+        exerciseList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // open popup on-click
+//                //get workoutname
+//                String exerciseName;
+//                exerciseName = chosenExercises.get(position).getName();
+//
+//                randomWorkout(exerciseName);
+            }
+        });
+
+        ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, exerciseName);
+
+        exerciseList.setAdapter(adapter);
 
     }
 
