@@ -26,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         buttonRegister = (Button)findViewById(R.id.login_button);
         editTextUsername = (EditText)findViewById(R.id.username);
         editTextPassword = (EditText)findViewById(R.id.password);
@@ -76,7 +75,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginClick(View view){
         if (view == buttonRegister){
             if(loginUser()) {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent;
+                if (editTextUsername.getText().toString().contains("@admin")){
+                    // go to admin home view
+                    intent = new Intent(this, AdminHomeActivity.class);
+                } else {
+                    // any other user go to user home view
+                    intent = new Intent(this, HomeActivity.class);
+                }
+
                 startActivity(intent);
             }
         }
@@ -118,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     
     public void onSignUpClick(View view)throws Exception {
             if(signUpUser()) {
-                Toast.makeText(this, "Click LOGIN to log in",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Register Successful. Click LOGIN to log in",Toast.LENGTH_SHORT).show();
             }
     }
 }
