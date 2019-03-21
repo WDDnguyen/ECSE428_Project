@@ -26,7 +26,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onCustomizeGymClick(View view) {
-        //TODO: Link with List of Equipment Activity
+        Intent intent = new Intent(this, CustomizeGymActivity.class);
+        startActivity(intent);
     }
 
     public void onLoadWorkoutClick(View view) {
