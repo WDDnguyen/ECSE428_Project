@@ -14,7 +14,6 @@ import mcgill.shredit.model.Exercise;
 import mcgill.shredit.model.Gym;
 import mcgill.shredit.model.User;
 import mcgill.shredit.model.Workout;
-import mcgill.shredit.DataSourceStub;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
