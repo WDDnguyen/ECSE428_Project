@@ -17,7 +17,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonRegister;
     private EditText editTextUsername;
     private EditText editTextPassword;
-    Repository rp = Repository.getInstance();
+    //Repository rp = Repository.getInstance();
+    DataSourceStub dsb = new DataSourceStub();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,10 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = (EditText)findViewById(R.id.password);
 
         refreshData();
+
+        // to remove when repository can fetch from user table
+        dsb.addUser("abc", "123");
+
     }
 
     public void refreshData () {
@@ -53,7 +58,11 @@ public class LoginActivity extends AppCompatActivity {
         }
         else if(TextUtils.isEmpty(password) && !TextUtils.isEmpty(username)){
             Toast.makeText(this, "Please enter password",Toast.LENGTH_SHORT).show();
-            
+
+            return false;
+
+        } else if (!dsb.checkPassword(username,password)){
+            Toast.makeText(this, "Invalid username or password",Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -62,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-
 
     public void onLoginClick(View view){
         if (view == buttonRegister){
@@ -94,16 +102,16 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        else if(rp.checkPassword(username,password)){// register
+        else if(!dsb.checkPassword(username,password)){// register
             Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
             return true;
-        }else{
+        }
+        else{
             Toast.makeText(this, "Username already exists",Toast.LENGTH_SHORT).show();
             return false;
         }
 
     }
-
     
     public void onSignUpClick(View view)throws Exception {
             if(signUpUser()) {
