@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import mcgill.shredit.data.DBService;
@@ -74,11 +75,17 @@ public class WorkoutActivity extends AppCompatActivity {
         for (String muscleGroup : muscleGroups.keySet()) {
             //Get exercises for muscle group
             List<Exercise> availableExercises = new ArrayList<>();
-            availableExercises.addAll(exercisesWithMuslces.get(muscleGroup));
+            List<Exercise> muscleGroupExercises = exercisesWithMuslces.get(muscleGroup);
+            if(muscleGroupExercises != null) {
+                availableExercises.addAll(muscleGroupExercises);
+            }
 
             // select exercises from provided list
-            for(int i = 0; i < muscleGroups.get(muscleGroup); i++) {
-                chosenExercises.add(availableExercises.get(rand.nextInt(availableExercises.size())));
+            int numExercises = availableExercises.size();
+            if (numExercises > 0) {
+                for(int i = 0; i < muscleGroups.get(muscleGroup); i++) {
+                    chosenExercises.add(availableExercises.get(rand.nextInt(availableExercises.size())));
+                }
             }
         }
 
@@ -104,10 +111,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 Exercise replacement = replaceWorkout(exerciseName);
                 chosenExercises.remove(position);
                 chosenExercises.add(position, replacement);
-
-//                for(Exercise x:chosenExercises. ) {
-//                    System.out.println(x.getName() + )
-//                }
 
                 // Update list displaying to screen
                 exerciseList = new ArrayList<String>();
@@ -167,7 +170,6 @@ public class WorkoutActivity extends AppCompatActivity {
         res.put(new Exercise("test1", "description", "Abs", none), "Abs");
         res.put(new Exercise("test2", "description", "Abs", none), "Abs");
         return res;
-
 
         //todo replace with actual values
 //        Repository repo = Repository.getInstance();
