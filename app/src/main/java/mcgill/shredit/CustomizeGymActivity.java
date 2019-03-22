@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
+import android.widget.Toast;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class CustomizeGymActivity extends AppCompatActivity {
     ListView listView;
     List<Equipment> arrayAllEquipment;
     List<Equipment> checkedEquipment;
+    boolean[] equipmentIsChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +44,20 @@ public class CustomizeGymActivity extends AppCompatActivity {
      * @param allEquipments list of equipments to display in list
      */
     private void displayEquipments(List<Equipment> allEquipments){
-
         List<String> allEquipmentString = new ArrayList<String>();
 
-        /*Create a String List of equipment names*/
-        for (Equipment temp : allEquipments) {
-            allEquipmentString.add(temp.getName());
-            //equipmentIsChecked.add(i,false);
+        /* keeps track of which equipment is checked */
+        equipmentIsChecked= new boolean[allEquipments.size()];
+        for (int i=0;i<allEquipments.size();i++){ // all equipements
+            equipmentIsChecked[i]=false; // preset to false(not checked)
         }
 
+        /* Create a String List of equipment names*/
+        for (Equipment temp : allEquipments) {
+            allEquipmentString.add(temp.getName());
+        }
+
+        /* Display the equipment names in listview */
         final ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_checked, allEquipmentString);
         listView.setAdapter(adapter);
@@ -62,6 +69,7 @@ public class CustomizeGymActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
                 CheckedTextView textview = (CheckedTextView)view;
                 textview.setChecked(!textview.isChecked());
+                equipmentIsChecked[position]=textview.isChecked();
             }
         });
     }
@@ -72,9 +80,25 @@ public class CustomizeGymActivity extends AppCompatActivity {
      * with list of checked equipments
      */
     public void onSubmitEquipmentClick(View view) {
-        Intent intent = new Intent(getApplication(), MuscleGroupActivity.class);
-        //intent.putExtra("EQUIPMENT_LIST", (Serializable) gymEquipments);
-        startActivity(intent);
+        boolean anyItemChecked=false; // for checking that at least 1 equipment is selected
+
+        checkedEquipment = new ArrayList<Equipment>();
+        /* search all equipment for checked ones */
+        for(int i=0;i<equipmentIsChecked.length;i++){
+            if(equipmentIsChecked[i]){
+                anyItemChecked=true;
+                checkedEquipment.add(arrayAllEquipment.get(i));
+                Toast.makeText(this, "selected "+arrayAllEquipment.get(i).getName(),Toast.LENGTH_SHORT).show(); // test code, delete
+            }
+        }
+        if(anyItemChecked){ // check if at least 1 equipment checked
+            /* goto MuscleGroupActivity view with list of chosen equipments*/
+            Intent intent = new Intent(getApplication(), MuscleGroupActivity.class);
+            intent.putExtra("EQUIPMENT_LIST", (Serializable) checkedEquipment);
+            startActivity(intent);
+        }else{ //if no equipment checked, display error message
+            Toast.makeText(this, "Please select at least 1 equipment",Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -89,19 +113,31 @@ public class CustomizeGymActivity extends AppCompatActivity {
     }
 
     /**
-     * Generates mock equipments. Delete when database is implemented                         (1)
+     * Generates mock equipments. Delete when database is implemented
      * @return mock equipment list
      */
     private List<Equipment> getMockEquipments() {
         Equipment mock0=new Equipment("none");
         Equipment mock1=new Equipment("treadmill");
         Equipment mock2=new Equipment("dumb bell");
-        Equipment mock3=new Equipment("protein milkshake");
+        Equipment mock3=new Equipment("Row Machine");
+        Equipment mock4=new Equipment("Squat Rack");
+        Equipment mock5=new Equipment("protein milkshake");
+        Equipment mock6=new Equipment("towel");
+        Equipment mock7=new Equipment("shower");
+        Equipment mock8=new Equipment("test");
+        Equipment mock9=new Equipment("test2");
         List<Equipment> allEquipments=new ArrayList();
         allEquipments.add(mock0);
         allEquipments.add(mock1);
         allEquipments.add(mock2);
         allEquipments.add(mock3);
+        allEquipments.add(mock4);
+        allEquipments.add(mock5);
+        allEquipments.add(mock6);
+        allEquipments.add(mock7);
+        allEquipments.add(mock8);
+        allEquipments.add(mock9);
         return allEquipments ;
     }
 
