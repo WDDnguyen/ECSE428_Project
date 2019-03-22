@@ -59,9 +59,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 // get workoutname
                 String exerciseName;
                 Exercise selectedExercise;
-//                exerciseName = chosenExercises.get(position).getName();
                 selectedExercise = chosenExercises.get(position);
-//                Exercise replacement = replaceWorkout(exerciseName);
 
                 createPopup(selectedExercise);
                 Exercise replacement = generateReplacementExercise(selectedExercise);
@@ -249,6 +247,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
     public void onSaveClick(View view) {
         //todo save workout
-        //include a popup to input a name
+        //include a popup to input a name, before changing pages to home activity.
+        //Workout already has temp name
     }
 }
