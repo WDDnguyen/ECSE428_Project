@@ -36,8 +36,6 @@ public class WorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_workout);
 
         getIntentValues();
-        printEquipments();
-        printMuscleGroups();
 
         listview = findViewById(R.id.list_workout);
 
@@ -47,6 +45,9 @@ public class WorkoutActivity extends AppCompatActivity {
         } else {
             getWorkoutInfo();
         }
+
+        printEquipments();
+        printMuscleGroups();
 
         // set values to display
         exerciseList = new ArrayList<String>();
@@ -147,7 +148,10 @@ public class WorkoutActivity extends AppCompatActivity {
     /*----@bendwilletts----*/
 
     public void getWorkoutInfo(){
+        chosenExercises = new ArrayList<>();
         chosenExercises = workout.getExercises();
+        muscleGroups = new HashMap<>();
+        equipments = new ArrayList<>();
         for (Exercise chosenExercise : chosenExercises) {
             addChosenEquipment(chosenExercise.getEquipment());
             addChosenMuscleGroup(chosenExercise.getMuscleGroup());

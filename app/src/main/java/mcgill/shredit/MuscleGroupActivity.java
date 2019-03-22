@@ -104,6 +104,7 @@ public class MuscleGroupActivity extends AppCompatActivity {
             Intent intent = new Intent(this, WorkoutActivity.class);
             intent.putExtra("MUSCLE_GROUP_EQUIPMENT_LIST", (Serializable) equipments);
             intent.putExtra("MUSCLE_GROUPS_HASHMAP", filteredMuscleGroups);
+            intent.putExtra("CLASS", "MuscleGroupActivity");
             startActivity(intent);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),
