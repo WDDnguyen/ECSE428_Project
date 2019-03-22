@@ -28,6 +28,7 @@ public class WorkoutActivity extends AppCompatActivity {
     ArrayAdapter adapter;
     ArrayList<String> exerciseList;
     ListView listview;
+    String prevClassName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,11 @@ public class WorkoutActivity extends AppCompatActivity {
         listview = findViewById(R.id.list_workout);
 
         //todo if no workout provided, generate one
-        workout = createWorkout();
+        if (prevClassName.equals("MuscleGroupActivity")) {
+            workout = createWorkout();
+        } else {
+            getWorkoutInfo();
+        }
 
         // set values to display
         exerciseList = new ArrayList<String>();
@@ -139,6 +144,46 @@ public class WorkoutActivity extends AppCompatActivity {
         return generatedWorkout;
     }
 
+    /*----@bendwilletts----*/
+
+    public void getWorkoutInfo(){
+        chosenExercises = workout.getExercises();
+        for (Exercise chosenExercise : chosenExercises) {
+            addChosenEquipment(chosenExercise.getEquipment());
+            addChosenMuscleGroup(chosenExercise.getMuscleGroup());
+        }
+        allExercises = queryValidExercises(equipments, muscleGroups, "");
+        // invert hashmap allExercises
+        exercisesWithMuslces = new HashMap<String, List<Exercise>>();   //muslce, exercises
+        for(Map.Entry<Exercise, String> entry : allExercises.entrySet()){
+            List<Exercise> list = new ArrayList<>();
+
+            if(exercisesWithMuslces.containsKey(entry.getValue()))
+                list = exercisesWithMuslces.get(entry.getValue());
+
+            list.add(entry.getKey());
+            exercisesWithMuslces.put(entry.getValue(), list);
+        }
+
+
+    }
+
+    private void addChosenEquipment(Equipment chosenEquipment) {
+        if(!equipments.contains(chosenEquipment)){
+            equipments.add(chosenEquipment);
+        }
+    }
+
+    private void addChosenMuscleGroup(String chosenMuscleGroup) {
+        if(muscleGroups.containsKey(chosenMuscleGroup)) {
+            muscleGroups.put(chosenMuscleGroup, muscleGroups.get(chosenMuscleGroup) + 1);
+        } else {
+            muscleGroups.put(chosenMuscleGroup, 1);
+        }
+    }
+
+    /*-------------------*/
+
     public void printEquipments(){
         for (Equipment equipment : equipments){
             System.out.println("EQUIPEMENT RECEIVED : " + equipments);
@@ -154,8 +199,13 @@ public class WorkoutActivity extends AppCompatActivity {
     // Get intent content from MuscleGroupActivity
     public void getIntentValues(){
         Intent intent = getIntent();
-        equipments = (List<Equipment>) intent.getSerializableExtra("MUSCLE_GROUP_EQUIPMENT_LIST");
-        muscleGroups = (HashMap<String, Integer>) intent.getSerializableExtra("MUSCLE_GROUPS_HASHMAP");
+        prevClassName = intent.getStringExtra("CLASS");
+        if (prevClassName.equals("MuscleGroupActivity")) {
+            equipments = (List<Equipment>) intent.getSerializableExtra("MUSCLE_GROUP_EQUIPMENT_LIST");
+            muscleGroups = (HashMap<String, Integer>) intent.getSerializableExtra("MUSCLE_GROUPS_HASHMAP");
+        } else {
+            workout = (Workout) intent.getSerializableExtra("WORKOUT");
+        }
     }
 
     public void onWorkoutDoneClick(View view){
