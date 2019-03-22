@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-public class HomeActivity extends AppCompatActivity {
+public class AdminHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_admin_home);
     }
 
     public void onSearchGymsClick(View view) {
@@ -26,8 +26,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onCustomizeGymClick(View view) {
-        Intent intent = new Intent(this, CustomizeGymActivity.class);
-        startActivity(intent);
+        //TODO: Link with List of Equipment Activity
     }
 
     public void onLoadWorkoutClick(View view) {
@@ -35,4 +34,8 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onModifyExerciseClick(View view){
+        Intent intent = new Intent(this, AdminModifyExerciseActivity.class);
+        startActivity(intent);
+    }
 }

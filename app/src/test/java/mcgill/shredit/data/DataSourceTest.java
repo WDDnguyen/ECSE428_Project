@@ -25,8 +25,9 @@ public class DataSourceTest {
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                //{new DBService()},
-                {Repository.getInstance()}
+                {new DBService()},
+                {Repository.getInstance()},
+                {createStub()}
         });
     }
 
@@ -41,6 +42,20 @@ public class DataSourceTest {
 
     public DataSourceTest(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    private static DataSource createStub() {
+        DataSource dataSource = new DataSourceStub();
+        dataSource.addUser(testUser.getUsername(), testUser.getPassword());
+        for(Equipment equipment : TestData.testEquipment)
+            dataSource.addEquipment(equipment);
+        for(Exercise exercise : TestData.testExercises)
+            dataSource.addExercise(exercise);
+        for(Gym gym : TestData.testGyms)
+            dataSource.addGym(testUser.getUsername(), gym);
+        for(Workout workout : TestData.testWorkouts)
+            dataSource.addWorkout(testUser.getUsername(), workout);
+        return dataSource;
     }
 
     private boolean isTestEquipment(Equipment equipment) {
@@ -82,7 +97,7 @@ public class DataSourceTest {
 
     @Test
     public void testGetExerciseListNoFilter() {
-        List<Exercise> exerciseList = dataSource.getExerciseList(null, null);
+        List<Exercise> exerciseList = dataSource.getExerciseList(null, null, null);
         assertNotNull(exerciseList);
         assertFalse(exerciseList.isEmpty());
         boolean found = false;
@@ -97,7 +112,7 @@ public class DataSourceTest {
 
     @Test
     public void testGetExerciseListMuscleGroupFilter() {
-        List<Exercise> exerciseList = dataSource.getExerciseList(muscleGroupFilter, null);
+        List<Exercise> exerciseList = dataSource.getExerciseList(muscleGroupFilter, null, null);
         assertNotNull(exerciseList);
         assertFalse(exerciseList.isEmpty());
         boolean found = false;
@@ -112,7 +127,7 @@ public class DataSourceTest {
 
     @Test
     public void testGetExerciseListGymFilter() {
-        List<Exercise> exerciseList = dataSource.getExerciseList(null, testGym.getName());
+        List<Exercise> exerciseList = dataSource.getExerciseList(null, testUser.getUsername(), testGym.getName());
         assertNotNull(exerciseList);
         assertFalse(exerciseList.isEmpty());
         boolean found = false;
@@ -127,7 +142,7 @@ public class DataSourceTest {
 
     @Test
     public void testGetExerciseListMuscleGroupAndGymFilter() {
-        List<Exercise> exerciseList = dataSource.getExerciseList(muscleGroupFilter, testGym.getName());
+        List<Exercise> exerciseList = dataSource.getExerciseList(muscleGroupFilter, testUser.getUsername(), testGym.getName());
         assertNotNull(exerciseList);
         assertFalse(exerciseList.isEmpty());
         boolean found = false;
