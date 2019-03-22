@@ -11,15 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.Button;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mcgill.shredit.model.Equipment;
-import mcgill.shredit.model.Gym;
+import mcgill.shredit.model.*;
 
 public class GymActivity extends AppCompatActivity {
 

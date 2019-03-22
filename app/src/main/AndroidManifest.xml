@@ -16,6 +16,7 @@
         <activity android:name=".GymActivity" />
         <activity android:name=".GymPresetActivity" />
         <activity android:name=".HomeActivity" />
+        <activity android:name=".CustomizeGymActivity"/>
         <activity android:name=".SavedWorkoutActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
