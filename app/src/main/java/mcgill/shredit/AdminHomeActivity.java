@@ -30,11 +30,8 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     public void onLoadWorkoutClick(View view) {
-        //TODO: Link with Load Workout Activity
-    }
-
-    public void onManageWorkoutsClick(View view) {
-        //TODO: Link with Manage Workouts Activity
+        Intent intent = new Intent(this, SavedWorkoutActivity.class);
+        startActivity(intent);
     }
 
     public void onModifyExerciseClick(View view){

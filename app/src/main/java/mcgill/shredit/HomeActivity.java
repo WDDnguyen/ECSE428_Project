@@ -34,7 +34,4 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onManageWorkoutsClick(View view) {
-        //TODO: Link with Manage Workouts Activity
-    }
 }

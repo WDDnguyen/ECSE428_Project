@@ -37,10 +37,12 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         savedWorkoutView = findViewById(R.id.saved_workout_view);
         savedWorkoutView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
+        //db query calls (need to change to use Workout object once WorkoutActivity facilitates accepting multiple intent)
         savedWorkoutList = querySavedWorkoutNames();
         savedEquipmentList = querySavedEquipments();
         savedMuscleGroupList = querySavedMuscleGroups();
 
+        //set init selected state
         selectedPos = -1;
         isSelected = false;
 
@@ -50,6 +52,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
                 savedWorkoutList
         );
 
+        //display name of workouts as list item
         savedWorkoutView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -62,6 +65,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         savedWorkoutView.setAdapter(adapter);
     }
 
+    //Passes data selected to WorkoutActivity
     public void onLoadButtonClick(View view) {
         if(isSelected){
             Intent intent = new Intent(this, WorkoutActivity.class);
@@ -76,6 +80,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         }
     }
 
+    //Deletes data locally and on the database
     public void onDeleteButtonClick(View view) {
         if(isSelected) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -117,9 +122,12 @@ public class SavedWorkoutActivity extends AppCompatActivity {
 
     }
 
+    //Delete workout on database (Will change to workout object once WorkoutActivity is changed)
     private void writeDeleteSavedWorkout(String workoutName, List<Equipment> workoutEquipment, HashMap<String,Integer> workoutMuscleGroups) {
-
+        //TODO: Add db call to remove workout once repository is working
     }
+
+    /*---- Queries ----*/
 
     private ArrayList<String> querySavedWorkoutNames() {
         String[] array = {"Chest and Arms", "Abs"};
