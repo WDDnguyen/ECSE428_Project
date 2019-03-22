@@ -128,7 +128,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     }
 
     /*---- Queries ----*/
-
+    //TODO: Change to call db for workouts once repository is working
     private ArrayList<String> querySavedWorkoutNames() {
         String[] array = {"Chest and Arms", "Abs"};
         ArrayList<String> savedWorkouts = new ArrayList<>(Arrays.asList(array));
