@@ -5,22 +5,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 
-import mcgill.shredit.data.DBService;
-import mcgill.shredit.data.MuscleGroup;
-import mcgill.shredit.data.Repository;
 import mcgill.shredit.model.*;
 
 public class WorkoutActivity extends AppCompatActivity {
@@ -39,20 +33,74 @@ public class WorkoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
+
         getIntentValues();
         printEquipments();
         printMuscleGroups();
 
-        listview = (ListView) findViewById(R.id.list_workout);
+        listview = findViewById(R.id.list_workout);
 
-        // generate workouts
-        // set a name
-        String exerciseName = "Workout:";
-        for (String muscleGroup : muscleGroups.keySet()) {
-            exerciseName = exerciseName + " " + muscleGroup;
+        //todo if no workout provided, generate one
+        workout = createWorkout();
+
+        // set values to display
+        exerciseList = new ArrayList<String>();
+        String display;
+        for (Exercise exercise : chosenExercises){
+            display = exercise.getName();
+            exerciseList.add(display);
         }
 
-        //TODO send gym name through activities
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // open popup on-click
+                // get workoutname
+                String exerciseName;
+                Exercise selectedExercise;
+//                exerciseName = chosenExercises.get(position).getName();
+                selectedExercise = chosenExercises.get(position);
+//                Exercise replacement = replaceWorkout(exerciseName);
+
+                createPopup(selectedExercise);
+                Exercise replacement = generateReplacementExercise(selectedExercise);
+
+                chosenExercises.remove(position);
+                chosenExercises.add(position, replacement);
+
+                // Update list displaying to screen
+                exerciseList = new ArrayList<String>();
+                String display;
+                for (Exercise exercise : chosenExercises){
+                    display = exercise.getName();
+                    exerciseList.add(display);
+                }
+
+                adapter.notifyDataSetChanged();
+                listview.setAdapter(adapter);
+            }
+        });
+
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, exerciseList);
+
+        listview.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+    }
+
+    public Workout createWorkout() {
+        // generate workouts
+        // set a name
+        String workoutName = "Workout:";
+        for (String muscleGroup : muscleGroups.keySet()) {
+            workoutName = workoutName + " " + muscleGroup;
+        }
+
         //TODO fix db querying
         allExercises = queryValidExercises(equipments, muscleGroups, "");
 
@@ -89,52 +137,8 @@ public class WorkoutActivity extends AppCompatActivity {
             }
         }
 
-        Workout generatedWorkout =  generateWorkout(chosenExercises, exerciseName, 1);
-
-        // set values to display
-        exerciseList = new ArrayList<String>();
-        String display;
-
-        for (Exercise exercise : chosenExercises){
-            display = exercise.getName();
-            exerciseList.add(display);
-        }
-
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // open popup on-click
-                // get workoutname
-                String exerciseName;
-                exerciseName = chosenExercises.get(position).getName();
-                Exercise replacement = replaceWorkout(exerciseName);
-                chosenExercises.remove(position);
-                chosenExercises.add(position, replacement);
-
-                // Update list displaying to screen
-                exerciseList = new ArrayList<String>();
-                String display;
-                for (Exercise exercise : chosenExercises){
-                    display = exercise.getName();
-                    exerciseList.add(display);
-                }
-
-                adapter.notifyDataSetChanged();
-                listview.setAdapter(adapter);
-            }
-        });
-
-        adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, exerciseList);
-
-        listview.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
+        Workout generatedWorkout =  generateWorkout(chosenExercises, workoutName, 1);
+        return generatedWorkout;
     }
 
     public void printEquipments(){
@@ -216,13 +220,21 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
     /**
-     * Dialog for randomly generating new exercise
+     * Create popup, display name of given exercise
+     * @param exercise Exercise name to be displayed
      */
-    public Exercise replaceWorkout(String exerciseName) {
-        WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exerciseName);
+    public void createPopup(Exercise exercise) {
+        WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exercise.getName());
         popup.show(getSupportFragmentManager(), "Dialog");
+    }
 
-        String muscle = allExercises.get(exerciseName);
+    /**
+     * Create a replacement exercise for targetExercise
+     * @param targetExercise Exercise to be swapped
+     * @return
+     */
+    public Exercise generateReplacementExercise(Exercise targetExercise) {
+        String muscle = allExercises.get(targetExercise.getName());
         HashMap<String, Integer> group = new HashMap<>();
         group.put(muscle,0);
         HashMap<Exercise, String> possibleReplacements = queryValidExercises(equipments, group, "");
@@ -233,5 +245,10 @@ public class WorkoutActivity extends AppCompatActivity {
         Random rand = new Random();
         Exercise chosenExercise = exercises.get(rand.nextInt(exercises.size()));
         return chosenExercise;
+    }
+
+    public void onSaveClick(View view) {
+        //todo save workout
+        //include a popup to input a name
     }
 }

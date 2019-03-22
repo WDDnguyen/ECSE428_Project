@@ -1,41 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--tools:context=".WorkoutActivity">-->
-
-    <!--<Button-->
-        <!--android:id="@+id/workout_done_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="49dp"-->
-        <!--android:layout_marginEnd="148dp"-->
-        <!--android:layout_marginRight="148dp"-->
-        <!--android:layout_marginBottom="44dp"-->
-        <!--android:onClick="onWorkoutDoneClick"-->
-        <!--android:text="Done"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent" />-->
-
-    <!--<ListView-->
-        <!--android:id="@+id/listview"-->
-        <!--android:layout_width="395dp"-->
-        <!--android:layout_height="622dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginTop="24dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--android:layout_marginBottom="16dp"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/workout_done_button"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.51"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--</android.support.constraint.ConstraintLayout>-->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -51,17 +14,16 @@
         android:layout_weight="1"
         android:padding="15dp" />
 
-    <!--<Button-->
-    <!--android:id="@+id/gym_confirm_button"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1"-->
-    <!--android:onClick="onGymConfirmClick"-->
-    <!--android:layout_marginStart="160dp"-->
-    <!--android:layout_marginLeft="160dp"-->
-    <!--android:layout_marginBottom="48dp"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--android:text="Confirm" />-->
+    <Button
+        android:id="@+id/save_workout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="148dp"
+        android:layout_marginLeft="148dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="onSaveClick"
+        android:text="Save Workout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </LinearLayout>
