@@ -1,12 +1,19 @@
 package mcgill.shredit;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +33,8 @@ public class WorkoutActivity extends AppCompatActivity {
     Map<String, List<Exercise>> exercisesWithMuslces;   //inverse of allExercises
     List<Exercise> chosenExercises;
     Workout workout;
+    final Context context = this; //for use with dialogPrompt (in Save Workout S7 task)
+    private String saveWorkoutDialogText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +135,6 @@ public class WorkoutActivity extends AppCompatActivity {
         muscleGroups = (HashMap<String, Integer>) intent.getSerializableExtra("MUSCLE_GROUPS_HASHMAP");
     }
 
-    public void onWorkoutDoneClick(View view){
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-    }
-
     //TODO Restore proper database querying
     public static HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
         HashMap<String, Integer> muscleGroup, String gymName) {
@@ -188,5 +192,53 @@ public class WorkoutActivity extends AppCompatActivity {
     public void randomWorkout(String exerciseName) {
         WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exerciseName);
         popup.show(getSupportFragmentManager(), "Dialog");
+    }
+
+    //User presses Home button
+    public void onWorkoutDoneClick(View view){
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
+    //User presses Save Workout button
+    public void onSaveWorkoutButtonClick(View view){
+        //load dialog_save_workout_name.xml DialogPrompt and inflate for the View
+        View promptSaveWorkoutView = LayoutInflater.from(context).inflate(R.layout.dialog_save_workout_name, null);
+        //Link the input EditText from the layout
+        final EditText userInput = (EditText) promptSaveWorkoutView.findViewById(R.id.saveWorkoutNameInput);
+
+        //Builder is the viewable dialog prompt
+        final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+        alertBuilder.setTitle("Save A Workout");
+        alertBuilder.setMessage("Enter a unique name to save your current workout.");
+        alertBuilder.setView(promptSaveWorkoutView);
+
+        // Set up the buttons
+        alertBuilder.setPositiveButton("Save Workout", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                String userInputString = userInput.getText().toString();
+                if(userInputString != null && !userInputString.isEmpty()) {
+                    saveWorkoutDialogText = userInputString;
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(),
+                            "Workout saved successfully!",
+                            Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(getApplicationContext(),
+                            "Please enter a unique name for your workout",
+                            Toast.LENGTH_SHORT).show();
+                    //alertBuilder.setMessage("Please enter a unique name for your workout!");
+                }
+            }
+        });
+        alertBuilder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+
+        alertBuilder.show();
     }
 }
