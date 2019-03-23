@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".GymPresetActivity">
 
     <TextView
@@ -12,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:textSize="18sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:gravity="center_horizontal"
         android:text="TextView" />
 
@@ -21,23 +23,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="41dp"
+        android:textSize="16sp"
         android:gravity="center_horizontal"
-        android:text="TextView" />
+        android:text="Available Equipment" />
 
     <ListView
         android:id="@+id/gymPresetListView"
         android:layout_width="395dp"
         android:layout_height="460dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:gravity="center_horizontal"
         android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/gym_confirm_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginLeft="160dp"
+        android:gravity="center_horizontal"
         android:onClick="onGymConfirmClick"
-        android:text="Confirm" />
+        android:text="Choose This Gym" />
 </LinearLayout>

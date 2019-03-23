@@ -42,8 +42,6 @@ public class GymPresetActivity extends AppCompatActivity {
         }
         ((TextView)findViewById(R.id.gymPresetTextView)).setText(textViewData);
 
-        ((TextView)findViewById(R.id.availableEquip)).setText("Available Equipment:");
-
 
         //Get the gym's presets (equipment list) and display in a ListView
         ArrayList<String> gymEquipmentArrayList = queryGymEquipment();
