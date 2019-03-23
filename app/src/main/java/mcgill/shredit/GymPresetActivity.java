@@ -81,7 +81,7 @@ public class GymPresetActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "A GYM HAS TO BE SELECTED",
+                    "Error loading this gym",
                     Toast.LENGTH_SHORT);
             toast.show();
         }

@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GymActivity">
-
-    <Button
-        android:id="@+id/gym_confirm_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginLeft="160dp"
-        android:layout_marginBottom="48dp"
-        android:onClick="onGymConfirmClick"
-        android:text="Confirm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    android:orientation="vertical"
+    tools:context=".GymPresetActivity">
 
     <TextView
         android:id="@+id/gymPresetTextView"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="30dp"
+        android:textSize="18sp"
         android:gravity="center_horizontal"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/availableEquip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="41dp"
+        android:gravity="center_horizontal"
+        android:text="TextView" />
 
     <ListView
         android:id="@+id/gymPresetListView"
@@ -34,17 +30,14 @@
         android:layout_height="460dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/availableEquip" />
+        android:layout_marginTop="8dp" />
 
-    <TextView
-        android:id="@+id/availableEquip"
-        android:layout_width="412dp"
+    <Button
+        android:id="@+id/gym_confirm_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
-        android:gravity="center_horizontal"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gymPresetTextView" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_marginStart="160dp"
+        android:layout_marginLeft="160dp"
+        android:onClick="onGymConfirmClick"
+        android:text="Confirm" />
+</LinearLayout>
