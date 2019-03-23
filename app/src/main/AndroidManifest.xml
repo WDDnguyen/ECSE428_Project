@@ -9,14 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminModifyExerciseActivity"></activity>
+        <activity
+            android:name=".AdminAddNewExerciseActivity"
+            android:label="@string/title_activity_admin_add_new_exercise"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AdminModifyExerciseActivity" />
         <activity android:name=".AdminHomeActivity" />
         <activity android:name=".WorkoutActivity" />
         <activity android:name=".MuscleGroupActivity" />
         <activity android:name=".GymActivity" />
         <activity android:name=".GymPresetActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".CustomizeGymActivity"/>
+        <activity android:name=".CustomizeGymActivity" />
         <activity android:name=".SavedWorkoutActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

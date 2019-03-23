@@ -7,5 +7,6 @@
     <string name="home_load_workout">Load Workout</string>
     <string name="home_saved_workouts">Saved Workouts</string>
     <string name="home_login">Login</string>
+    <string name="title_activity_admin_add_new_exercise">AdminAddNewExerciseActivity</string>
 </resources>
 
