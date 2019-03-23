@@ -2,10 +2,11 @@
 /*This code was generated using the UMPLE 1.29.1.4262.30c9ffc7c modeling language!*/
 
 package mcgill.shredit.model;
+import java.io.Serializable;
 import java.util.*;
 
 // line 19 "../../../../../../ShreditModel.ump"
-public class Workout
+public class Workout implements Serializable
 {
 
   //------------------------
@@ -53,8 +54,7 @@ public class Workout
 
   public List<Exercise> getExercises()
   {
-    List<Exercise> newExercises = Collections.unmodifiableList(exercises);
-    return newExercises;
+    return exercises;
   }
 
   public int numberOfExercises()
