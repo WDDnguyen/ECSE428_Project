@@ -35,6 +35,7 @@ public class WorkoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
 
+        //todo generate other values from intent values
         getIntentValues();
 
         listview = findViewById(R.id.list_workout);
@@ -67,11 +68,12 @@ public class WorkoutActivity extends AppCompatActivity {
                 Exercise selectedExercise;
                 selectedExercise = chosenExercises.get(position);
 
-                createPopup(selectedExercise);
-                Exercise replacement = generateReplacementExercise(selectedExercise);
+                Exercise replacement = createPopup(selectedExercise);
 
                 chosenExercises.remove(position);
+                removeExFromWorkout(workout, replacement);
                 chosenExercises.add(position, replacement);
+                addExToWorkout(workout, replacement);
 
                 // Update list displaying to screen
                 exerciseList = new ArrayList<String>();
@@ -271,32 +273,41 @@ public class WorkoutActivity extends AppCompatActivity {
         return wasRemoved;
     }
 
-    /**
-     * Create popup, display name of given exercise
-     * @param exercise Exercise name to be displayed
-     */
-    public void createPopup(Exercise exercise) {
-        WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exercise.getName());
-        popup.show(getSupportFragmentManager(), "Dialog");
-    }
 
-    /**
-     * Create a replacement exercise for targetExercise
-     * @param targetExercise Exercise to be swapped
-     * @return
-     */
-    public Exercise generateReplacementExercise(Exercise targetExercise) {
-        String muscle = allExercises.get(targetExercise.getName());
+    public Exercise createPopup(Exercise exercise) {
+        // create list of valid exercises
+
+        String muscle = allExercises.get(exercise.getName());
         HashMap<String, Integer> group = new HashMap<>();
         group.put(muscle,0);
         HashMap<Exercise, String> possibleReplacements = queryValidExercises(equipments, group, "");
 
+        // Exercise pool holds all valid exercises
+        List<Exercise> exercisePool = new ArrayList<>();
+        exercisePool.addAll(possibleReplacements.keySet());
+
         //select a random one
-        List<Exercise> exercises = new ArrayList<>();
-        exercises.addAll(possibleReplacements.keySet());
         Random rand = new Random();
-        Exercise chosenExercise = exercises.get(rand.nextInt(exercises.size()));
-        return chosenExercise;
+        Exercise randExercise = exercisePool.get(rand.nextInt(exercisePool.size()));
+        exercisePool.add(0, randExercise);  // add this random exercise to front of list
+
+        // convert list to string array, to send to popup
+        String[] stringExercisePool = new String[exercisePool.size()];
+        int counter = 0;
+        for(Exercise x : exercisePool) {
+            stringExercisePool[counter++] = x.getName();
+        }
+
+        //rename item 0 to random
+        stringExercisePool[0] = "Random Exercise";
+
+        //todo udpate popup to give output index
+        WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exercise.getName(), stringExercisePool);
+        popup.show(getSupportFragmentManager(), "Dialog");
+
+        // get index of selected iteam from exercisePool
+        int popupIndex = popup.getIndex();
+        return exercisePool.get(popupIndex);
     }
 
     public void onSaveClick(View view) {
