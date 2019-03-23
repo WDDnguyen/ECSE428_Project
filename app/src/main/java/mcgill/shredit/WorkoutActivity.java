@@ -17,7 +17,7 @@ import java.util.Random;
 
 import mcgill.shredit.model.*;
 
-public class WorkoutActivity extends AppCompatActivity {
+public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPopupActivity.WorkoutSwapDialogListener{
 
     List<Equipment> equipments;
     HashMap<String, Integer> muscleGroups;
@@ -29,6 +29,8 @@ public class WorkoutActivity extends AppCompatActivity {
     ArrayList<String> exerciseList;
     ListView listview;
     String prevClassName;
+
+    int listenedIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,15 @@ public class WorkoutActivity extends AppCompatActivity {
                 Exercise selectedExercise;
                 selectedExercise = chosenExercises.get(position);
 
+//                String displayd;
+//                System.out.println("Before");
+//                for (Exercise exercise : chosenExercises){
+//                    System.out.println(exercise.getName());
+//                }
+
                 Exercise replacement = createPopup(selectedExercise);
+
+//                System.out.println("Replacement: " + replacement.getName());
 
                 chosenExercises.remove(position);
                 removeExFromWorkout(workout, replacement);
@@ -78,8 +88,10 @@ public class WorkoutActivity extends AppCompatActivity {
                 // Update list displaying to screen
                 exerciseList = new ArrayList<String>();
                 String display;
+                System.out.println("After");
                 for (Exercise exercise : chosenExercises){
                     display = exercise.getName();
+//                    System.out.println(display);
                     exerciseList.add(display);
                 }
 
@@ -302,17 +314,28 @@ public class WorkoutActivity extends AppCompatActivity {
         stringExercisePool[0] = "Random Exercise";
 
         //todo udpate popup to give output index
+        listenedIndex = -1;
         WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exercise.getName(), stringExercisePool);
         popup.show(getSupportFragmentManager(), "Dialog");
 
         // get index of selected iteam from exercisePool
-        int popupIndex = popup.getIndex();
-        return exercisePool.get(popupIndex);
+//        int popupIndex = popup.getIndex();
+//        while(listenedIndex == -1) {}
+//        Exercise replacementExercise = exercisePool.get(listenedIndex);
+        Exercise replacementExercise = exercisePool.get(0);
+        return replacementExercise;
+
     }
 
     public void onSaveClick(View view) {
         //todo save workout
         //include a popup to input a name, before changing pages to home activity.
         //Workout already has temp name
+    }
+
+    @Override
+    public void applyIndex(int index) {
+        listenedIndex = index;
+        System.out.println(Integer.toString(listenedIndex) + ": Triggerred listener");
     }
 }
