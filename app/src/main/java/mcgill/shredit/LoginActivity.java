@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
         refreshData();
 
-        // to remove when repository can fetch from user table
+        // TODO: to remove when repository can fetch from user table
         dss.addUser("abc", "123");
 
     }
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter password",Toast.LENGTH_SHORT).show();
 
             return false;
-            // replace dss when repository is ready
+            // TODO: replace dss when repository is ready
         } else if (!dss.checkPassword(username,password)){
             Toast.makeText(this, "Invalid username or password",Toast.LENGTH_SHORT).show();
             return false;

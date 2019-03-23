@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Random;
 
 import mcgill.shredit.data.DBService;
+import mcgill.shredit.data.DataSourceStub;
 import mcgill.shredit.data.MuscleGroup;
 import mcgill.shredit.model.*;
 
@@ -35,6 +36,8 @@ public class WorkoutActivity extends AppCompatActivity {
     Workout workout;
     final Context context = this; //for use with dialogPrompt (in Save Workout S7 task)
     private String saveWorkoutDialogText = "";
+    //Repository rp = Repository.getInstance();
+    DataSourceStub dss = new DataSourceStub();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +212,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
         //Builder is the viewable dialog prompt
         final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-        alertBuilder.setTitle("Save A Workout");
+        alertBuilder.setTitle("Save This Workout");
         alertBuilder.setMessage("Enter a unique name to save your current workout.");
         alertBuilder.setView(promptSaveWorkoutView);
 
@@ -219,16 +222,27 @@ public class WorkoutActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 String userInputString = userInput.getText().toString();
                 if(userInputString != null && !userInputString.isEmpty()) {
-                    saveWorkoutDialogText = userInputString;
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(),
-                            "Workout saved successfully!",
-                            Toast.LENGTH_SHORT).show();
+                    //TODO:Check if user's inputted workout name is unique in database
+                    //if (workout name is valid) then
+                    if(isSaveWorkoutNameUnique(userInputString)){
+                        saveWorkoutDialogText = userInputString;
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(),
+                                "Workout saved successfully!",
+                                Toast.LENGTH_SHORT).show();
+
+                    //else: error message
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter a unique name for your workout",
+                                Toast.LENGTH_SHORT).show();
+                        //alertBuilder.setMessage("Please enter a unique name for your workout!");
+                    }
+
                 } else{
                     Toast.makeText(getApplicationContext(),
                             "Please enter a unique name for your workout",
                             Toast.LENGTH_SHORT).show();
-                    //alertBuilder.setMessage("Please enter a unique name for your workout!");
                 }
             }
         });
@@ -240,5 +254,9 @@ public class WorkoutActivity extends AppCompatActivity {
         });
 
         alertBuilder.show();
+    }
+    
+    public boolean isSaveWorkoutNameUnique (String workoutName){
+        return true;
     }
 }
