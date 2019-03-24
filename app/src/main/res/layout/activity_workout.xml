@@ -10,20 +10,32 @@
     <ListView
         android:id="@+id/list_workout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="15dp" />
 
-    <Button
-        android:id="@+id/save_workout_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginLeft="148dp"
-        android:layout_marginBottom="24dp"
-        android:onClick="onSaveClick"
-        android:text="Save Workout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/workout_save"
+            android:onClick="onSaveWorkoutButtonClick"
+            />
+
+        <Button
+            android:id="@+id/home_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/workout_home"
+            android:onClick="onWorkoutDoneClick"
+            />
+    </LinearLayout>
 
 </LinearLayout>
