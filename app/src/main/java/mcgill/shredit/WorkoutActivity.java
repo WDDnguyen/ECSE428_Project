@@ -60,15 +60,6 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         printEquipments();
         printMuscleGroups();
 
-        // set values to display
-        exerciseList = new ArrayList<String>();
-        String display;
-        for (Exercise exercise : workout.getExercises()){
-            display = exercise.getName();
-            exerciseList.add(display);
-        }
-
-
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,8 +71,15 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
             }
         });
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, exerciseList);
+        // set values to display
+        exerciseList = new ArrayList<String>();
+        String display;
+        for (Exercise exercise : workout.getExercises()){
+            display = exercise.getName();
+            exerciseList.add(display);
+        }
 
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, exerciseList);
         listview.setAdapter(adapter);
     }
 
@@ -211,6 +209,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         Equipment none = new Equipment("None");
         res.put(new Exercise("test1", "description", "Abs", none), "Abs");
         res.put(new Exercise("test2", "description", "Abs", none), "Abs");
+        res.put(new Exercise("test3", "description", "Abs", none), "Abs");
         return res;
 
 //        List<Exercise> exercises = repo.getExerciseList("Gym name", "", "");
@@ -311,6 +310,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         exerciseList = new ArrayList<String>();
         String display;
 //        System.out.println("\nNew Item");
+        //todo update adapter should update view
         for (Exercise exercise : workout.getExercises()){
             display = exercise.getName();
             exerciseList.add(display);

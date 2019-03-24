@@ -8,14 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import mcgill.shredit.model.Exercise;
-
 public class WorkoutSwapPopupActivity extends AppCompatDialogFragment {
 
-//    int index = -1;
     private WorkoutSwapDialogListener listener;
 
     @Override
@@ -65,6 +59,7 @@ public class WorkoutSwapPopupActivity extends AppCompatDialogFragment {
     }
 
     public interface WorkoutSwapDialogListener{
+        // for returning information to the other class
         void applyIndex(int index);
     }
 }
