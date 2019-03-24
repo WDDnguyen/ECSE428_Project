@@ -15,26 +15,36 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
+import mcgill.shredit.data.Repository;
 import mcgill.shredit.model.*;
 
 public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPopupActivity.WorkoutSwapDialogListener{
 
+    // values used between threads
+    Repository repo;
     List<Equipment> equipments;
     HashMap<String, Integer> muscleGroups;
     HashMap<Exercise, String> allExercises;   //format exercise, muscle group
     Map<String, List<Exercise>> exercisesWithMuslces;   //inverse of allExercises
     Workout workout;
+
+    // output details
     ArrayAdapter adapter;
     ArrayList<String> exerciseList;
     ListView listview;
     String prevClassName;
 
+    // popup relevant variables
+    List<Exercise> exercisePool;
+    Exercise targetExercise;
     int listenedIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
+
+        repo = Repository.getInstance();
 
         getIntentValues();
 
@@ -63,28 +73,10 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // open popup on-click
-                // get workoutname
-                String exerciseName;
                 Exercise selectedExercise;
                 selectedExercise = workout.getExercises().get(position);
 
-                Exercise replacement = createPopup(selectedExercise);
-
-                removeExFromWorkout(workout, selectedExercise);
-                addExToWorkout(workout, replacement);
-
-                // Update list displaying to screen
-                exerciseList = new ArrayList<String>();
-                String display;
-                System.out.println("After");
-                for (Exercise exercise : workout.getExercises()){
-                    display = exercise.getName();
-//                    System.out.println(display);
-                    exerciseList.add(display);
-                }
-
-                adapter.notifyDataSetChanged();
-                listview.setAdapter(adapter);
+                createPopup(selectedExercise);
             }
         });
 
@@ -107,7 +99,6 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
             workoutName = workoutName + " " + muscleGroup;
         }
 
-        //TODO fix db querying
         allExercises = queryValidExercises(equipments, muscleGroups, "");
 
         // invert hashmap allExercises
@@ -222,8 +213,6 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         res.put(new Exercise("test2", "description", "Abs", none), "Abs");
         return res;
 
-        //todo replace with actual values
-//        Repository repo = Repository.getInstance();
 //        List<Exercise> exercises = repo.getExerciseList("Gym name", "", "");
 //        exercises.addAll(repo.getExerciseList("Gym name", "public", ""));
 //
@@ -267,7 +256,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     }
 
 
-    public Exercise createPopup(Exercise exercise) {
+    public void createPopup(Exercise exercise) {
         // create list of valid exercises
 
         String muscle = allExercises.get(exercise.getName());
@@ -276,7 +265,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         HashMap<Exercise, String> possibleReplacements = queryValidExercises(equipments, group, "");
 
         // Exercise pool holds all valid exercises
-        List<Exercise> exercisePool = new ArrayList<>();
+        exercisePool = new ArrayList<>();
         exercisePool.addAll(possibleReplacements.keySet());
 
         //select a random one
@@ -294,48 +283,41 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         //rename item 0 to random
         stringExercisePool[0] = "Random Exercise";
 
-        //todo udpate popup to give output index
-        listenedIndex = -1;
+        targetExercise = exercise;
         WorkoutSwapPopupActivity popup = WorkoutSwapPopupActivity.newInstance(exercise.getName(), stringExercisePool);
         popup.show(getSupportFragmentManager(), "Dialog");
-
-        // get index of selected iteam from exercisePool
-//        int popupIndex = popup.getIndex();
-//        while(listenedIndex == -1) {}
-//        Exercise replacementExercise = exercisePool.get(listenedIndex);
-        Exercise replacementExercise = exercisePool.get(0);
-        return replacementExercise;
-
     }
 
     public void onSaveClick(View view) {
         //todo save workout
-        //include a popup to input a name, before changing pages to home activity.
-        //Workout already has temp name
+
+        // how do I get username here?
+//        repo.addWorkout(username ,workout);
     }
 
     @Override
     public void applyIndex(int index) {
         listenedIndex = index;
-        System.out.println(Integer.toString(listenedIndex) + ": Triggerred listener");
 
         // modify workout
-//        removeExFromWorkout(workout, selectedWorkout);
-//        addExToWorkout(workout, replacement);
+        removeExFromWorkout(workout, targetExercise);
+        addExToWorkout(workout, exercisePool.get(index));
 
+        updateAdapter();
+    }
+
+    public void updateAdapter() {
         // update output
-//        // Update list displaying to screen
-//        exerciseList = new ArrayList<String>();
-//        String display;
-//        System.out.println("After");
-//        for (Exercise exercise : chosenExercises){
-//            display = exercise.getName();
-//            exerciseList.add(display);
-//        }
-//
-//        adapter.notifyDataSetChanged();
-//        listview.setAdapter(adapter);
-//
-//        updateAdapter;
+        exerciseList = new ArrayList<String>();
+        String display;
+//        System.out.println("\nNew Item");
+        for (Exercise exercise : workout.getExercises()){
+            display = exercise.getName();
+            exerciseList.add(display);
+//            System.out.println(display);
+        }
+
+        adapter.notifyDataSetChanged();
+        listview.setAdapter(adapter);
     }
 }
