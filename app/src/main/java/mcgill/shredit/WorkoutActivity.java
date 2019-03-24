@@ -65,6 +65,8 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
 
         getIntentValues();
 
+        addTestData();
+
         listview = findViewById(R.id.list_workout);
 
         // if no workout provided create one
@@ -151,7 +153,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         }
 
         Workout generatedWorkout =  generateWorkout(chosenExercises, workoutName, 1);
-        System.out.println(generatedWorkout);
+
         return generatedWorkout;
     }
 
@@ -220,30 +222,55 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         }
         username = intent.getStringExtra("USER");
     }
+    public void addTestData() {
+        dss.addUser(username, "123");
+        Equipment none = new Equipment("None");
+        Exercise e1 = new Exercise("test1", "description", "Abs", none);
+        Exercise e2 = new Exercise("test2", "description", "Abs", none);
+        Exercise e3 = new Exercise("test3", "description", "Abs", none);
+        dss.addExercise(e1);
+        dss.addExercise(e2);
+        dss.addExercise(e3);
+
+
+        //Add workouts
+
+        Workout wo1 = new Workout("");
+        Workout wo2 = new Workout("");
+        wo1.setName("Abs x2");
+        wo2.setName("Abs x4");
+        wo1.addExercise(new Exercise("test1", "description", "Abs", none));
+        wo1.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
+        dss.addWorkout(username, wo1);
+        dss.addWorkout(username, wo2);
+
+    }
 
     //TODO Restore proper database querying
-    public static HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
+    public HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
         HashMap<String, Integer> muscleGroup, String gymName) {
-
-        HashMap<Exercise, String> res = new HashMap<>();
-        Equipment none = new Equipment("None");
-        res.put(new Exercise("test1", "description", "Abs", none), "Abs");
-        res.put(new Exercise("test2", "description", "Abs", none), "Abs");
-        res.put(new Exercise("test3", "description", "Abs", none), "Abs");
-        return res;
-
-//        List<Exercise> exercises = repo.getExerciseList("Gym name", "", "");
-//        exercises.addAll(repo.getExerciseList("Gym name", "public", ""));
 //
-//        HashMap<Exercise, String> validExercises = new HashMap<>();
-//
-//        // for each muscle
-//        for(String muscle : muscleGroup.keySet()) {
-//            for(Exercise exercise: exercises) {
-//                validExercises.put(exercise, muscle);
-//            }
-//        }
-//        return validExercises;
+//        HashMap<Exercise, String> res = new HashMap<>();
+//        Equipment none = new Equipment("None");
+//        res.put(new Exercise("test1", "description", "Abs", none), "Abs");
+//        res.put(new Exercise("test2", "description", "Abs", none), "Abs");
+//        res.put(new Exercise("test3", "description", "Abs", none), "Abs");
+//        return res;
+
+        HashMap<Exercise, String> validExercises = new HashMap<>();
+
+        // for each muscle
+        for(String muscle : muscleGroup.keySet()) {
+            List<Exercise> exercises = dss.getExerciseList(muscle, username, "");
+            for(Exercise exercise: exercises) {
+                validExercises.put(exercise, muscle);
+            }
+        }
+        return validExercises;
 
 
     }
@@ -355,6 +382,8 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
                     //if (workout name is valid) then
                     if(isSaveWorkoutNameUnique(userInputString)){
                         saveWorkoutDialogText = userInputString;
+                        workout.setName(saveWorkoutDialogText);
+                        dss.addWorkout(username, workout);
                         dialog.dismiss();
                         Toast.makeText(getApplicationContext(),
                                 "Workout saved successfully!",
@@ -385,7 +414,13 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         alertBuilder.show();
     }
     
-    public boolean isSaveWorkoutNameUnique (String workoutName){
+    public boolean isSaveWorkoutNameUnique (String workoutName) {
+        List<Workout> currSavedWorkouts = dss.getWorkoutList(username);
+        for (Workout wo : currSavedWorkouts) {
+            if(wo.getName().equals(workoutName)){
+                return false;
+            }
+        }
         return true;
     }
 }

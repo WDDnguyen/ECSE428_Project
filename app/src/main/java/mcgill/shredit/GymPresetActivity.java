@@ -14,12 +14,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import mcgill.shredit.MuscleGroupActivity;
+import mcgill.shredit.data.DataSourceStub;
 import mcgill.shredit.model.Equipment;
 import mcgill.shredit.model.Gym;
 
 
 public class GymPresetActivity extends AppCompatActivity {
     String username;
+
+    //Repository rp = Repository.getInstance();
+    DataSourceStub dss = new DataSourceStub();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
