@@ -23,7 +23,6 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     HashMap<String, Integer> muscleGroups;
     HashMap<Exercise, String> allExercises;   //format exercise, muscle group
     Map<String, List<Exercise>> exercisesWithMuslces;   //inverse of allExercises
-    List<Exercise> chosenExercises;
     Workout workout;
     ArrayAdapter adapter;
     ArrayList<String> exerciseList;
@@ -37,12 +36,11 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
 
-        //todo generate other values from intent values
         getIntentValues();
 
         listview = findViewById(R.id.list_workout);
 
-        //todo if no workout provided, generate one
+        // if no workout provided create one
         if (prevClassName.equals("MuscleGroupActivity")) {
             workout = createWorkout();
         } else {
@@ -55,7 +53,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         // set values to display
         exerciseList = new ArrayList<String>();
         String display;
-        for (Exercise exercise : chosenExercises){
+        for (Exercise exercise : workout.getExercises()){
             display = exercise.getName();
             exerciseList.add(display);
         }
@@ -68,28 +66,18 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
                 // get workoutname
                 String exerciseName;
                 Exercise selectedExercise;
-                selectedExercise = chosenExercises.get(position);
-
-//                String displayd;
-//                System.out.println("Before");
-//                for (Exercise exercise : chosenExercises){
-//                    System.out.println(exercise.getName());
-//                }
+                selectedExercise = workout.getExercises().get(position);
 
                 Exercise replacement = createPopup(selectedExercise);
 
-//                System.out.println("Replacement: " + replacement.getName());
-
-                chosenExercises.remove(position);
-                removeExFromWorkout(workout, replacement);
-                chosenExercises.add(position, replacement);
+                removeExFromWorkout(workout, selectedExercise);
                 addExToWorkout(workout, replacement);
 
                 // Update list displaying to screen
                 exerciseList = new ArrayList<String>();
                 String display;
                 System.out.println("After");
-                for (Exercise exercise : chosenExercises){
+                for (Exercise exercise : workout.getExercises()){
                     display = exercise.getName();
 //                    System.out.println(display);
                     exerciseList.add(display);
@@ -137,7 +125,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
 
         // for each muscle group entry, get random exercises of the muscle group
         Random rand = new Random();
-        chosenExercises = new ArrayList<>();
+        List<Exercise> chosenExercises = new ArrayList<>();
         for (String muscleGroup : muscleGroups.keySet()) {
             //Get exercises for muscle group
             List<Exercise> availableExercises = new ArrayList<>();
@@ -162,13 +150,11 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     /*----@bendwilletts----*/
 
     public void getWorkoutInfo(){
-        chosenExercises = new ArrayList<>();
-        chosenExercises = workout.getExercises();
         muscleGroups = new HashMap<>();
         equipments = new ArrayList<>();
-        for (Exercise chosenExercise : chosenExercises) {
-            addChosenEquipment(chosenExercise.getEquipment());
-            addChosenMuscleGroup(chosenExercise.getMuscleGroup());
+        for (Exercise exercise : workout.getExercises()) {
+            addChosenEquipment(exercise.getEquipment());
+            addChosenMuscleGroup(exercise.getMuscleGroup());
         }
         allExercises = queryValidExercises(equipments, muscleGroups, "");
         // invert hashmap allExercises
@@ -224,11 +210,6 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         } else {
             workout = (Workout) intent.getSerializableExtra("WORKOUT");
         }
-    }
-
-    public void onWorkoutDoneClick(View view){
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
     }
 
     //TODO Restore proper database querying
@@ -337,5 +318,24 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     public void applyIndex(int index) {
         listenedIndex = index;
         System.out.println(Integer.toString(listenedIndex) + ": Triggerred listener");
+
+        // modify workout
+//        removeExFromWorkout(workout, selectedWorkout);
+//        addExToWorkout(workout, replacement);
+
+        // update output
+//        // Update list displaying to screen
+//        exerciseList = new ArrayList<String>();
+//        String display;
+//        System.out.println("After");
+//        for (Exercise exercise : chosenExercises){
+//            display = exercise.getName();
+//            exerciseList.add(display);
+//        }
+//
+//        adapter.notifyDataSetChanged();
+//        listview.setAdapter(adapter);
+//
+//        updateAdapter;
     }
 }
