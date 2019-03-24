@@ -19,7 +19,7 @@ import mcgill.shredit.model.Gym;
 
 
 public class GymPresetActivity extends AppCompatActivity {
-
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -40,9 +40,9 @@ public class GymPresetActivity extends AppCompatActivity {
         {
             textViewData = (String) savedInstanceState.getSerializable("item_gym_name");
         }
+        Intent intent = getIntent();
+        username = intent.getStringExtra("USER");
         ((TextView)findViewById(R.id.gymPresetTextView)).setText(textViewData);
-
-        ((TextView)findViewById(R.id.availableEquip)).setText("Available Equipment:");
 
 
         //Get the gym's presets (equipment list) and display in a ListView
@@ -78,10 +78,11 @@ public class GymPresetActivity extends AppCompatActivity {
         if(!gymEquipments.isEmpty()){
             Intent intent = new Intent(this, MuscleGroupActivity.class);
             intent.putExtra("EQUIPMENT_LIST", (Serializable) gymEquipments);
+            intent.putExtra("USER", username);
             startActivity(intent);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "A GYM HAS TO BE SELECTED",
+                    "Error loading this gym",
                     Toast.LENGTH_SHORT);
             toast.show();
         }

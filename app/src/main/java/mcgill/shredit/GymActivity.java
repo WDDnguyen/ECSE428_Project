@@ -11,25 +11,26 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.Button;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mcgill.shredit.model.Equipment;
-import mcgill.shredit.model.Gym;
+import mcgill.shredit.model.*;
 
 public class GymActivity extends AppCompatActivity {
 
     ListView search_gym;
     ArrayAdapter<String> adapter;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gym);
+        getIntentValues();
 
         // Search bar
         search_gym = findViewById(R.id.search_gym);
@@ -48,7 +49,9 @@ public class GymActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //onGymConfirmClick(arg1);
                 Intent intent = new Intent(getApplication(), GymPresetActivity.class);
+                intent.putExtra("USER", username);
                 intent.putExtra("item_gym_name", arrayGyms.get(position)); //pass the gym name onto the next activity
+
                 startActivity(intent);
             }
         });
@@ -84,5 +87,10 @@ public class GymActivity extends AppCompatActivity {
         String[] array = {"McGill Fitness Center", "Econofitness St Catherine", "Econofitness Atwater"};
         ArrayList<String> gyms = new ArrayList<>(Arrays.asList(array));
         return gyms;
+    }
+
+    public void getIntentValues(){
+        Intent intent = getIntent();
+        username = intent.getStringExtra("USER");
     }
 }
