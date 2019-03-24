@@ -25,11 +25,14 @@ public class CustomizeGymActivity extends AppCompatActivity {
     List<Equipment> arrayAllEquipment;
     List<Equipment> checkedEquipment;
     boolean[] equipmentIsChecked;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homeequipment);
+
+        getIntentValues();
 
         Repository rp = Repository.getInstance();
         listView = (ListView)findViewById(R.id.equipmentListView);
@@ -95,6 +98,7 @@ public class CustomizeGymActivity extends AppCompatActivity {
             /* goto MuscleGroupActivity view with list of chosen equipments*/
             Intent intent = new Intent(getApplication(), MuscleGroupActivity.class);
             intent.putExtra("EQUIPMENT_LIST", (Serializable) checkedEquipment);
+            intent.putExtra("USER", username);
             startActivity(intent);
         }else{ //if no equipment checked, display error message
             Toast.makeText(this, "Please select at least 1 equipment",Toast.LENGTH_SHORT).show();
@@ -139,6 +143,11 @@ public class CustomizeGymActivity extends AppCompatActivity {
         allEquipments.add(mock8);
         allEquipments.add(mock9);
         return allEquipments ;
+    }
+
+    public void getIntentValues(){
+        Intent intent = getIntent();
+        username = intent.getStringExtra("USER");
     }
 
 

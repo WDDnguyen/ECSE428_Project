@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     // any other user go to user home view
                     intent = new Intent(this, HomeActivity.class);
                 }
-
+                intent.putExtra("USER", editTextUsername.getText().toString().trim());
                 startActivity(intent);
             }
         }

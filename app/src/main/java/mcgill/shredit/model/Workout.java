@@ -83,7 +83,6 @@ public class Workout implements Serializable
   public boolean addExercise(Exercise aExercise)
   {
     boolean wasAdded = false;
-    if (exercises.contains(aExercise)) { return false; }
     exercises.add(aExercise);
     wasAdded = true;
     return wasAdded;

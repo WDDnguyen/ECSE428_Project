@@ -28,6 +28,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     boolean isSelected;
     List<Workout> savedWorkoutList;
     ArrayList<String> savedWorkoutNames;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_saved_workouts);
         savedWorkoutView = findViewById(R.id.saved_workout_view);
         savedWorkoutView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+
+        getIntentValues();
 
         //db query calls (need to change to use Workout object once WorkoutActivity facilitates accepting multiple intent)
         savedWorkoutNames = new ArrayList<>();
@@ -73,6 +76,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
             Intent intent = new Intent(this, WorkoutActivity.class);
             intent.putExtra("WORKOUT", savedWorkoutList.get(selectedPos));
             intent.putExtra("CLASS", "SavedWorkoutActivity");
+            intent.putExtra("USER", username);
             startActivity(intent);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -173,5 +177,10 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         retSavedWorkouts.add(wo1);
         retSavedWorkouts.add(wo2);
         return retSavedWorkouts;
+    }
+
+    public void getIntentValues(){
+        Intent intent = getIntent();
+        username = intent.getStringExtra("USER");
     }
 }
