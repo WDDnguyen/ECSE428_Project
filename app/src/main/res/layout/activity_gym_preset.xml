@@ -6,39 +6,43 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:padding="20dp"
     tools:context=".GymPresetActivity">
 
     <TextView
         android:id="@+id/gymPresetTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center_horizontal"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/availableEquip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
-        android:textSize="16sp"
+        android:layout_marginBottom="5dp"
         android:gravity="center_horizontal"
-        android:text="Available Equipment" />
+        android:text="Available Equipment"
+        android:textSize="16sp" />
 
     <ListView
         android:id="@+id/gymPresetListView"
-        android:layout_width="395dp"
-        android:layout_height="460dp"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="8dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="0.75"
+        android:gravity="center_horizontal" />
 
     <Button
         android:id="@+id/gym_confirm_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:onClick="onGymConfirmClick"
         android:text="Choose This Gym" />
+
 </LinearLayout>
