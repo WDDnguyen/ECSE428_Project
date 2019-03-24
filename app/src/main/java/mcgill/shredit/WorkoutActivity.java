@@ -38,6 +38,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     List<Exercise> exercisePool;
     Exercise targetExercise;
     int listenedIndex;
+    int selectedIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
                 // open popup on-click
                 Exercise selectedExercise;
                 selectedExercise = workout.getExercises().get(position);
-
+                selectedIndex = position;
                 createPopup(selectedExercise);
             }
         });
@@ -302,21 +303,15 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         removeExFromWorkout(workout, targetExercise);
         addExToWorkout(workout, exercisePool.get(index));
 
-        updateAdapter();
+        updateAdapter(exercisePool.get(index));
     }
 
-    public void updateAdapter() {
-        // update output
-        exerciseList = new ArrayList<String>();
-        String display;
+    public void updateAdapter(Exercise exToReplace) {
+
 //        System.out.println("\nNew Item");
         //todo update adapter should update view
-        for (Exercise exercise : workout.getExercises()){
-            display = exercise.getName();
-            exerciseList.add(display);
-//            System.out.println(display);
-        }
-
+        exerciseList.remove(selectedIndex);
+        exerciseList.add(selectedIndex, exToReplace.getName());
         adapter.notifyDataSetChanged();
         listview.setAdapter(adapter);
     }
