@@ -8,34 +8,48 @@ import android.widget.Toast;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
+        getIntentValues();
     }
 
     public void onSearchGymsClick(View view) {
         Intent intent = new Intent(this, GymActivity.class);
+        intent.putExtra("USER", username);
         startActivity(intent);
     }
 
     public void onLogOutClick(View view) {
         Toast.makeText(this, "User account information updated",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("USER", username);
         startActivity(intent);
     }
 
     public void onCustomizeGymClick(View view) {
-        //TODO: Link with List of Equipment Activity
+        Intent intent = new Intent(this, CustomizeGymActivity.class);
+        intent.putExtra("USER", username);
+        startActivity(intent);
     }
 
     public void onLoadWorkoutClick(View view) {
         Intent intent = new Intent(this, SavedWorkoutActivity.class);
+        intent.putExtra("USER", username);
         startActivity(intent);
     }
 
     public void onModifyExerciseClick(View view){
         Intent intent = new Intent(this, AdminModifyExerciseActivity.class);
+        intent.putExtra("USER", username);
         startActivity(intent);
+    }
+
+    public void getIntentValues(){
+        Intent intent = getIntent();
+        username = intent.getStringExtra("USER");
     }
 }

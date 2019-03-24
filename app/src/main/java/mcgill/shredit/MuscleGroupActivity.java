@@ -31,6 +31,7 @@ public class MuscleGroupActivity extends AppCompatActivity {
 
     List<Equipment> equipments;
     TableLayout tl;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class MuscleGroupActivity extends AppCompatActivity {
     public void getIntentValues(){
         Intent intent = getIntent();
         equipments = (List<Equipment>) intent.getSerializableExtra("EQUIPMENT_LIST");
+        username = intent.getStringExtra("USER");
     }
 
     // filter muscle groups based on user inputs
@@ -105,6 +107,7 @@ public class MuscleGroupActivity extends AppCompatActivity {
             intent.putExtra("MUSCLE_GROUP_EQUIPMENT_LIST", (Serializable) equipments);
             intent.putExtra("MUSCLE_GROUPS_HASHMAP", filteredMuscleGroups);
             intent.putExtra("CLASS", "MuscleGroupActivity");
+            intent.putExtra("USER", username);
             startActivity(intent);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),

@@ -42,6 +42,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     private String saveWorkoutDialogText = "";
     //Repository rp = Repository.getInstance();
     DataSourceStub dss = new DataSourceStub();
+    String username;
 
     // output details
     ArrayAdapter adapter;
@@ -144,11 +145,13 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
             if (numExercises > 0) {
                 for(int i = 0; i < muscleGroups.get(muscleGroup); i++) {
                     chosenExercises.add(availableExercises.get(rand.nextInt(availableExercises.size())));
+
                 }
             }
         }
 
         Workout generatedWorkout =  generateWorkout(chosenExercises, workoutName, 1);
+        System.out.println(generatedWorkout);
         return generatedWorkout;
     }
 
@@ -215,6 +218,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         } else {
             workout = (Workout) intent.getSerializableExtra("WORKOUT");
         }
+        username = intent.getStringExtra("USER");
     }
 
     //TODO Restore proper database querying
@@ -324,6 +328,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     //User presses Home button
     public void onWorkoutDoneClick(View view){
         Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("USER", username);
         startActivity(intent);
     }
 
