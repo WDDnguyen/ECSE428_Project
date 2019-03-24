@@ -54,7 +54,6 @@
         android:text="@string/home_load_workout"
         android:onClick="onLoadWorkoutClick"/>
 
-
     <View
         android:id="@+id/home_divider2"
         android:layout_width="match_parent"
@@ -69,5 +68,20 @@
         android:layout_height="wrap_content"
         android:onClick="onLogOutClick"
         android:text="Log Out" />
+
+    <View
+        android:id="@+id/home_divider3"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="?android:attr/listDivider" />
+
+    <Button
+        android:id="@+id/modifiy_exercise_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onModifyExerciseClick"
+        android:text="MODIFY EXERCISE" />
 
 </LinearLayout>

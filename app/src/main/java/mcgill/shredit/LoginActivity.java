@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import mcgill.shredit.data.Repository;
+
+import mcgill.shredit.data.DataSourceStub;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -17,19 +17,23 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonRegister;
     private EditText editTextUsername;
     private EditText editTextPassword;
-    Repository rp = Repository.getInstance();
+    //Repository rp = Repository.getInstance();
+    DataSourceStub dss = new DataSourceStub();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         buttonRegister = (Button)findViewById(R.id.login_button);
         editTextUsername = (EditText)findViewById(R.id.username);
         editTextPassword = (EditText)findViewById(R.id.password);
 
         refreshData();
+
+        // TODO: to remove when repository can fetch from user table
+        dss.addUser("abc", "123");
+
     }
 
     public void refreshData () {
@@ -53,7 +57,11 @@ public class LoginActivity extends AppCompatActivity {
         }
         else if(TextUtils.isEmpty(password) && !TextUtils.isEmpty(username)){
             Toast.makeText(this, "Please enter password",Toast.LENGTH_SHORT).show();
-            
+
+            return false;
+            // TODO: replace dss when repository is ready
+        } else if (!dss.checkPassword(username,password)){
+            Toast.makeText(this, "Invalid username or password",Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -63,11 +71,18 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     public void onLoginClick(View view){
         if (view == buttonRegister){
             if(loginUser()) {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent;
+                if (editTextUsername.getText().toString().contains("@admin")){
+                    // go to admin home view
+                    intent = new Intent(this, AdminHomeActivity.class);
+                } else {
+                    // any other user go to user home view
+                    intent = new Intent(this, HomeActivity.class);
+                }
+                intent.putExtra("USER", editTextUsername.getText().toString().trim());
                 startActivity(intent);
             }
         }
@@ -94,20 +109,22 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        else if(rp.checkPassword(username,password)){// register
+        else if(!dss.checkPassword(username,password)){// register
+            // replace when RP can write to User table
+            dss.addUser(username,password);
             Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
             return true;
-        }else{
+        }
+        else{
             Toast.makeText(this, "Username already exists",Toast.LENGTH_SHORT).show();
             return false;
         }
 
     }
-
     
     public void onSignUpClick(View view)throws Exception {
             if(signUpUser()) {
-                Toast.makeText(this, "Click LOGIN to log in",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Register Successful. Click LOGIN to log in",Toast.LENGTH_SHORT).show();
             }
     }
 }
