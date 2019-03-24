@@ -15,7 +15,7 @@ import mcgill.shredit.model.Exercise;
 import mcgill.shredit.model.Gym;
 import mcgill.shredit.model.Workout;
 
-public class DBService implements DataSource{
+public class DBService implements DataSource {
 
     private static final String DB_USERNAME = "shreditpostgre";
     private static final String DB_PASSWORD = "shreditpostgre";
@@ -35,7 +35,7 @@ public class DBService implements DataSource{
 
     private static final String WORKOUT_TABLE = "Workouts";
     private static final String WORKOUT_NAME = "w_name";
-    private static final String WORKOUT_EXERCISE_TABLE = "WorkoutExercise";
+    private static final String WORKOUT_EXERCISE_TABLE = "WorkoutExercises";
 
     private static final String USER_TABLE = "Users";
     private static final String USER_USERNAME = "username";
@@ -98,19 +98,21 @@ public class DBService implements DataSource{
                 EXERCISE_TABLE,
                 EQUIPMENT_TABLE, EQUIPMENT_NAME, EQUIPMENT_NAME);
 
-        if(gymName != null) {
+        if(username != null && gymName != null) {
             query += String.format("\nINNER JOIN %s AS ge_t ON eq_t.%s=ge_t.%s",
                     GYM_EQUIPMENT_TABLE, EQUIPMENT_NAME, EQUIPMENT_NAME);
         }
 
         if (muscleGroup != null) {
             query += String.format("\nWHERE %s='%s'", EXERCISE_MUSCLE_GROUP, muscleGroup);
-            if (gymName != null) {
-                query += String.format(" AND %s='%s'", GYM_NAME, gymName);
+            if (username != null && gymName != null) {
+                query += String.format(" AND %s='%s' AND %s='%s'",
+                        GYM_NAME, gymName, USER_USERNAME, username);
             }
 
-        } else if (gymName != null) {
-            query += String.format("\nWHERE %s='%s'", GYM_NAME, gymName);
+        } else if (username != null && gymName != null) {
+            query += String.format("\nWHERE %s='%s' AND %s='%s'",
+                    GYM_NAME, gymName, USER_USERNAME, username);
         }
 
         query += ";";
@@ -151,12 +153,12 @@ public class DBService implements DataSource{
         String query = String.format("SELECT DISTINCT eq_t.%s, ge_t.%s\n"
                         + "FROM %s AS eq_t\n"
                         + "INNER JOIN %s AS ge_t ON eq_t.%s=ge_t.%s\n"
-                        + "INNER JOIN %s AS g_t ON ge_t.%s=g_t.%s\n"
-                        + "WHERE %s='%s';",
+                        + "INNER JOIN %s AS g_t ON ge_t.%s=g_t.%s AND ge_t.%s=g_t.%s\n"
+                        + "WHERE ge_t.%s='%s';",
                 EQUIPMENT_NAME, GYM_NAME,
                 EXERCISE_TABLE,
                 GYM_EQUIPMENT_TABLE, EQUIPMENT_NAME, EQUIPMENT_NAME,
-                GYM_TABLE, GYM_NAME, GYM_NAME,
+                GYM_TABLE, GYM_NAME, GYM_NAME, USER_USERNAME, USER_USERNAME,
                 USER_USERNAME, username);
 
         HashMap<String, Gym> gymSet = new HashMap<>();
@@ -204,13 +206,13 @@ public class DBService implements DataSource{
                         + "FROM %s AS eq_t\n"
                         + "INNER JOIN %s AS ex_t ON eq_t.%s=ex_t.%s\n"
                         + "INNER JOIN %s AS we_t ON ex_t.%s=we_t.%s\n"
-                        + "INNER JOIN %s AS w_t ON we_t.%s=w_t.%s\n"
-                        + "WHERE %s='%s';",
+                        + "INNER JOIN %s AS w_t ON we_t.%s=w_t.%s AND we_t.%s=w_t.%s\n"
+                        + "WHERE w_t.%s='%s';",
                 EQUIPMENT_NAME, EXERCISE_NAME, EXERCISE_DESCRIPTION, EXERCISE_MUSCLE_GROUP, WORKOUT_NAME,
                 EQUIPMENT_TABLE,
                 EXERCISE_TABLE, EQUIPMENT_NAME, EQUIPMENT_NAME,
                 WORKOUT_EXERCISE_TABLE, EXERCISE_NAME, EXERCISE_NAME,
-                WORKOUT_TABLE, WORKOUT_NAME, WORKOUT_NAME,
+                WORKOUT_TABLE, WORKOUT_NAME, WORKOUT_NAME, USER_USERNAME, USER_USERNAME,
                 USER_USERNAME, username);
 
         HashMap<String, Workout> workoutSet = new HashMap<>();
@@ -293,46 +295,332 @@ public class DBService implements DataSource{
 
     @Override
     public boolean addUser(String username, String password) {
-        return false;
+        removeUser(username);
+        Connection con = null;
+        Statement stmt = null;
+        String query = String.format("INSERT INTO %s(%s,%s)\n"
+                        + "VALUES ('%s','%s');",
+                USER_TABLE, USER_USERNAME, USER_PASSWORD,
+                username, password);
+
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
+    }
+
+    @Override
+    public boolean removeUser(String username) {
+        Connection con = null;
+        Statement stmt = null;
+        String query = String.format("DELETE FROM %s\n"
+                        + "WHERE %s='%s';",
+                USER_TABLE,
+                USER_USERNAME, username);
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 
     @Override
     public boolean addEquipment(Equipment equipment) {
-        return false;
+        removeEquipment(equipment);
+        Connection con = null;
+        Statement stmt = null;
+        String query = String.format("INSERT INTO %s(%s)\n"
+                        + "VALUES ('%s');",
+                EQUIPMENT_TABLE, EQUIPMENT_NAME,
+                equipment.getName());
+
+
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 
     @Override
     public boolean removeEquipment(Equipment equipment) {
-        return false;
+        Connection con = null;
+        Statement stmt = null;
+        String query = String.format("DELETE FROM %s\n"
+                        + "WHERE %s='%s';",
+                EQUIPMENT_TABLE,
+                EQUIPMENT_NAME, equipment.getName());
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 
     @Override
     public boolean addExercise(Exercise exercise) {
-        return false;
+        removeExercise(exercise);
+        Connection con = null;
+        Statement stmt = null;
+        String query = String.format("INSERT INTO %s(%s,%s,%s,%s)\n"
+                        + "VALUES ('%s','%s','%s','%s');",
+                EXERCISE_TABLE, EXERCISE_NAME, EXERCISE_DESCRIPTION, EXERCISE_MUSCLE_GROUP,
+                EQUIPMENT_NAME,
+                exercise.getName(), exercise.getDescription(), exercise.getMuscleGroup(),
+                exercise.getEquipment().getName());
+
+
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 
     @Override
     public boolean removeExercise(Exercise exercise) {
-        return false;
+        Connection con = null;
+        Statement stmt = null;
+        String query = String.format("DELETE FROM %s\n"
+                        + "WHERE %s='%s';",
+                EXERCISE_TABLE,
+                EXERCISE_NAME, exercise.getName());
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 
     @Override
     public boolean addGym(String username, Gym gym) {
-        return false;
+        removeGym(username, gym);
+        Connection con = null;
+        Statement stmt = null;
+        StringBuilder query = new StringBuilder(String.format("INSERT INTO %s(%s,%s)\n"
+                        + "VALUES ('%s','%s');\n",
+                GYM_TABLE, GYM_NAME, USER_USERNAME,
+                gym.getName(), username));
+        if (!gym.getEquipments().isEmpty()) {
+            query.append(String.format("INSERT INTO %s(%s,%s,%s)\n"
+                            + "VALUES",
+                    GYM_EQUIPMENT_TABLE, GYM_NAME, USER_USERNAME, EQUIPMENT_NAME));
+            for (Equipment equipment : gym.getEquipments()) {
+                query.append(String.format(" ('%s','%s','%s'),\n",
+                        gym.getName(), username, equipment.getName()));
+            }
+            query.replace(query.length() - 2, query.length(), ";");
+        }
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query.toString());
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 
     @Override
     public boolean removeGym(String username, Gym gym) {
-        return false;
+        Connection con = null;
+        Statement stmt = null;
+        String query = String.format("DELETE FROM %s\n"
+                        + "WHERE %s='%s' AND %s='%s';\n"
+                        + "DELETE FROM %s\n"
+                        + "WHERE %s='%s' AND %s='%s';",
+                GYM_EQUIPMENT_TABLE,
+                GYM_NAME, gym.getName(), USER_USERNAME, username,
+                GYM_TABLE,
+                GYM_NAME, gym.getName(), USER_USERNAME, username);
+
+        boolean success = false;
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 
     @Override
     public boolean addWorkout(String username, Workout workout) {
-        return false;
+        removeWorkout(username, workout);
+        Connection con = null;
+        Statement stmt = null;
+        StringBuilder query = new StringBuilder(String.format("INSERT INTO %s(%s,%s)\n"
+                        + "VALUES ('%s','%s');\n",
+                WORKOUT_TABLE, WORKOUT_NAME, USER_USERNAME,
+                workout.getName(), username));
+        if (!workout.getExercises().isEmpty()) {
+            query.append(String.format("INSERT INTO %s(%s,%s,%s)\n"
+                            + "VALUES",
+                    WORKOUT_EXERCISE_TABLE, WORKOUT_NAME, USER_USERNAME, EXERCISE_NAME));
+            for (Exercise exercise : workout.getExercises()) {
+                query.append(String.format(" ('%s','%s','%s'),\n",
+                        workout.getName(), username, exercise.getName()));
+            }
+            query.replace(query.length() - 2, query.length(), ";");
+        }
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query.toString());
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 
     @Override
     public boolean removeWorkout(String username, Workout workout) {
-        return false;
+        Connection con = null;
+        Statement stmt = null;
+        String query = String.format("DELETE FROM %s\n"
+                        + "WHERE %s='%s' AND %s='%s';\n"
+                        + "DELETE FROM %s\n"
+                        + "WHERE %s='%s' AND %s='%s';",
+                WORKOUT_EXERCISE_TABLE,
+                WORKOUT_NAME, workout.getName(), USER_USERNAME, username,
+                WORKOUT_TABLE,
+                WORKOUT_NAME, workout.getName(), USER_USERNAME, username);
+
+        boolean success = false;
+
+        try {
+            con = getConnection();
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+            success = true;
+        } catch (SQLException e) {System.out.println(e.getMessage());}
+        finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {}
+        }
+        return success;
     }
 }

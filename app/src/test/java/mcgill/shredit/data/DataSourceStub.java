@@ -73,7 +73,7 @@ public class DataSourceStub implements DataSource {
 
     @Override
     public boolean checkPassword(String username, String password) {
-        return users.get(username).getPassword().equals(password);
+        return users.containsKey(username) && users.get(username).getPassword().equals(password);
     }
 
     @Override
@@ -81,6 +81,17 @@ public class DataSourceStub implements DataSource {
         users.put(username, new User(username, password));
         gyms.put(username, new HashMap<String, Gym>());
         workouts.put(username, new HashMap<String, Workout>());
+        return true;
+    }
+
+    @Override
+    public boolean removeUser(String username) {
+        if(!users.containsKey(username)) {
+            return true;
+        }
+        users.remove(username);
+        gyms.remove(username);
+        workouts.remove(username);
         return true;
     }
 
@@ -93,7 +104,7 @@ public class DataSourceStub implements DataSource {
     @Override
     public boolean removeEquipment(Equipment equipment) {
         if (!this.equipment.containsKey(equipment.getName())) {
-            return false;
+            return true;
         }
         this.equipment.remove(equipment.getName());
         return true;
@@ -108,7 +119,7 @@ public class DataSourceStub implements DataSource {
     @Override
     public boolean removeExercise(Exercise exercise) {
         if (!exercises.containsKey(exercise.getName())) {
-            return false;
+            return true;
         }
         exercises.remove(exercise.getName());
         return true;
@@ -126,11 +137,11 @@ public class DataSourceStub implements DataSource {
     @Override
     public boolean removeGym(String username, Gym gym) {
         if (!gyms.containsKey(username)) {
-            return false;
+            return true;
         }
         HashMap<String, Gym> userGyms = gyms.get(username);
-        if (userGyms.containsKey(gym.getName())) {
-            return false;
+        if (!userGyms.containsKey(gym.getName())) {
+            return true;
         }
         userGyms.remove(gym.getName());
         return true;
@@ -151,8 +162,8 @@ public class DataSourceStub implements DataSource {
             return false;
         }
         HashMap<String, Workout> userWorkouts = workouts.get(username);
-        if (userWorkouts.containsKey(workout.getName())) {
-            return false;
+        if (!userWorkouts.containsKey(workout.getName())) {
+            return true;
         }
         userWorkouts.remove(workout.getName());
         return true;

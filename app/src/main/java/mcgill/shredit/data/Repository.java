@@ -51,6 +51,11 @@ public final class Repository implements DataSource {
     }
 
     @Override
+    public boolean removeUser(String username) {
+        return dbs.removeUser(username);
+    }
+
+    @Override
     public boolean addEquipment(Equipment equipment) {
         return dbs.addEquipment(equipment);
     }
