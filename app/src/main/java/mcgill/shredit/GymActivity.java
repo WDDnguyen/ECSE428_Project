@@ -64,7 +64,6 @@ public class GymActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplication(), GymPresetActivity.class);
                 intent.putExtra("USER", username);
                 intent.putExtra("item_gym_name", gymNames.get(position)); //pass the gym name onto the next activity
-                intent.putExtra("GYM_OBJECT", (Serializable) listOfGyms.get(position));
 
                 startActivity(intent);
             }
@@ -99,21 +98,9 @@ public class GymActivity extends AppCompatActivity {
     public void addTestData() {
         dss.addUser(username, "123");
         dss.addUser("public", "");
-        Equipment e1 = new Equipment("Squat Rack");
-        Equipment e2 = new Equipment( "Row Machine");
-        Equipment e3 = new Equipment("Power Rack");
         Gym g1 = new Gym("McGill Fitness Center");
         Gym g2 = new Gym("Econofitness St Catherine");
         Gym g3 =  new Gym( "Econofitness Atwater");
-        g1.addEquipment(e1);
-        g1.addEquipment(e2);
-        g1.addEquipment(e3);
-        g2.addEquipment(e1);
-        g2.addEquipment(e2);
-        g2.addEquipment(e3);
-        g3.addEquipment(e1);
-        g3.addEquipment(e2);
-        g3.addEquipment(e3);
         dss.addGym("public", g1);
         dss.addGym("public", g2);
         dss.addGym("public", g3);

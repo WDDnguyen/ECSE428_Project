@@ -2,11 +2,10 @@
 /*This code was generated using the UMPLE 1.29.1.4262.30c9ffc7c modeling language!*/
 
 package mcgill.shredit.model;
-import java.io.Serializable;
 import java.util.*;
 
 // line 3 "../../../../../../ShreditModel.ump"
-public class Gym implements Serializable
+public class Gym
 {
 
   //------------------------

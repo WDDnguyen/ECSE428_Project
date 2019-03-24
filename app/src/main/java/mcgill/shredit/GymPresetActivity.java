@@ -20,15 +20,10 @@ import mcgill.shredit.model.Gym;
 
 
 public class GymPresetActivity extends AppCompatActivity {
+    String username;
 
     //Repository rp = Repository.getInstance();
     DataSourceStub dss = new DataSourceStub();
-
-    String gymName;
-    String username;
-    Gym selectedGym;
-    List<Equipment> gymEquipmentArrayList;
-    List<String> gymEquipmentNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -43,7 +38,6 @@ public class GymPresetActivity extends AppCompatActivity {
                 textViewData = null;
             } else {
                 textViewData = extras.getString("item_gym_name");
-                gymName = textViewData;
             }
         }
         else
@@ -52,41 +46,42 @@ public class GymPresetActivity extends AppCompatActivity {
         }
         Intent intent = getIntent();
         username = intent.getStringExtra("USER");
-        selectedGym = (Gym) intent.getSerializableExtra("GYM_OBJECT");
         ((TextView)findViewById(R.id.gymPresetTextView)).setText(textViewData);
 
 
         //Get the gym's presets (equipment list) and display in a ListView
-        gymEquipmentArrayList = queryGymEquipment();
-        gymEquipmentNames = new ArrayList<>();
-
-        for (Equipment eq : gymEquipmentArrayList) {
-            gymEquipmentNames.add(eq.getName());
-        }
-
+        ArrayList<String> gymEquipmentArrayList = queryGymEquipment();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 GymPresetActivity.this,
                 android.R.layout.simple_list_item_1,
-                gymEquipmentNames
+                gymEquipmentArrayList
         );
 
         ListView gymPreset_ListView = (ListView) findViewById(R.id.gymPresetListView);
         gymPreset_ListView.setAdapter(adapter);
     }
 
-    private List<Equipment> queryGymEquipment() {
-        return selectedGym.getEquipments();
-
+    //TODO: query gym equipment data from database
+    private ArrayList<String> queryGymEquipment() {
+        String[] array = {"Squat Rack: 2", "Row Machine: 3", "Power Rack: 1"};
+        ArrayList<String> gymEquipment = new ArrayList<>(Arrays.asList(array));
+        return gymEquipment;
     }
 
     // Moved here from GymActivity.java
     // TODO : Need to pass actual generated gym equipment data to MuscleGroupActivity
     public void onGymConfirmClick(View view) {
+        //dummy data
+        Gym selectedGym = new Gym("FlexBoi");
+        Equipment gymEquipment = new Equipment("treadmill");
 
-        if(!gymEquipmentArrayList.isEmpty()){
+        selectedGym.addEquipment(gymEquipment);
+        List<Equipment> gymEquipments = selectedGym.getEquipments();
+
+        if(!gymEquipments.isEmpty()){
             Intent intent = new Intent(this, MuscleGroupActivity.class);
-            intent.putExtra("EQUIPMENT_LIST", (Serializable) gymEquipmentArrayList);
+            intent.putExtra("EQUIPMENT_LIST", (Serializable) gymEquipments);
             intent.putExtra("USER", username);
             startActivity(intent);
         } else {
