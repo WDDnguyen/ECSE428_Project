@@ -376,27 +376,28 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         alertBuilder.setPositiveButton("Save Workout", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                String userInputString = userInput.getText().toString();
-                if(userInputString != null && !userInputString.isEmpty()) {
-                    //TODO:Check if user's inputted workout name is unique in database
-                    //if (workout name is valid) then
-                    if(isSaveWorkoutNameUnique(userInputString)){
-                        saveWorkoutDialogText = userInputString;
-                        workout.setName(saveWorkoutDialogText);
-                        dss.addWorkout(username, workout);
-                        dialog.dismiss();
+                String userInputString = userInput.getText().toString().trim();
+                if(!userInputString.isEmpty()) {
+                    if(isSaveWorkoutNameValid(userInputString)) { //name uses only valid characters
+                        if (isSaveWorkoutNameUnique(userInputString)) { //name is unique in database
+                            saveWorkoutDialogText = userInputString;
+                            workout.setName(saveWorkoutDialogText);
+                            dss.addWorkout(username, workout);
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(),
+                                    "Workout saved successfully!",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Please enter a unique name for your workout",
+                                    Toast.LENGTH_SHORT).show();
+                            //alertBuilder.setMessage("Please enter a unique name for your workout!");
+                        }
+                    } else{
                         Toast.makeText(getApplicationContext(),
-                                "Workout saved successfully!",
+                                "Please only use letters & numbers for your workout",
                                 Toast.LENGTH_SHORT).show();
-
-                    //else: error message
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "Please enter a unique name for your workout",
-                                Toast.LENGTH_SHORT).show();
-                        //alertBuilder.setMessage("Please enter a unique name for your workout!");
                     }
-
                 } else{
                     Toast.makeText(getApplicationContext(),
                             "Please enter a unique name for your workout",
@@ -413,11 +414,16 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
 
         alertBuilder.show();
     }
+
+    //Checks that user's input workout name only matches alphanumeric characters
+    public boolean isSaveWorkoutNameValid (String workoutName){
+        return workoutName.matches("^[a-zA-Z0-9]*$");
+    }
     
     public boolean isSaveWorkoutNameUnique (String workoutName) {
         List<Workout> currSavedWorkouts = dss.getWorkoutList(username);
         for (Workout wo : currSavedWorkouts) {
-            if(wo.getName().equals(workoutName)){
+            if(wo.getName().equalsIgnoreCase(workoutName)){
                 return false;
             }
         }
