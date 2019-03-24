@@ -1,9 +1,11 @@
 package mcgill.shredit.data;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import mcgill.shredit.data.DataSource;
 import mcgill.shredit.model.Equipment;
 import mcgill.shredit.model.Exercise;
 import mcgill.shredit.model.Gym;
@@ -18,7 +20,7 @@ public class DataSourceStub implements DataSource {
     private HashMap<String, HashMap<String, Workout>> workouts;
     private HashMap<String, User> users;
 
-    DataSourceStub() {
+    public DataSourceStub() {
         equipment = new HashMap<>();
         exercises = new HashMap<>();
         gyms = new HashMap<>();
@@ -73,7 +75,14 @@ public class DataSourceStub implements DataSource {
 
     @Override
     public boolean checkPassword(String username, String password) {
-        return users.containsKey(username) && users.get(username).getPassword().equals(password);
+        User user = users.get(username);
+        if (user != null){
+            if(user.getPassword().equals(password)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
