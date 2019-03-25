@@ -40,7 +40,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     Workout workout;
     final Context context = this; //for use with dialogPrompt (in Save Workout S7 task)
     private String saveWorkoutDialogText = "";
-    //Repository rp = Repository.getInstance();
+    //Repository rp = Repository.getInstance(this);
     DataSourceStub dss = new DataSourceStub();
     String username;
 
@@ -61,7 +61,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
 
-        repo = Repository.getInstance();
+        repo = Repository.getInstance(this);
 
         getIntentValues();
 

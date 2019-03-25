@@ -44,7 +44,9 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {}
+    public void onCreate(SQLiteDatabase db) {
+
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}

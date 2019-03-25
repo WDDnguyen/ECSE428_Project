@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import mcgill.shredit.data.DataSourceStub;
+import mcgill.shredit.data.Repository;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -17,8 +18,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonRegister;
     private EditText editTextUsername;
     private EditText editTextPassword;
-    //Repository rp = Repository.getInstance();
-    DataSourceStub dss = new DataSourceStub();
+    Repository rp = Repository.getInstance(this);
+//    DataSourceStub dss = new DataSourceStub();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         refreshData();
 
         // TODO: to remove when repository can fetch from user table
-        dss.addUser("abc", "123");
+//        rp.addUser("abc", "123")
 
     }
 
@@ -60,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
 
             return false;
             // TODO: replace dss when repository is ready
-        } else if (!dss.checkPassword(username,password)){
+//        } else if (!dss.checkPassword(username,password)){
+        } else if (rp.checkPassword(username,password)){
             Toast.makeText(this, "Invalid username or password",Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -109,9 +111,9 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        else if(!dss.checkPassword(username,password)){// register
+        else if(!rp.checkPassword(username,password)){// register
             // replace when RP can write to User table
-            dss.addUser(username,password);
+            rp.addUser(username,password);
             Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
             return true;
         }
