@@ -36,7 +36,7 @@ public class CustomizeGymActivity extends AppCompatActivity {
 
         Repository rp = Repository.getInstance();
         listView = (ListView)findViewById(R.id.equipmentListView);
-        //arrayAllEquipment = queryEquipments(); //Uses Repository's function to query database
+        //arrayAllEquipment = rp.getEquipmentList(); //Uses Repository's function to query database
         arrayAllEquipment = getMockEquipments(); //gets mock equipment list
         displayEquipments(arrayAllEquipment); //displays all equipment in list view
 
