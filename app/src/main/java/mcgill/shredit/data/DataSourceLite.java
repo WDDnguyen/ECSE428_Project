@@ -22,7 +22,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     private static final String EXERCISE_TABLE = "Exercises";
     private static final String EXERCISE_NAME = "ex_name";
     private static final String EXERCISE_DESCRIPTION = "description";
-    private static final String EXERCISE_MUSCLE_GROUP = "musclegroup";
+    private static final String EXERCISE_MUSCLE_GROUP = "muscleGroup";
 
     private static final String GYM_TABLE = "Gyms";
     private static final String GYM_NAME = "g_name";
@@ -290,10 +290,12 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
                     String workoutName = c.getString(c.getColumnIndex(WORKOUT_NAME));
                     String exerciseName = c.getString(c.getColumnIndex(EXERCISE_NAME));
                     String equipmentName = c.getString(c.getColumnIndex(EQUIPMENT_NAME));
+                    System.out.println(equipmentName);
                     if (!equipmentSet.containsKey(equipmentName)) {
                         equipmentSet.put(equipmentName, new Equipment(
                                 c.getString(c.getColumnIndex(EQUIPMENT_NAME))));
                     }
+                    System.out.println(c.getColumnIndex(EXERCISE_MUSCLE_GROUP));
                     if (!exerciseSet.containsKey(exerciseName)) {
                         exerciseSet.put(exerciseName, new Exercise(
                                 c.getString(c.getColumnIndex(EXERCISE_NAME)),
@@ -301,12 +303,14 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
                                 c.getString(c.getColumnIndex(EXERCISE_MUSCLE_GROUP)),
                                 equipmentSet.get(equipmentName)));
                     }
+                    System.out.println(workoutName);
                     if (!workoutSet.containsKey(workoutName)) {
                         Workout newWorkout = new Workout(c.getString(c.getColumnIndex(WORKOUT_NAME)));
                         workoutSet.put(workoutName, newWorkout);
                         workoutList.add(newWorkout);
                     }
                     workoutSet.get(workoutName).addExercise(exerciseSet.get(exerciseName));
+
                 } while (c.moveToNext());
             }
         } catch (Exception e) {System.out.println(e.getMessage());}
