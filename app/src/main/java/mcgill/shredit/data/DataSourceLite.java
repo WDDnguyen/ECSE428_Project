@@ -1,6 +1,5 @@
 package mcgill.shredit.data;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -144,8 +143,10 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             }
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
-            db.close();
+            if(c != null)
+                c.close();
+            if(db != null)
+                db.close();
             return equipmentList;
         }
     }
@@ -202,8 +203,10 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             }
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
-            db.close();
+            if(c != null)
+                c.close();
+            if(db != null)
+                db.close();
             return exerciseList;
         }
     }
@@ -249,8 +252,10 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             }
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
-            db.close();
+            if(c != null)
+                c.close();
+            if(db != null)
+                db.close();
             return gymList;
         }
     }
@@ -306,8 +311,10 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             }
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
-            db.close();
+            if(c != null)
+                c.close();
+            if(db != null)
+                db.close();
             return workoutList;
         }
     }
@@ -328,8 +335,10 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             }
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
-            db.close();
+            if(c != null)
+                c.close();
+            if(db != null)
+                db.close();
             return truePassword != null && truePassword.equals(password);
         }
     }
@@ -352,7 +361,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -373,7 +383,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -397,7 +408,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -418,7 +430,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -445,7 +458,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -466,7 +480,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -498,7 +513,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -523,7 +539,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -555,7 +572,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
@@ -582,7 +600,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            db.close();
+            if(db != null)
+                db.close();
         }
         return success;
     }
