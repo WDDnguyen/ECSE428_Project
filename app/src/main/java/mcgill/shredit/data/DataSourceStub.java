@@ -167,4 +167,16 @@ public class DataSourceStub implements DataSource {
         userWorkouts.remove(workout.getName());
         return true;
     }
+
+    @Override
+    public boolean removeUser(String username) {
+        if(!users.containsKey(username)) {
+            return true;
+        }
+        users.remove(username);
+        gyms.remove(username);
+        workouts.remove(username);
+        return true;
+    }
+
 }

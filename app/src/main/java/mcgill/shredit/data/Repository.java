@@ -89,4 +89,9 @@ public final class Repository implements DataSource {
     public boolean removeWorkout(String username, Workout workout) {
         return dbs.removeWorkout(username, workout);
     }
+
+    @Override
+    public boolean removeUser(String username) {
+        return dbs.removeUser(username);
+    }
 }
