@@ -1,25 +1,20 @@
 package mcgill.shredit.data;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
 import mcgill.shredit.model.Equipment;
 import mcgill.shredit.model.Exercise;
 import mcgill.shredit.model.Gym;
 import mcgill.shredit.model.Workout;
 
-public class DBService implements DataSource {
-
-    private static final String DB_USERNAME = "shreditpostgre";
-    private static final String DB_PASSWORD = "shreditpostgre";
-    private static final String DB_SERVER_URL = "jdbc:postgresql://shreditpostgre.caqrxjkfzeba.us-east-2.rds.amazonaws.com:5432/shreditpostgre";
+public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
 
     private static final String EQUIPMENT_TABLE = "Equipment";
     private static final String EQUIPMENT_NAME = "eq_name";
@@ -41,56 +36,49 @@ public class DBService implements DataSource {
     private static final String USER_USERNAME = "username";
     private static final String USER_PASSWORD = "password";
 
-    public DBService() {}
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "shredit.db";
 
-    private Connection getConnection() throws SQLException {
-        Connection con;
-        Properties connectionProps = new Properties();
-        connectionProps.put("user", DB_USERNAME);
-        connectionProps.put("password", DB_PASSWORD);
-
-        con = DriverManager.getConnection(DB_SERVER_URL, connectionProps);
-        return con;
+    public DataSourceLite(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {}
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+
 
     @Override
     public List<Equipment> getEquipmentList() {
         ArrayList<Equipment> equipmentList= new ArrayList<>();
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
 
         String query = String.format("SELECT DISTINCT %s FROM %s;",
                 EQUIPMENT_NAME, EQUIPMENT_TABLE);
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            if (rs != null) {
-                while (rs.next()) {
-                    equipmentList.add(new Equipment(rs.getString(EQUIPMENT_NAME)));
-                }
+            db = this.getWritableDatabase();
+            c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                do {
+                    equipmentList.add(new Equipment(c.getString(c.getColumnIndex(EQUIPMENT_NAME))));
+                } while (c.moveToNext());
             }
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
+            return equipmentList;
         }
-        return equipmentList;
     }
 
     @Override
     public List<Exercise> getExerciseList(String muscleGroup, String username, String gymName) {
         ArrayList<Exercise> exerciseList= new ArrayList<>();
         HashMap<String, Equipment> equipmentSet = new HashMap<>();
-        Connection con = null;
-        Statement stmt = null;
 
         String query = String.format("SELECT DISTINCT %s, %s, %s, ex_t.%s\n"
                         + "FROM %s AS ex_t\n"
@@ -118,33 +106,29 @@ public class DBService implements DataSource {
 
         query += ";";
 
+        SQLiteDatabase db = null;
+        Cursor c = null;
+
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            if (rs != null) {
-                while (rs.next()) {
-                    if (!equipmentSet.containsKey(rs.getString(EQUIPMENT_NAME))) {
-                        equipmentSet.put(rs.getString(EQUIPMENT_NAME), new Equipment(
-                                rs.getString(EQUIPMENT_NAME)));
+            db = this.getWritableDatabase();
+            c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                 do {
+                    if (!equipmentSet.containsKey(c.getString(c.getColumnIndex(EQUIPMENT_NAME)))) {
+                        equipmentSet.put(c.getString(c.getColumnIndex(EQUIPMENT_NAME)), new Equipment(
+                                c.getString(c.getColumnIndex(EQUIPMENT_NAME))));
                     }
                     exerciseList.add(new Exercise(
-                            rs.getString(EXERCISE_NAME),
-                            rs.getString(EXERCISE_DESCRIPTION),
-                            rs.getString(EXERCISE_MUSCLE_GROUP),
-                            equipmentSet.get(rs.getString(EQUIPMENT_NAME))));
-                }
+                            c.getString(c.getColumnIndex(EXERCISE_NAME)),
+                            c.getString(c.getColumnIndex(EXERCISE_DESCRIPTION)),
+                            c.getString(c.getColumnIndex(EXERCISE_MUSCLE_GROUP)),
+                            equipmentSet.get(c.getString(c.getColumnIndex(EQUIPMENT_NAME)))));
+                } while (c.moveToNext());
             }
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
             return exerciseList;
         }
     }
@@ -165,17 +149,17 @@ public class DBService implements DataSource {
         HashMap<String, Gym> gymSet = new HashMap<>();
         HashMap<String, Equipment> equipmentSet = new HashMap<>();
         ArrayList<Gym> gymList = new ArrayList<>();
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            if (rs != null) {
-                while (rs.next()) {
-                    String equipmentName = rs.getString(EQUIPMENT_NAME);
-                    String gymName = rs.getString(GYM_NAME);
+            
+            db = this.getWritableDatabase();
+            c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                do {
+                    String equipmentName = c.getString(c.getColumnIndex(EQUIPMENT_NAME));
+                    String gymName = c.getString(c.getColumnIndex(GYM_NAME));
                     if (!equipmentSet.containsKey(equipmentName)) {
                         equipmentSet.put(equipmentName, new Equipment(
                                 equipmentName));
@@ -186,18 +170,12 @@ public class DBService implements DataSource {
                         gymList.add(newGym);
                     }
                     gymSet.get(gymName).addEquipment(equipmentSet.get(equipmentName));
-                }
+                } while (c.moveToNext());
             }
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
             return gymList;
         }
     }
@@ -220,76 +198,63 @@ public class DBService implements DataSource {
         HashMap<String, Exercise> exerciseSet = new HashMap<>();
         HashMap<String, Equipment> equipmentSet = new HashMap<>();
         ArrayList<Workout> workoutList = new ArrayList<>();
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            if (rs != null) {
-                while (rs.next()) {
-                    String workoutName = rs.getString(WORKOUT_NAME);
-                    String exerciseName = rs.getString(EQUIPMENT_NAME);
-                    String equipmentName = rs.getString(EQUIPMENT_NAME);
+            
+            db = this.getWritableDatabase();
+            c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                do {
+                    String workoutName = c.getString(c.getColumnIndex(WORKOUT_NAME));
+                    String exerciseName = c.getString(c.getColumnIndex(EQUIPMENT_NAME));
+                    String equipmentName = c.getString(c.getColumnIndex(EQUIPMENT_NAME));
                     if (!equipmentSet.containsKey(equipmentName)) {
                         equipmentSet.put(equipmentName, new Equipment(
-                                rs.getString(EQUIPMENT_NAME)));
+                                c.getString(c.getColumnIndex(EQUIPMENT_NAME))));
                     }
                     if (!exerciseSet.containsKey(exerciseName)) {
                         exerciseSet.put(exerciseName, new Exercise(
-                                rs.getString(EXERCISE_NAME),
-                                rs.getString(EXERCISE_DESCRIPTION),
-                                rs.getString(EXERCISE_MUSCLE_GROUP),
+                                c.getString(c.getColumnIndex(EXERCISE_NAME)),
+                                c.getString(c.getColumnIndex(EXERCISE_DESCRIPTION)),
+                                c.getString(c.getColumnIndex(EXERCISE_MUSCLE_GROUP)),
                                 equipmentSet.get(equipmentName)));
                     }
                     if (!workoutSet.containsKey(workoutName)) {
-                        Workout newWorkout = new Workout(rs.getString(WORKOUT_NAME));
+                        Workout newWorkout = new Workout(c.getString(c.getColumnIndex(WORKOUT_NAME)));
                         workoutSet.put(workoutName, newWorkout);
                         workoutList.add(newWorkout);
                     }
                     workoutSet.get(workoutName).addExercise(exerciseSet.get(exerciseName));
-                }
+                } while (c.moveToNext());
             }
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
             return workoutList;
         }
     }
 
     public boolean checkPassword(String username, String password) {
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("SELECT DISTINCT %s FROM %s WHERE %s='%s';",
                 USER_PASSWORD, USER_TABLE, USER_USERNAME, username);
         String truePassword = null;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            if (rs != null) {
-                rs.next();
-                truePassword = rs.getString(USER_PASSWORD);
+            
+            db = this.getWritableDatabase();
+            c = db.rawQuery(query, null);
+            if (c.moveToFirst()) {
+                truePassword = c.getString(c.getColumnIndex(USER_PASSWORD));
             }
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
             return truePassword != null && truePassword.equals(password);
         }
     }
@@ -297,8 +262,8 @@ public class DBService implements DataSource {
     @Override
     public boolean addUser(String username, String password) {
         removeUser(username);
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("INSERT INTO %s(%s,%s)\n"
                         + "VALUES ('%s','%s');",
                 USER_TABLE, USER_USERNAME, USER_PASSWORD,
@@ -307,28 +272,22 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query, null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
 
     @Override
     public boolean removeUser(String username) {
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s';",
                 USER_TABLE,
@@ -336,20 +295,14 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query, null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
@@ -357,8 +310,8 @@ public class DBService implements DataSource {
     @Override
     public boolean addEquipment(Equipment equipment) {
         removeEquipment(equipment);
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("INSERT INTO %s(%s)\n"
                         + "VALUES ('%s');",
                 EQUIPMENT_TABLE, EQUIPMENT_NAME,
@@ -368,28 +321,22 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query, null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
 
     @Override
     public boolean removeEquipment(Equipment equipment) {
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s';",
                 EQUIPMENT_TABLE,
@@ -397,20 +344,14 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query, null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
@@ -418,8 +359,8 @@ public class DBService implements DataSource {
     @Override
     public boolean addExercise(Exercise exercise) {
         removeExercise(exercise);
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("INSERT INTO %s(%s,%s,%s,%s)\n"
                         + "VALUES ('%s','%s','%s','%s');",
                 EXERCISE_TABLE, EXERCISE_NAME, EXERCISE_DESCRIPTION, EXERCISE_MUSCLE_GROUP,
@@ -431,28 +372,22 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query, null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
 
     @Override
     public boolean removeExercise(Exercise exercise) {
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s';",
                 EXERCISE_TABLE,
@@ -460,20 +395,14 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query, null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
@@ -481,8 +410,8 @@ public class DBService implements DataSource {
     @Override
     public boolean addGym(String username, Gym gym) {
         removeGym(username, gym);
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         StringBuilder query = new StringBuilder(String.format("INSERT INTO %s(%s,%s)\n"
                         + "VALUES ('%s','%s');\n",
                 GYM_TABLE, GYM_NAME, USER_USERNAME,
@@ -500,28 +429,22 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query.toString());
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query.toString(), null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
 
     @Override
     public boolean removeGym(String username, Gym gym) {
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s' AND %s='%s';\n"
                         + "DELETE FROM %s\n"
@@ -533,20 +456,14 @@ public class DBService implements DataSource {
 
         boolean success = false;
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query, null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
@@ -554,8 +471,8 @@ public class DBService implements DataSource {
     @Override
     public boolean addWorkout(String username, Workout workout) {
         removeWorkout(username, workout);
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         StringBuilder query = new StringBuilder(String.format("INSERT INTO %s(%s,%s)\n"
                         + "VALUES ('%s','%s');\n",
                 WORKOUT_TABLE, WORKOUT_NAME, USER_USERNAME,
@@ -573,28 +490,22 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query.toString());
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query.toString(), null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
 
     @Override
     public boolean removeWorkout(String username, Workout workout) {
-        Connection con = null;
-        Statement stmt = null;
+        SQLiteDatabase db = null;
+        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s' AND %s='%s';\n"
                         + "DELETE FROM %s\n"
@@ -607,20 +518,14 @@ public class DBService implements DataSource {
         boolean success = false;
 
         try {
-            con = getConnection();
-            stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            
+            db = this.getWritableDatabase();
+            db.rawQuery(query, null);
             success = true;
-        } catch (SQLException e) {System.out.println(e.getMessage());}
+        } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {}
+            c.close();
+            db.close();
         }
         return success;
     }
