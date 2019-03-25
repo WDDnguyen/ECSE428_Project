@@ -1,5 +1,6 @@
 package mcgill.shredit.data;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -18,6 +19,7 @@ import mcgill.shredit.model.Workout;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
 public class DataSourceTest {
@@ -188,5 +190,80 @@ public class DataSourceTest {
     @Test
     public void testCheckPassword() {
         assertTrue(dataSource.checkPassword(testUser.getUsername(), testUser.getPassword()));
+    }
+
+    @Test
+    public void testAddRemoveUser() {
+        User newUser = new User("User2", "password123");
+        assertTrue(dataSource.addUser(newUser.getUsername(), newUser.getPassword()));
+        assertTrue(dataSource.checkPassword(newUser.getUsername(), newUser.getPassword()));
+        assertTrue(dataSource.removeUser(newUser.getUsername()));
+        assertFalse(dataSource.checkPassword(newUser.getUsername(), newUser.getPassword()));
+    }
+
+    @Test
+    public void testAddRemoveEquipment() {
+        Equipment newEquipment = new Equipment("equipment1");
+        assertTrue(dataSource.addEquipment(newEquipment));
+        boolean flag = false;
+        for(Equipment equipment : dataSource.getEquipmentList()) {
+            if (equipment.getName().equals(newEquipment.getName())) {
+                flag = true;
+            }
+        }
+        assertTrue(flag);
+        assertTrue(dataSource.removeEquipment(newEquipment));
+        for(Equipment equipment : dataSource.getEquipmentList())
+            if(equipment.getName().equals(newEquipment.getName()))
+                fail();
+    }
+
+    @Test
+    public void testAddRemoveExercise() {
+        Exercise newExercise = new Exercise("exercise1", "description", MuscleGroup.ABS, testEquipment);
+        assertTrue(dataSource.addExercise(newExercise));
+        boolean flag = false;
+        for(Exercise exercise : dataSource.getExerciseList(null, null, null)) {
+            if (exercise.getName().equals(newExercise.getName())) {
+                flag = true;
+            }
+        }
+        assertTrue(flag);
+        assertTrue(dataSource.removeExercise(newExercise));
+        for(Exercise exercise : dataSource.getExerciseList(null, null, null))
+            if(exercise.getName().equals(newExercise.getName()))
+                fail();
+    }
+
+    @Test
+    public void testAddRemoveGym() {
+        assertTrue(dataSource.removeGym(testUser.getUsername(), testGym));
+        for(Gym gym : dataSource.getGymList(testUser.getUsername()))
+            if(isTestGym(gym))
+                fail();
+        assertTrue(dataSource.addGym(testUser.getUsername(), testGym));
+        boolean flag = false;
+        for(Gym gym : dataSource.getGymList(testUser.getUsername())) {
+            if (isTestGym(gym)) {
+                flag = true;
+            }
+        }
+        assertTrue(flag);
+    }
+
+    @Test
+    public void testAddRemoveWorkout() {
+        assertTrue(dataSource.removeWorkout(testUser.getUsername(), testWorkout));
+        for(Workout workout : dataSource.getWorkoutList(testUser.getUsername()))
+            if(isTestWorkout(workout))
+                fail();
+        assertTrue(dataSource.addWorkout(testUser.getUsername(), testWorkout));
+        boolean flag = false;
+        for(Workout workout : dataSource.getWorkoutList(testUser.getUsername())) {
+            if (isTestWorkout(workout)) {
+                flag = true;
+            }
+        }
+        assertTrue(flag);
     }
 }
