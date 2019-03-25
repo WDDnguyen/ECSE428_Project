@@ -288,7 +288,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             if (c.moveToFirst()) {
                 do {
                     String workoutName = c.getString(c.getColumnIndex(WORKOUT_NAME));
-                    String exerciseName = c.getString(c.getColumnIndex(EQUIPMENT_NAME));
+                    String exerciseName = c.getString(c.getColumnIndex(EXERCISE_NAME));
                     String equipmentName = c.getString(c.getColumnIndex(EQUIPMENT_NAME));
                     if (!equipmentSet.containsKey(equipmentName)) {
                         equipmentSet.put(equipmentName, new Equipment(
@@ -351,13 +351,14 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
                         + "VALUES ('%s','%s');",
                 USER_TABLE, USER_USERNAME, USER_PASSWORD,
                 username, password);
+        System.out.println(query);
 
         boolean success = false;
 
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query, null);
+            db.execSQL(query);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -379,7 +380,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query, null);
+            db.execSQL(query);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -404,7 +405,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query, null);
+            db.execSQL(query);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -426,7 +427,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query, null);
+            db.execSQL(query);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -454,7 +455,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query, null);
+            db.execSQL(query);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -476,7 +477,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query, null);
+            db.execSQL(query);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -509,7 +510,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query.toString(), null);
+            db.execSQL(query.toString());
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -535,7 +536,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query, null);
+            db.execSQL(query);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -568,7 +569,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query.toString(), null);
+            db.execSQL(query.toString());
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -596,7 +597,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.rawQuery(query, null);
+            db.execSQL(query);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {

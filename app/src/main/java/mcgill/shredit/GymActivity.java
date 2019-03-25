@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import mcgill.shredit.data.DataSourceStub;
+import mcgill.shredit.data.Repository;
 import mcgill.shredit.model.*;
 
 public class GymActivity extends AppCompatActivity {
@@ -29,8 +30,8 @@ public class GymActivity extends AppCompatActivity {
     List<Gym> listOfGyms;
     List<String> gymNames;
 
-    //Repository rp = Repository.getInstance();
-    DataSourceStub dss = new DataSourceStub();
+    Repository rp = Repository.getInstance(this);
+    //DataSourceStub dss = new DataSourceStub();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class GymActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gym);
         getIntentValues();
 
-        addTestData();
+        //addTestData();
 
         // Search bar
         search_gym = findViewById(R.id.search_gym);
@@ -96,35 +97,50 @@ public class GymActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void addTestData() {
-        dss.addUser(username, "123");
-        dss.addUser("public", "");
-        Equipment e1 = new Equipment("Squat Rack");
-        Equipment e2 = new Equipment( "Row Machine");
-        Equipment e3 = new Equipment("Power Rack");
-        Gym g1 = new Gym("McGill Fitness Center");
-        Gym g2 = new Gym("Econofitness St Catherine");
-        Gym g3 =  new Gym( "Econofitness Atwater");
-        g1.addEquipment(e1);
-        g1.addEquipment(e2);
-        g1.addEquipment(e3);
-        g2.addEquipment(e1);
-        g2.addEquipment(e2);
-        g2.addEquipment(e3);
-        g3.addEquipment(e1);
-        g3.addEquipment(e2);
-        g3.addEquipment(e3);
-        dss.addGym("public", g1);
-        dss.addGym("public", g2);
-        dss.addGym("public", g3);
-    }
+//    public void addTestData() {
+//        dss.addUser(username, "123");
+//        dss.addUser("public", "");
+//        Equipment e1 = new Equipment("Squat Rack");
+//        Equipment e2 = new Equipment( "Row Machine");
+//        Equipment e3 = new Equipment("Power Rack");
+//        Gym g1 = new Gym("McGill Fitness Center");
+//        Gym g2 = new Gym("Econofitness St Catherine");
+//        Gym g3 =  new Gym( "Econofitness Atwater");
+//        g1.addEquipment(e1);
+//        g1.addEquipment(e2);
+//        g1.addEquipment(e3);
+//        g2.addEquipment(e1);
+//        g2.addEquipment(e2);
+//        g2.addEquipment(e3);
+//        g3.addEquipment(e1);
+//        g3.addEquipment(e2);
+//        g3.addEquipment(e3);
+//        dss.addGym("public", g1);
+//        dss.addGym("public", g2);
+//        dss.addGym("public", g3);
+//    }
 
     // TODO query gym data
     private List<Gym> queryGyms() {
 //        String[] array = {"McGill Fitness Center", "Econofitness St Catherine", "Econofitness Atwater"};
 //        ArrayList<String> gyms = new ArrayList<>(Arrays.asList(array));
 
-        return dss.getGymList("public");
+        List<Gym> publicGyms = rp.getGymList("public");
+        List<Gym> userGyms = rp.getGymList(username);
+        System.out.println(userGyms);
+        System.out.println(username);
+        List<Gym> retGyms = new ArrayList<>();
+        if (!publicGyms.isEmpty()) {
+            for (Gym g : publicGyms) {
+                retGyms.add(g);
+            }
+        }
+        if(!userGyms.isEmpty()) {
+            for (Gym g : userGyms) {
+                retGyms.add(g);
+            }
+        }
+        return retGyms;
     }
 
     public void getIntentValues(){
