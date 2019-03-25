@@ -337,7 +337,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     public boolean addUser(String username, String password) {
         removeUser(username);
         SQLiteDatabase db = null;
-        Cursor c = null;
         String query = String.format("INSERT INTO %s(%s,%s)\n"
                         + "VALUES ('%s','%s');",
                 USER_TABLE, USER_USERNAME, USER_PASSWORD,
@@ -352,7 +351,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -361,7 +359,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     @Override
     public boolean removeUser(String username) {
         SQLiteDatabase db = null;
-        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s';",
                 USER_TABLE,
@@ -375,7 +372,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -385,7 +381,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     public boolean addEquipment(Equipment equipment) {
         removeEquipment(equipment);
         SQLiteDatabase db = null;
-        Cursor c = null;
         String query = String.format("INSERT INTO %s(%s)\n"
                         + "VALUES ('%s');",
                 EQUIPMENT_TABLE, EQUIPMENT_NAME,
@@ -401,7 +396,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -410,7 +404,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     @Override
     public boolean removeEquipment(Equipment equipment) {
         SQLiteDatabase db = null;
-        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s';",
                 EQUIPMENT_TABLE,
@@ -424,7 +417,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -452,7 +444,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -461,7 +452,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     @Override
     public boolean removeExercise(Exercise exercise) {
         SQLiteDatabase db = null;
-        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s';",
                 EXERCISE_TABLE,
@@ -475,7 +465,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -485,7 +474,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     public boolean addGym(String username, Gym gym) {
         removeGym(username, gym);
         SQLiteDatabase db = null;
-        Cursor c = null;
         StringBuilder query = new StringBuilder(String.format("INSERT INTO %s(%s,%s)\n"
                         + "VALUES ('%s','%s');\n",
                 GYM_TABLE, GYM_NAME, USER_USERNAME,
@@ -509,7 +497,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -518,7 +505,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     @Override
     public boolean removeGym(String username, Gym gym) {
         SQLiteDatabase db = null;
-        Cursor c = null;
         String query = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s' AND %s='%s';\n"
                         + "DELETE FROM %s\n"
@@ -536,7 +522,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -546,7 +531,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     public boolean addWorkout(String username, Workout workout) {
         removeWorkout(username, workout);
         SQLiteDatabase db = null;
-        Cursor c = null;
         StringBuilder query = new StringBuilder(String.format("INSERT INTO %s(%s,%s)\n"
                         + "VALUES ('%s','%s');\n",
                 WORKOUT_TABLE, WORKOUT_NAME, USER_USERNAME,
@@ -570,7 +554,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
@@ -598,7 +581,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
-            c.close();
             db.close();
         }
         return success;
