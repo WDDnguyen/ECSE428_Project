@@ -22,6 +22,8 @@ public interface DataSource {
 
     boolean addUser(String username, String password);
 
+    boolean removeUser(String username);
+
     boolean addEquipment(Equipment equipment);
 
     boolean removeEquipment(Equipment equipment);
