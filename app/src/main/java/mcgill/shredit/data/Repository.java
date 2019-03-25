@@ -19,9 +19,10 @@ public final class Repository implements DataSource {
     }
 
     public static Repository getInstance(Context c) {
-        if (instance == null)
-            instance = new Repository(c);
-        return instance;
+        return new Repository(c);
+//        if (instance == null)
+//            instance = new Repository(c);
+//        return instance;
     }
 
     @Override
