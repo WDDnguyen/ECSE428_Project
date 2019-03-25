@@ -14,11 +14,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import mcgill.shredit.data.MuscleGroup;
+import mcgill.shredit.data.Repository;
 import mcgill.shredit.model.Equipment;
 import mcgill.shredit.model.Exercise;
 
 public class AdminAddNewExerciseActivity extends AppCompatActivity {
 
+    Repository rp = Repository.getInstance(this);
     String[] muscleGroups;
 
     @Override
@@ -42,16 +44,16 @@ public class AdminAddNewExerciseActivity extends AppCompatActivity {
 
     public void onDoneAddingClick(View view){
         TextView exerciseText = (TextView) findViewById(R.id.exercise_text);
-        TextView equipmentText = (TextView) findViewById(R.id.equipment_text);
         Spinner spinner = (Spinner) findViewById(R.id.spinner_id);
 
         String exName = exerciseText.getText().toString();
-        String equipmentName = equipmentText.getText().toString();
         String muscleGroup = spinner.getSelectedItem().toString();
 
-        Exercise exercise = new Exercise(exName, "description",muscleGroup, new Equipment(equipmentName));
+        Exercise newExercise = new Exercise(exName, "description",muscleGroup, new Equipment("None"));
+        rp.addExercise(newExercise);
+
         System.out.println("SUCCESSFULLY CREATED EXERCISE ");
-        String result = exercise.getName();
+        String result = newExercise.getName();
 
         System.out.println("PUTTING RESULT " + result);
 

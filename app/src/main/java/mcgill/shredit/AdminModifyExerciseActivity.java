@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import mcgill.shredit.data.MuscleGroup;
 import mcgill.shredit.data.Repository;
@@ -26,7 +27,7 @@ public class AdminModifyExerciseActivity extends AppCompatActivity {
 
     Repository rp = Repository.getInstance(this);
     String username;
-    ArrayList<Exercise> exercises = new ArrayList<>();
+    ArrayList<Exercise> exercises;
     ArrayList<String> exerciseName = new ArrayList<>();
     ArrayList<Boolean> checkedExercises = new ArrayList<>();
     
@@ -38,8 +39,9 @@ public class AdminModifyExerciseActivity extends AppCompatActivity {
 
         getIntentValues();
 
-        ArrayList<Exercise> exercises = createMockExercises();
-        exercises = createMockExercises();
+
+
+        exercises = new ArrayList<>(rp.getExerciseList(null, null, null));
 
         ListView exerciseList = (ListView) findViewById(R.id.exercise_list);
 
@@ -54,6 +56,7 @@ public class AdminModifyExerciseActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_single_choice
                 , exerciseName);
+
 
         exerciseList.setAdapter(adapter);
         exerciseList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -70,6 +73,7 @@ public class AdminModifyExerciseActivity extends AppCompatActivity {
         ArrayAdapter adapter = (ArrayAdapter) listview.getAdapter();
         int position = listview.getCheckedItemPosition();
         exerciseName.remove(position);
+        rp.removeExercise(exercises.get(position));
         exercises.remove(position);
 
         adapter.notifyDataSetChanged();

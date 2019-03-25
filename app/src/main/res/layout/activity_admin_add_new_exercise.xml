@@ -60,7 +60,7 @@
         android:layout_marginRight="176dp"
         android:layout_marginBottom="64dp"
         android:onClick="onDoneAddingClick"
-        android:text="Button"
+        android:text="Done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
