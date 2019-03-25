@@ -49,7 +49,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         db.execSQL("CREATE TABLE Users(\n" +
                 "  username VARCHAR(255) NOT NULL,\n" +
                 "  password VARCHAR(255) NOT NULL,\n" +
-                "  PRIMARY KEY (username));");
+                "  PRIMARY KEY (username))");
 
         db.execSQL("CREATE TABLE Equipment(\n" +
                 "  eq_name VARCHAR(255) NOT NULL,\n" +
@@ -322,7 +322,7 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     public boolean checkPassword(String username, String password) {
         SQLiteDatabase db = null;
         Cursor c = null;
-        String query = String.format("SELECT DISTINCT %s FROM %s WHERE %s='%s';",
+        String query = String.format("SELECT DISTINCT %s FROM %s WHERE %s='%s'",
                 USER_PASSWORD, USER_TABLE, USER_USERNAME, username);
         String truePassword = null;
 
