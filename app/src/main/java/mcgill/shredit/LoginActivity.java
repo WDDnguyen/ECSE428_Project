@@ -60,13 +60,10 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter password",Toast.LENGTH_SHORT).show();
 
             return false;
-            // TODO: replace dss when repository is ready
-//        } else if (!dss.checkPassword(username,password)){
-        } else if (rp.checkPassword(username,password)){
+        } else if (!rp.checkPassword(username,password)){
             Toast.makeText(this, "Invalid username or password",Toast.LENGTH_SHORT).show();
             return false;
         }
-
         else {
             return true;
         }
@@ -111,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        else if(!rp.checkPassword(username,password)){// register
+        else if(rp.checkPassword(username,password)){// register
             // replace when RP can write to User table
             rp.addUser(username,password);
             Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
