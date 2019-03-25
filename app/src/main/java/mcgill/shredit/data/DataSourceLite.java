@@ -5,6 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +44,11 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "shredit.db";
 
+    Context context;
+
     public DataSourceLite(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -92,31 +100,220 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
                 "  PRIMARY KEY (w_name, username, ex_name)\n" +
                 ");");
 
-        db.execSQL("INSERT INTO Users(username, password)\n" +
-                "VALUES ('User1', 'password123');");
 
-        db.execSQL("INSERT INTO Equipment(eq_name)\n" +
-                "VALUES ('Dumbbells'),\n" +
-                " ('Bench'),\n" +
-                " ('Stationary Bike');");
+        //Exercises
+        try {
+            InputStreamReader file = new InputStreamReader(context.getAssets().open("exercises.csv"));
+            BufferedReader buffer = new BufferedReader(file);
+            String line = "";
+            String tableName = EXERCISE_TABLE;
+            String columns = EXERCISE_NAME+", "+EXERCISE_DESCRIPTION+", "+EXERCISE_MUSCLE_GROUP+", "+EQUIPMENT_NAME;
+            String str1 = "INSERT INTO " + tableName + " (" + columns + ") values(";
+            String str2 = ");";
+            buffer.readLine();
 
-        db.execSQL("INSERT INTO Exercises(ex_name, description, muscleGroup, eq_name)\n" +
-                "VALUES ('Dumbbell curls', 'Lift a dumbbell', 'Biceps', 'Dumbbells'),\n" +
-                " ('Dumbbell flies', 'Lift a dumbbell', 'Chest', 'Dumbbells'),\n" +
-                " ('Bench press', 'Lift a barbell', 'Chest', 'Bench');");
+            while ((line = buffer.readLine()) != null) {
+                StringBuilder sb = new StringBuilder(str1);
+                String[] str = line.split(",");
+                sb.append(str[0] + ", ");
+                sb.append(str[1] + ", ");
+                sb.append(str[2] + ", ");
+                sb.append(str[3]);
+                sb.append(str2);
+                db.execSQL(sb.toString());
+            }
 
-        db.execSQL("INSERT INTO Gyms(g_name, username)\n" +
-                "VALUES ('myGym', 'User1');");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
 
-        db.execSQL("INSERT INTO GymEquipment(g_name, username, eq_name)\n" +
-                "VALUES ('myGym', 'User1', 'Dumbbells');");
+        //Equipment
+        try {
+            InputStreamReader file = new InputStreamReader(context.getAssets().open("equipment.csv"));
+            BufferedReader buffer = new BufferedReader(file);
+            String line = "";
+            String tableName = EQUIPMENT_TABLE;
+            String columns = EQUIPMENT_NAME;
+            String str1 = "INSERT INTO " + tableName + " (" + columns + ") values(";
+            String str2 = ");";
+            buffer.readLine();
 
-        db.execSQL("INSERT INTO Workouts(w_name, username)\n" +
-                "VALUES ('myWorkout', 'User1');");
+            while ((line = buffer.readLine()) != null) {
+                StringBuilder sb = new StringBuilder(str1);
+                String[] str = line.split(",");
+                sb.append(str[0]);
+                sb.append(str2);
+                db.execSQL(sb.toString());
+            }
 
-        db.execSQL("INSERT INTO WorkoutExercises(w_name, username, ex_name)\n" +
-                "VALUES ('myWorkout', 'User1', 'Dumbbell curls'),\n" +
-                " ('myWorkout', 'User1', 'Dumbbell flies');");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        //GymEquipment
+        try {
+            InputStreamReader file = new InputStreamReader(context.getAssets().open("gymequipment.csv"));
+            BufferedReader buffer = new BufferedReader(file);
+            String line = "";
+            String tableName = GYM_EQUIPMENT_TABLE;
+            String columns = GYM_NAME+", "+USER_USERNAME+", "+EQUIPMENT_NAME;
+            String str1 = "INSERT INTO " + tableName + " (" + columns + ") values(";
+            String str2 = ");";
+            buffer.readLine();
+
+            while ((line = buffer.readLine()) != null) {
+                StringBuilder sb = new StringBuilder(str1);
+                String[] str = line.split(",");
+                sb.append(str[0] + ", ");
+                sb.append(str[1] + ", ");
+                sb.append(str[2]);
+                sb.append(str2);
+                db.execSQL(sb.toString());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        //Gyms
+        try {
+            InputStreamReader file = new InputStreamReader(context.getAssets().open("gyms.csv"));
+            BufferedReader buffer = new BufferedReader(file);
+            String line = "";
+            String tableName = GYM_TABLE;
+            String columns = GYM_NAME+", "+USER_USERNAME;
+            String str1 = "INSERT INTO " + tableName + " (" + columns + ") values(";
+            String str2 = ");";
+            buffer.readLine();
+
+            while ((line = buffer.readLine()) != null) {
+                StringBuilder sb = new StringBuilder(str1);
+                String[] str = line.split(",");
+                sb.append(str[0] + ", ");
+                sb.append(str[1]);
+                sb.append(str2);
+                db.execSQL(sb.toString());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        //Users
+        try {
+            InputStreamReader file = new InputStreamReader(context.getAssets().open("users.csv"));
+            BufferedReader buffer = new BufferedReader(file);
+            String line = "";
+            String tableName = USER_TABLE;
+            String columns = USER_USERNAME+", "+USER_PASSWORD;
+            String str1 = "INSERT INTO " + tableName + " (" + columns + ") values(";
+            String str2 = ");";
+            buffer.readLine();
+
+            while ((line = buffer.readLine()) != null) {
+                StringBuilder sb = new StringBuilder(str1);
+                String[] str = line.split(",");
+                sb.append(str[0] + ", ");
+                sb.append(str[1]);
+                sb.append(str2);
+                db.execSQL(sb.toString());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        //WorkoutExercises
+        try {
+            InputStreamReader file = new InputStreamReader(context.getAssets().open("workoutexercises.csv"));
+            BufferedReader buffer = new BufferedReader(file);
+            String line = "";
+            String tableName = WORKOUT_EXERCISE_TABLE;
+            String columns = WORKOUT_NAME+", "+USER_USERNAME+", "+EXERCISE_NAME;
+            String str1 = "INSERT INTO " + tableName + " (" + columns + ") values(";
+            String str2 = ");";
+            buffer.readLine();
+
+            while ((line = buffer.readLine()) != null) {
+                StringBuilder sb = new StringBuilder(str1);
+                String[] str = line.split(",");
+                sb.append(str[0] + ", ");
+                sb.append(str[1] + ", ");
+                sb.append(str[2]);
+                sb.append(str2);
+                db.execSQL(sb.toString());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        //Workouts
+        try {
+            InputStreamReader file = new InputStreamReader(context.getAssets().open("workouts.csv"));
+            BufferedReader buffer = new BufferedReader(file);
+            String line = "";
+            String tableName = WORKOUT_TABLE;
+            String columns = WORKOUT_NAME+", "+USER_USERNAME;
+            String str1 = "INSERT INTO " + tableName + " (" + columns + ") values(";
+            String str2 = ");";
+            buffer.readLine();
+
+            while ((line = buffer.readLine()) != null) {
+                StringBuilder sb = new StringBuilder(str1);
+                String[] str = line.split(",");
+                sb.append(str[0] + ", ");
+                sb.append(str[1]);
+                sb.append(str2);
+                db.execSQL(sb.toString());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+
+
+
+//        db.execSQL("INSERT INTO Users(username, password)\n" +
+//                "VALUES ('User1', 'password123');");
+
+//        db.execSQL("INSERT INTO Equipment(eq_name)\n" +
+//                "VALUES ('Dumbbells'),\n" +
+//                " ('Bench'),\n" +
+//                " ('Stationary Bike');");
+
+//        db.execSQL("INSERT INTO Exercises(ex_name, description, muscleGroup, eq_name)\n" +
+//                "VALUES ('Dumbbell curls', 'Lift a dumbbell', 'Biceps', 'Dumbbells'),\n" +
+//                " ('Dumbbell flies', 'Lift a dumbbell', 'Chest', 'Dumbbells'),\n" +
+//                " ('Bench press', 'Lift a barbell', 'Chest', 'Bench');");
+
+//        db.execSQL("INSERT INTO Gyms(g_name, username)\n" +
+//                "VALUES ('myGym', 'User1');");
+//
+//        db.execSQL("INSERT INTO GymEquipment(g_name, username, eq_name)\n" +
+//                "VALUES ('myGym', 'User1', 'Dumbbells');");
+//
+//        db.execSQL("INSERT INTO Workouts(w_name, username)\n" +
+//                "VALUES ('myWorkout', 'User1');");
+//
+//        db.execSQL("INSERT INTO WorkoutExercises(w_name, username, ex_name)\n" +
+//                "VALUES ('myWorkout', 'User1', 'Dumbbell curls'),\n" +
+//                " ('myWorkout', 'User1', 'Dumbbell flies');");
 
     }
 
