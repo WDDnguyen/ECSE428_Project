@@ -487,12 +487,10 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
                     String workoutName = c.getString(c.getColumnIndex(WORKOUT_NAME));
                     String exerciseName = c.getString(c.getColumnIndex(EXERCISE_NAME));
                     String equipmentName = c.getString(c.getColumnIndex(EQUIPMENT_NAME));
-                    System.out.println(equipmentName);
                     if (!equipmentSet.containsKey(equipmentName)) {
                         equipmentSet.put(equipmentName, new Equipment(
                                 c.getString(c.getColumnIndex(EQUIPMENT_NAME))));
                     }
-                    System.out.println(c.getColumnIndex(EXERCISE_MUSCLE_GROUP));
                     if (!exerciseSet.containsKey(exerciseName)) {
                         exerciseSet.put(exerciseName, new Exercise(
                                 c.getString(c.getColumnIndex(EXERCISE_NAME)),
@@ -500,7 +498,6 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
                                 c.getString(c.getColumnIndex(EXERCISE_MUSCLE_GROUP)),
                                 equipmentSet.get(equipmentName)));
                     }
-                    System.out.println(workoutName);
                     if (!workoutSet.containsKey(workoutName)) {
                         Workout newWorkout = new Workout(c.getString(c.getColumnIndex(WORKOUT_NAME)));
                         workoutSet.put(workoutName, newWorkout);
@@ -693,26 +690,26 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         removeGym(username, gym);
         SQLiteDatabase db = null;
         StringBuilder query = new StringBuilder(String.format("INSERT INTO %s(%s,%s)\n"
-                        + "VALUES ('%s','%s');\n",
+                        + "VALUES ('%s','%s');",
                 GYM_TABLE, GYM_NAME, USER_USERNAME,
                 gym.getName(), username));
+        List<String> queries = new ArrayList<>();
+        queries.add(query.toString());
         if (!gym.getEquipments().isEmpty()) {
-            query.append(String.format("INSERT INTO %s(%s,%s,%s)\n"
-                            + "VALUES",
-                    GYM_EQUIPMENT_TABLE, GYM_NAME, USER_USERNAME, EQUIPMENT_NAME));
             for (Equipment equipment : gym.getEquipments()) {
-                query.append(String.format(" ('%s','%s','%s'),\n",
+                StringBuilder eqquery = new StringBuilder(String.format("INSERT INTO %s(%s,%s,%s)\n"
+                            + "VALUES ('%s','%s','%s');",
+                    GYM_EQUIPMENT_TABLE, GYM_NAME, USER_USERNAME, EQUIPMENT_NAME,
                         gym.getName(), username, equipment.getName()));
+                queries.add(eqquery.toString());
             }
-            query.replace(query.length() - 2, query.length(), ";");
         }
         boolean success = false;
 
         try {
             
             db = this.getWritableDatabase();
-            db.execSQL(query.toString());
-            success = true;
+            success = executeMultipleQueries(db, queries);
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
             if(db != null)
@@ -724,12 +721,13 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     @Override
     public boolean removeGym(String username, Gym gym) {
         SQLiteDatabase db = null;
-        String query = String.format("DELETE FROM %s\n"
-                        + "WHERE %s='%s' AND %s='%s';\n"
-                        + "DELETE FROM %s\n"
+        String query_ge = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s' AND %s='%s';",
                 GYM_EQUIPMENT_TABLE,
-                GYM_NAME, gym.getName(), USER_USERNAME, username,
+                GYM_NAME, gym.getName(), USER_USERNAME, username);
+
+        String query_g = String.format("DELETE FROM %s\n"
+                + "WHERE %s='%s' AND %s='%s';",
                 GYM_TABLE,
                 GYM_NAME, gym.getName(), USER_USERNAME, username);
 
@@ -737,7 +735,8 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
         try {
             
             db = this.getWritableDatabase();
-            db.execSQL(query);
+            db.execSQL(query_ge);
+            db.execSQL(query_g);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -755,23 +754,22 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
                         + "VALUES ('%s','%s');\n",
                 WORKOUT_TABLE, WORKOUT_NAME, USER_USERNAME,
                 workout.getName(), username));
+        List<String> queries = new ArrayList<>();
+        queries.add(query.toString());
         if (!workout.getExercises().isEmpty()) {
-            query.append(String.format("INSERT INTO %s(%s,%s,%s)\n"
-                            + "VALUES",
-                    WORKOUT_EXERCISE_TABLE, WORKOUT_NAME, USER_USERNAME, EXERCISE_NAME));
             for (Exercise exercise : workout.getExercises()) {
-                query.append(String.format(" ('%s','%s','%s'),\n",
+                StringBuilder exquery = new StringBuilder(String.format("INSERT INTO %s(%s,%s,%s)\n"
+                                + "VALUES ('%s','%s','%s');\n",
+                        WORKOUT_EXERCISE_TABLE, WORKOUT_NAME, USER_USERNAME, EXERCISE_NAME,
                         workout.getName(), username, exercise.getName()));
+                queries.add(exquery.toString());
             }
-            query.replace(query.length() - 2, query.length(), ";");
         }
         boolean success = false;
 
         try {
-            
             db = this.getWritableDatabase();
-            db.execSQL(query.toString());
-            success = true;
+            success = executeMultipleQueries(db, queries);
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
             if(db != null)
@@ -784,21 +782,21 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     public boolean removeWorkout(String username, Workout workout) {
         SQLiteDatabase db = null;
         Cursor c = null;
-        String query = String.format("DELETE FROM %s\n"
-                        + "WHERE %s='%s' AND %s='%s';\n"
-                        + "DELETE FROM %s\n"
+        String query_we = String.format("DELETE FROM %s\n"
                         + "WHERE %s='%s' AND %s='%s';",
                 WORKOUT_EXERCISE_TABLE,
-                WORKOUT_NAME, workout.getName(), USER_USERNAME, username,
+                WORKOUT_NAME, workout.getName(), USER_USERNAME, username);
+        String query_w = String.format("DELETE FROM %s\n"
+                + "WHERE %s='%s' AND %s='%s';",
                 WORKOUT_TABLE,
                 WORKOUT_NAME, workout.getName(), USER_USERNAME, username);
-
         boolean success = false;
 
         try {
             
             db = this.getWritableDatabase();
-            db.execSQL(query);
+            db.execSQL(query_w);
+            db.execSQL(query_we);
             success = true;
         } catch (Exception e) {System.out.println(e.getMessage());}
         finally {
@@ -806,5 +804,13 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
                 db.close();
         }
         return success;
+    }
+
+    private boolean executeMultipleQueries(SQLiteDatabase db, List<String> queries){
+        for (String s : queries){
+            System.out.println(s);
+            db.execSQL(s);
+        }
+        return true;
     }
 }

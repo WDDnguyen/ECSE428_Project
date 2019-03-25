@@ -60,8 +60,10 @@ public class MuscleGroupActivity extends AppCompatActivity {
             TableRow tableRow = (TableRow) tl.getChildAt(i);
             CheckBox muscleGroupCb = (CheckBox) tableRow.getChildAt(0);
             EditText textValue = (EditText) tableRow.getChildAt(1);
-            int numberOfExercises = Integer.parseInt(textValue.getText().toString());
-
+            int numberOfExercises = 0;
+            if(textValue.getText().toString().length() > 0){
+                numberOfExercises = Integer.parseInt(textValue.getText().toString());
+            }
             if (muscleGroupCb.isChecked() && numberOfExercises > 0 ){
                 filteredMuscleGroups.put(muscleGroupCb.getText().toString(), numberOfExercises);
             }
