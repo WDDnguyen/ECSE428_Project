@@ -53,6 +53,7 @@ public class DBService implements DataSource {
         return con;
     }
 
+    @Override
     public List<Equipment> getEquipmentList() {
         ArrayList<Equipment> equipmentList= new ArrayList<>();
         Connection con = null;

@@ -40,7 +40,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     Workout workout;
     final Context context = this; //for use with dialogPrompt (in Save Workout S7 task)
     private String saveWorkoutDialogText = "";
-    //Repository rp = Repository.getInstance();
+    //Repository rp = Repository.getInstance(this);
     DataSourceStub dss = new DataSourceStub();
     String username;
 
@@ -61,9 +61,11 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
 
-        repo = Repository.getInstance();
+        repo = Repository.getInstance(this);
 
         getIntentValues();
+
+        addTestData();
 
         listview = findViewById(R.id.list_workout);
 
@@ -151,7 +153,7 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         }
 
         Workout generatedWorkout =  generateWorkout(chosenExercises, workoutName, 1);
-        System.out.println(generatedWorkout);
+
         return generatedWorkout;
     }
 
@@ -220,30 +222,55 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         }
         username = intent.getStringExtra("USER");
     }
+    public void addTestData() {
+        dss.addUser(username, "123");
+        Equipment none = new Equipment("None");
+        Exercise e1 = new Exercise("test1", "description", "Abs", none);
+        Exercise e2 = new Exercise("test2", "description", "Abs", none);
+        Exercise e3 = new Exercise("test3", "description", "Abs", none);
+        dss.addExercise(e1);
+        dss.addExercise(e2);
+        dss.addExercise(e3);
+
+
+        //Add workouts
+
+        Workout wo1 = new Workout("");
+        Workout wo2 = new Workout("");
+        wo1.setName("Abs x2");
+        wo2.setName("Abs x4");
+        wo1.addExercise(new Exercise("test1", "description", "Abs", none));
+        wo1.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
+        dss.addWorkout(username, wo1);
+        dss.addWorkout(username, wo2);
+
+    }
 
     //TODO Restore proper database querying
-    public static HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
+    public HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
         HashMap<String, Integer> muscleGroup, String gymName) {
-
-        HashMap<Exercise, String> res = new HashMap<>();
-        Equipment none = new Equipment("None");
-        res.put(new Exercise("test1", "description", "Abs", none), "Abs");
-        res.put(new Exercise("test2", "description", "Abs", none), "Abs");
-        res.put(new Exercise("test3", "description", "Abs", none), "Abs");
-        return res;
-
-//        List<Exercise> exercises = repo.getExerciseList("Gym name", "", "");
-//        exercises.addAll(repo.getExerciseList("Gym name", "public", ""));
 //
-//        HashMap<Exercise, String> validExercises = new HashMap<>();
-//
-//        // for each muscle
-//        for(String muscle : muscleGroup.keySet()) {
-//            for(Exercise exercise: exercises) {
-//                validExercises.put(exercise, muscle);
-//            }
-//        }
-//        return validExercises;
+//        HashMap<Exercise, String> res = new HashMap<>();
+//        Equipment none = new Equipment("None");
+//        res.put(new Exercise("test1", "description", "Abs", none), "Abs");
+//        res.put(new Exercise("test2", "description", "Abs", none), "Abs");
+//        res.put(new Exercise("test3", "description", "Abs", none), "Abs");
+//        return res;
+
+        HashMap<Exercise, String> validExercises = new HashMap<>();
+
+        // for each muscle
+        for(String muscle : muscleGroup.keySet()) {
+            List<Exercise> exercises = dss.getExerciseList(muscle, username, "");
+            for(Exercise exercise: exercises) {
+                validExercises.put(exercise, muscle);
+            }
+        }
+        return validExercises;
 
 
     }
@@ -349,25 +376,28 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
         alertBuilder.setPositiveButton("Save Workout", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                String userInputString = userInput.getText().toString();
-                if(userInputString != null && !userInputString.isEmpty()) {
-                    //TODO:Check if user's inputted workout name is unique in database
-                    //if (workout name is valid) then
-                    if(isSaveWorkoutNameUnique(userInputString)){
-                        saveWorkoutDialogText = userInputString;
-                        dialog.dismiss();
+                String userInputString = userInput.getText().toString().trim();
+                if(!userInputString.isEmpty()) {
+                    if(isSaveWorkoutNameValid(userInputString)) { //name uses only valid characters
+                        if (isSaveWorkoutNameUnique(userInputString)) { //name is unique in database
+                            saveWorkoutDialogText = userInputString;
+                            workout.setName(saveWorkoutDialogText);
+                            dss.addWorkout(username, workout);
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(),
+                                    "Workout saved successfully!",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Please enter a unique name for your workout",
+                                    Toast.LENGTH_SHORT).show();
+                            //alertBuilder.setMessage("Please enter a unique name for your workout!");
+                        }
+                    } else{
                         Toast.makeText(getApplicationContext(),
-                                "Workout saved successfully!",
+                                "Please only use letters & numbers for your workout",
                                 Toast.LENGTH_SHORT).show();
-
-                    //else: error message
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "Please enter a unique name for your workout",
-                                Toast.LENGTH_SHORT).show();
-                        //alertBuilder.setMessage("Please enter a unique name for your workout!");
                     }
-
                 } else{
                     Toast.makeText(getApplicationContext(),
                             "Please enter a unique name for your workout",
@@ -384,8 +414,19 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
 
         alertBuilder.show();
     }
+
+    //Checks that user's input workout name only matches alphanumeric characters
+    public boolean isSaveWorkoutNameValid (String workoutName){
+        return workoutName.matches("^[a-zA-Z0-9]*$");
+    }
     
-    public boolean isSaveWorkoutNameUnique (String workoutName){
+    public boolean isSaveWorkoutNameUnique (String workoutName) {
+        List<Workout> currSavedWorkouts = dss.getWorkoutList(username);
+        for (Workout wo : currSavedWorkouts) {
+            if(wo.getName().equalsIgnoreCase(workoutName)){
+                return false;
+            }
+        }
         return true;
     }
 }

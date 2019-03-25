@@ -1,5 +1,7 @@
 package mcgill.shredit.data;
 
+import android.content.Context;
+
 import java.util.List;
 
 import mcgill.shredit.model.*;
@@ -9,15 +11,18 @@ public final class Repository implements DataSource {
     private static Repository instance;
 
     private DataSource dbs;
+//    private DataSourceLite
 
-    private Repository() {
-        dbs = new DBService();
+    private Repository(Context c) {
+//        dbs = new DBService();
+        dbs = new DataSourceLite(c);
     }
 
-    public static Repository getInstance() {
-        if (instance == null)
-            instance = new Repository();
-        return instance;
+    public static Repository getInstance(Context c) {
+        return new Repository(c);
+//        if (instance == null)
+//            instance = new Repository(c);
+//        return instance;
     }
 
     @Override

@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import mcgill.shredit.data.DataSourceStub;
+import mcgill.shredit.data.Repository;
 import mcgill.shredit.model.*;
 
 public class SavedWorkoutActivity extends AppCompatActivity {
@@ -30,6 +32,9 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     ArrayList<String> savedWorkoutNames;
     String username;
 
+    Repository rp = Repository.getInstance(this);
+    //DataSourceStub dss = new DataSourceStub();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,8 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         savedWorkoutView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
         getIntentValues();
+
+        //addTestData(); //remove once Repository is working
 
         //db query calls (need to change to use Workout object once WorkoutActivity facilitates accepting multiple intent)
         savedWorkoutNames = new ArrayList<>();
@@ -130,6 +137,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     //Delete workout on database (Will change to workout object once WorkoutActivity is changed)
     private void writeDeleteSavedWorkout(Workout wo) {
         //TODO: Add db call to remove workout once repository is working
+        rp.removeWorkout(username, wo);
     }
 
     /*---- Queries ----*/
@@ -161,22 +169,25 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         return savedMuscleGroups;
     }
 
+//    public void addTestData() {
+//        dss.addUser(username, "123");
+//        Workout wo1 = new Workout("");
+//        Workout wo2 = new Workout("");
+//        wo1.setName("Abs x2");
+//        wo2.setName("Abs x4");
+//        Equipment none = new Equipment("None");
+//        wo1.addExercise(new Exercise("test1", "description", "Abs", none));
+//        wo1.addExercise(new Exercise("test2", "description", "Abs", none));
+//        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
+//        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
+//        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
+//        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
+//        dss.addWorkout(username, wo1);
+//        dss.addWorkout(username, wo2);
+//    }
+
     private List<Workout> querySavedWorkouts() {
-        List<Workout> retSavedWorkouts = new ArrayList<>();
-        Workout wo1 = new Workout("");
-        Workout wo2 = new Workout("");
-        wo1.setName("Abs x2");
-        wo2.setName("Abs x4");
-        Equipment none = new Equipment("None");
-        wo1.addExercise(new Exercise("test1", "description", "Abs", none));
-        wo1.addExercise(new Exercise("test2", "description", "Abs", none));
-        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
-        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
-        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
-        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
-        retSavedWorkouts.add(wo1);
-        retSavedWorkouts.add(wo2);
-        return retSavedWorkouts;
+        return rp.getWorkoutList(username);
     }
 
     public void getIntentValues(){

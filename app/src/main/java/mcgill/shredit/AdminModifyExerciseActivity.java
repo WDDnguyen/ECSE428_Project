@@ -24,7 +24,7 @@ import mcgill.shredit.model.Exercise;
 
 public class AdminModifyExerciseActivity extends AppCompatActivity {
 
-    Repository rp = Repository.getInstance();
+    Repository rp = Repository.getInstance(this);
     String username;
     ArrayList<Exercise> exercises = new ArrayList<>();
     ArrayList<String> exerciseName = new ArrayList<>();
