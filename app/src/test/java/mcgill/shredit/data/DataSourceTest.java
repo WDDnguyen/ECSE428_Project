@@ -28,7 +28,6 @@ public class DataSourceTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
                 {new DBService()},
-                {Repository.getInstance(this)},
                 {createStub()}
         });
     }
