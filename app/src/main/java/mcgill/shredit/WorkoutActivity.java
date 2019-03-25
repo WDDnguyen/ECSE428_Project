@@ -311,8 +311,15 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
 
         //select a random one
         Random rand = new Random();
-        Exercise randExercise = exercisePool.get(rand.nextInt(exercisePool.size()));
-        exercisePool.add(0, randExercise);  // add this random exercise to front of list
+        if (exercisePool.size() > 0) {
+            Exercise randExercise = exercisePool.get(rand.nextInt(exercisePool.size()));
+            exercisePool.add(0, randExercise);  // add this random exercise to front of list
+        } else {
+            // no replacement exercises exist
+            Toast.makeText(getApplicationContext(),
+                    "No replacement exercises available",
+                    Toast.LENGTH_SHORT).show();
+        }
 
         // convert list to string array, to send to popup
         String[] stringExercisePool = new String[exercisePool.size()];
