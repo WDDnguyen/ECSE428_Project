@@ -1,5 +1,6 @@
 package mcgill.shredit.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -45,6 +46,78 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("CREATE TABLE Users(\n" +
+                "  username VARCHAR(255) NOT NULL,\n" +
+                "  password VARCHAR(255) NOT NULL,\n" +
+                "  PRIMARY KEY (username));");
+
+        db.execSQL("CREATE TABLE Equipment(\n" +
+                "  eq_name VARCHAR(255) NOT NULL,\n" +
+                "  PRIMARY KEY (eq_name)\n" +
+                ");");
+
+        db.execSQL("CREATE TABLE Exercises(\n" +
+                "  ex_name VARCHAR(255) NOT NULL,\n" +
+                "  description VARCHAR(255) NOT NULL,\n" +
+                "  muscleGroup VARCHAR(255) NOT NULL,\n" +
+                "  eq_name VARCHAR(255) NOT NULL REFERENCES Equipment(eq_name),\n" +
+                "  PRIMARY KEY (ex_name)\n" +
+                ");");
+
+        db.execSQL("CREATE TABLE Gyms(\n" +
+                "  g_name VARCHAR(255) NOT NULL,\n" +
+                "  username VARCHAR(255) NOT NULL REFERENCES Users(username),\n" +
+                "  PRIMARY KEY (g_name, username)\n" +
+                ");");
+
+        db.execSQL("CREATE TABLE GymEquipment(\n" +
+                "  g_name VARCHAR(255) NOT NULL,\n" +
+                "  username VARCHAR(255) NOT NULL,\n" +
+                "  eq_name VARCHAR(255) NOT NULL REFERENCES Equipment(eq_name),\n" +
+                "  FOREIGN KEY (g_name, username) REFERENCES Gyms(g_name, username),\n" +
+                "  PRIMARY KEY (g_name, username, eq_name)\n" +
+                ");");
+
+        db.execSQL("CREATE TABLE Workouts(\n" +
+                "  w_name VARCHAR(255) NOT NULL,\n" +
+                "  username VARCHAR(255) NOT NULL REFERENCES Users(username),\n" +
+                "  PRIMARY KEY (w_name, username)\n" +
+                ");");
+
+        db.execSQL("CREATE TABLE WorkoutExercises(\n" +
+                "  w_name VARCHAR(255) NOT NULL,\n" +
+                "  username VARCHAR(255) NOT NULL,\n" +
+                "  ex_name VARCHAR(255) NOT NULL REFERENCES Exercises(ex_name),\n" +
+                "  FOREIGN KEY (w_name, username) REFERENCES Workouts(w_name, username),\n" +
+                "  PRIMARY KEY (w_name, username, ex_name)\n" +
+                ");");
+
+        db.execSQL("INSERT INTO Users(username, password)\n" +
+                "VALUES ('User1', 'password123');");
+
+        db.execSQL("INSERT INTO Equipment(eq_name)\n" +
+                "VALUES ('Dumbbells'),\n" +
+                " ('Bench'),\n" +
+                " ('Stationary Bike');");
+
+        db.execSQL("INSERT INTO Exercises(ex_name, description, muscleGroup, eq_name)\n" +
+                "VALUES ('Dumbbell curls', 'Lift a dumbbell', 'Biceps', 'Dumbbells'),\n" +
+                " ('Dumbbell flies', 'Lift a dumbbell', 'Chest', 'Dumbbells'),\n" +
+                " ('Bench press', 'Lift a barbell', 'Chest', 'Bench');");
+
+        db.execSQL("INSERT INTO Gyms(g_name, username)\n" +
+                "VALUES ('myGym', 'User1');");
+
+        db.execSQL("INSERT INTO GymEquipment(g_name, username, eq_name)\n" +
+                "VALUES ('myGym', 'User1', 'Dumbbells');");
+
+        db.execSQL("INSERT INTO Workouts(w_name, username)\n" +
+                "VALUES ('myWorkout', 'User1');");
+
+        db.execSQL("INSERT INTO WorkoutExercises(w_name, username, ex_name)\n" +
+                "VALUES ('myWorkout', 'User1', 'Dumbbell curls'),\n" +
+                " ('myWorkout', 'User1', 'Dumbbell flies');");
 
     }
 
