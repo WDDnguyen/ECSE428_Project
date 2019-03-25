@@ -25,16 +25,26 @@ import mcgill.shredit.model.Exercise;
 public class AdminModifyExerciseActivity extends AppCompatActivity {
 
     Repository rp = Repository.getInstance();
+
     ArrayList<Exercise> exercises = new ArrayList<>();
     ArrayList<String> exerciseName = new ArrayList<>();
     ArrayList<Boolean> checkedExercises = new ArrayList<>();
+
+    String username;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_modify_exercise);
 
+
         exercises = createMockExercises();
+
+        getIntentValues();
+
+        ArrayList<Exercise> exercises = createMockExercises();
+
 
         ListView exerciseList = (ListView) findViewById(R.id.exercise_list);
 
@@ -97,6 +107,7 @@ public class AdminModifyExerciseActivity extends AppCompatActivity {
 
     public void onDoneClick(View view){
         Intent intent = new Intent(this, AdminHomeActivity.class);
+        intent.putExtra("USER", username);
         startActivity(intent);
     }
 
@@ -113,5 +124,10 @@ public class AdminModifyExerciseActivity extends AppCompatActivity {
         exercises.add(new Exercise("exercise9", "des4", "Abs" ,new Equipment("None")));
         exercises.add(new Exercise("exercise10", "des5", "Triceps" ,new Equipment("None")));
         return exercises;
+    }
+
+    public void getIntentValues(){
+        Intent intent = getIntent();
+        username = intent.getStringExtra("USER");
     }
 }

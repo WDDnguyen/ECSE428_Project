@@ -3,8 +3,10 @@
 
 package mcgill.shredit.model;
 
+import java.io.Serializable;
+
 // line 12 "../../../../../../ShreditModel.ump"
-public class Exercise
+public class Exercise implements Serializable
 {
 
   //------------------------

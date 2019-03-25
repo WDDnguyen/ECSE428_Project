@@ -24,11 +24,13 @@ public class GymActivity extends AppCompatActivity {
 
     ListView search_gym;
     ArrayAdapter<String> adapter;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gym);
+        getIntentValues();
 
         // Search bar
         search_gym = findViewById(R.id.search_gym);
@@ -47,7 +49,9 @@ public class GymActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //onGymConfirmClick(arg1);
                 Intent intent = new Intent(getApplication(), GymPresetActivity.class);
+                intent.putExtra("USER", username);
                 intent.putExtra("item_gym_name", arrayGyms.get(position)); //pass the gym name onto the next activity
+
                 startActivity(intent);
             }
         });
@@ -83,5 +87,10 @@ public class GymActivity extends AppCompatActivity {
         String[] array = {"McGill Fitness Center", "Econofitness St Catherine", "Econofitness Atwater"};
         ArrayList<String> gyms = new ArrayList<>(Arrays.asList(array));
         return gyms;
+    }
+
+    public void getIntentValues(){
+        Intent intent = getIntent();
+        username = intent.getStringExtra("USER");
     }
 }

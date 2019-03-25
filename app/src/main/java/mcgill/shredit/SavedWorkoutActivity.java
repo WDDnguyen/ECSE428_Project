@@ -26,9 +26,9 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     int selectedPos;
     boolean isSelected;
-    ArrayList<HashMap<String,Integer>> savedMuscleGroupList;
-    ArrayList<List<Equipment>> savedEquipmentList;
-    ArrayList<String> savedWorkoutList;
+    List<Workout> savedWorkoutList;
+    ArrayList<String> savedWorkoutNames;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +37,15 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         savedWorkoutView = findViewById(R.id.saved_workout_view);
         savedWorkoutView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
+        getIntentValues();
+
         //db query calls (need to change to use Workout object once WorkoutActivity facilitates accepting multiple intent)
-        savedWorkoutList = querySavedWorkoutNames();
-        savedEquipmentList = querySavedEquipments();
-        savedMuscleGroupList = querySavedMuscleGroups();
+        savedWorkoutNames = new ArrayList<>();
+        savedWorkoutList = querySavedWorkouts();
+
+        for (Workout wo : savedWorkoutList) {
+            savedWorkoutNames.add(wo.getName());
+        }
 
         //set init selected state
         selectedPos = -1;
@@ -49,7 +54,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(
                 SavedWorkoutActivity.this,
                 android.R.layout.simple_list_item_1,
-                savedWorkoutList
+                savedWorkoutNames
         );
 
         //display name of workouts as list item
@@ -69,8 +74,9 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     public void onLoadButtonClick(View view) {
         if(isSelected){
             Intent intent = new Intent(this, WorkoutActivity.class);
-            intent.putExtra("MUSCLE_GROUP_EQUIPMENT_LIST", (Serializable) savedEquipmentList.get(selectedPos));
-            intent.putExtra("MUSCLE_GROUPS_HASHMAP", savedMuscleGroupList.get(selectedPos));
+            intent.putExtra("WORKOUT", savedWorkoutList.get(selectedPos));
+            intent.putExtra("CLASS", "SavedWorkoutActivity");
+            intent.putExtra("USER", username);
             startActivity(intent);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -84,21 +90,20 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     public void onDeleteButtonClick(View view) {
         if(isSelected) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure you want to delete " + savedWorkoutList.get(selectedPos));
+            builder.setMessage("Are you sure you want to delete " + savedWorkoutNames.get(selectedPos));
             builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    String woName = savedWorkoutList.get(selectedPos);
-                    writeDeleteSavedWorkout(woName, savedEquipmentList.get(selectedPos), savedMuscleGroupList.get(selectedPos));
+                    Workout delWorkout = savedWorkoutList.get(selectedPos);
+                    writeDeleteSavedWorkout(delWorkout);
                     savedWorkoutView.clearChoices();
                     savedWorkoutList.remove(selectedPos);
-                    savedEquipmentList.remove(selectedPos);
-                    savedMuscleGroupList.remove(selectedPos);
+                    savedWorkoutNames.remove(selectedPos);
                     adapter.notifyDataSetChanged();
                     savedWorkoutView.setAdapter(adapter);
                     selectedPos = -1;
                     isSelected = false;
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            woName + " workout deleted.",
+                             delWorkout.getName() + " workout deleted.",
                             Toast.LENGTH_SHORT);
                     toast.show();
                     dialog.dismiss();
@@ -123,7 +128,7 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     }
 
     //Delete workout on database (Will change to workout object once WorkoutActivity is changed)
-    private void writeDeleteSavedWorkout(String workoutName, List<Equipment> workoutEquipment, HashMap<String,Integer> workoutMuscleGroups) {
+    private void writeDeleteSavedWorkout(Workout wo) {
         //TODO: Add db call to remove workout once repository is working
     }
 
@@ -154,5 +159,28 @@ public class SavedWorkoutActivity extends AppCompatActivity {
         savedMuscleGroups.add(m1);
         savedMuscleGroups.add(m2);
         return savedMuscleGroups;
+    }
+
+    private List<Workout> querySavedWorkouts() {
+        List<Workout> retSavedWorkouts = new ArrayList<>();
+        Workout wo1 = new Workout("");
+        Workout wo2 = new Workout("");
+        wo1.setName("Abs x2");
+        wo2.setName("Abs x4");
+        Equipment none = new Equipment("None");
+        wo1.addExercise(new Exercise("test1", "description", "Abs", none));
+        wo1.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
+        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
+        retSavedWorkouts.add(wo1);
+        retSavedWorkouts.add(wo2);
+        return retSavedWorkouts;
+    }
+
+    public void getIntentValues(){
+        Intent intent = getIntent();
+        username = intent.getStringExtra("USER");
     }
 }
