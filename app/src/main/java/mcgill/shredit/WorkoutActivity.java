@@ -222,30 +222,52 @@ public class WorkoutActivity extends AppCompatActivity implements WorkoutSwapPop
     }
 
     //TODO Restore proper database querying
-    public static HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
+    public HashMap<Exercise, String> queryValidExercises(List<Equipment> equipmentList,
         HashMap<String, Integer> muscleGroup, String gymName) {
 
-        HashMap<Exercise, String> res = new HashMap<>();
-        Equipment none = new Equipment("None");
-        res.put(new Exercise("test1", "description", "Abs", none), "Abs");
-        res.put(new Exercise("test2", "description", "Abs", none), "Abs");
-        res.put(new Exercise("test3", "description", "Abs", none), "Abs");
-        return res;
+//        HashMap<Exercise, String> res = new HashMap<>();
+//        Equipment none = new Equipment("None");
+//        res.put(new Exercise("test1", "description", "Abs", none), "Abs");
+//        res.put(new Exercise("test2", "description", "Abs", none), "Abs");
+//        res.put(new Exercise("test3", "description", "Abs", none), "Abs");
+//        return res;
 
-//        List<Exercise> exercises = repo.getExerciseList("Gym name", "", "");
-//        exercises.addAll(repo.getExerciseList("Gym name", "public", ""));
-//
-//        HashMap<Exercise, String> validExercises = new HashMap<>();
-//
-//        // for each muscle
+        // build gym object
+//        String gname = "";
+//        for(Equipment x : equipmentList) {
+//            gname = gname + x.getName() + " ";
+//        }
+//        Gym g = new Gym(username + gname);
+//        for (Equipment e : equipmentList) {
+//            g.addEquipment(e);
+//        }
+//        repo.addGym(username, g);
+
+        //cycle through muscle groups
+        List<Exercise> exercises;
+        HashMap<Exercise, String> validExercises = new HashMap<>();
+
+        for(String muscle : muscleGroup.keySet()) {
+            exercises = new ArrayList<>();
+            exercises.addAll(repo.getExerciseList(null, null, null));
+//            exercises.addAll(repo.getExerciseList(muscle, "public", ""));
+
+            for(Exercise ex : exercises) {
+                System.out.println(ex.getName());
+                validExercises.put(ex, muscle);
+            }
+        }
+
+//        return exercises;
+
+
+        // for each muscle
 //        for(String muscle : muscleGroup.keySet()) {
 //            for(Exercise exercise: exercises) {
 //                validExercises.put(exercise, muscle);
 //            }
 //        }
-//        return validExercises;
-
-
+        return validExercises;
     }
 
     public static Workout generateWorkout(List<Exercise> exercises, String name, int id) {
