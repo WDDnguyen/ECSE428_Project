@@ -143,18 +143,19 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     //opens error prompt
     public void openNoWorkoutsErrorPrompt() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("No Saved Workouts! Go and create one and hit the save button to access it here.");
+        builder.setMessage("Go and create one!\nHit the save button to access it here.");
+        builder.setTitle("No Saved Workouts");
         builder.setPositiveButton("Home", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(SavedWorkoutActivity.this, HomeActivity.class);
+                intent.putExtra("USER", username);
+                startActivity(intent);
                 dialog.dismiss();
 
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("USER", username);
-        startActivity(intent);
     }
 
     //Delete workout on database (Will change to workout object once WorkoutActivity is changed)
