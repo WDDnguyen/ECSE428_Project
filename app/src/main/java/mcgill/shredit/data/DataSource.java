@@ -20,6 +20,8 @@ public interface DataSource {
 
     boolean checkPassword(String username,String password);
 
+    boolean userExists(String username);
+
     boolean addUser(String username, String password);
 
     boolean removeUser(String username);

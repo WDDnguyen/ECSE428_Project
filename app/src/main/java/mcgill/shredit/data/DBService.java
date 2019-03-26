@@ -295,6 +295,11 @@ public class DBService implements DataSource {
     }
 
     @Override
+    public boolean userExists(String username) {
+        return false;
+    }
+
+    @Override
     public boolean addUser(String username, String password) {
         removeUser(username);
         Connection con = null;

@@ -86,6 +86,11 @@ public class DataSourceStub implements DataSource {
     }
 
     @Override
+    public boolean userExists(String username) {
+        return false;
+    }
+
+    @Override
     public boolean addUser(String username, String password) {
         users.put(username, new User(username, password));
         gyms.put(username, new HashMap<String, Gym>());

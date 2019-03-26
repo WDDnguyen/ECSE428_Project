@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        else if(!rp.checkPassword(username,password)){// register
+        else if(rp.userExists(username)){// register
             // replace when RP can write to User table
             rp.addUser(username,password);
             Toast.makeText(this, "Register Successful",Toast.LENGTH_SHORT).show();
