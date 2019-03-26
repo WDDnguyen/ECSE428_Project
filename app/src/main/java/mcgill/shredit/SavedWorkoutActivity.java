@@ -1,6 +1,7 @@
 package mcgill.shredit;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -75,6 +76,11 @@ public class SavedWorkoutActivity extends AppCompatActivity {
             }
         });
         savedWorkoutView.setAdapter(adapter);
+
+        //No workouts error check
+        if (savedWorkoutNames.isEmpty()){
+            openNoWorkoutsErrorPrompt();
+        }
     }
 
     //Passes data selected to WorkoutActivity
@@ -134,6 +140,24 @@ public class SavedWorkoutActivity extends AppCompatActivity {
 
     }
 
+    //opens error prompt
+    public void openNoWorkoutsErrorPrompt() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Go and create one!\nHit the save button to access it here.");
+        builder.setTitle("No Saved Workouts");
+        builder.setPositiveButton("Home", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(SavedWorkoutActivity.this, HomeActivity.class);
+                intent.putExtra("USER", username);
+                startActivity(intent);
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     //Delete workout on database (Will change to workout object once WorkoutActivity is changed)
     private void writeDeleteSavedWorkout(Workout wo) {
         //TODO: Add db call to remove workout once repository is working
@@ -141,50 +165,6 @@ public class SavedWorkoutActivity extends AppCompatActivity {
     }
 
     /*---- Queries ----*/
-    //TODO: Change to call db for workouts once repository is working
-    private ArrayList<String> querySavedWorkoutNames() {
-        String[] array = {"Chest and Arms", "Abs"};
-        ArrayList<String> savedWorkouts = new ArrayList<>(Arrays.asList(array));
-        return savedWorkouts;
-    }
-
-    private ArrayList<List<Equipment>> querySavedEquipments() {
-        ArrayList<List<Equipment>> savedEquipments = new ArrayList<>();
-        List<Equipment> e1 = Arrays.asList(new Equipment("Barbells"), new Equipment("Exercise Ball"));
-        List<Equipment> e2 = Arrays.asList(new Equipment("Medicine Ball"));
-        savedEquipments.add(e1);
-        savedEquipments.add(e2);
-        return savedEquipments;
-    }
-
-    private ArrayList<HashMap<String, Integer>> querySavedMuscleGroups() {
-        ArrayList<HashMap<String,Integer>> savedMuscleGroups = new ArrayList<>();
-        HashMap<String,Integer> m1 = new HashMap<>();
-        m1.put("Chest", 2);
-        m1.put("Back", 2);
-        HashMap<String,Integer> m2 = new HashMap<>();
-        m2.put("Abs", 4);
-        savedMuscleGroups.add(m1);
-        savedMuscleGroups.add(m2);
-        return savedMuscleGroups;
-    }
-
-//    public void addTestData() {
-//        dss.addUser(username, "123");
-//        Workout wo1 = new Workout("");
-//        Workout wo2 = new Workout("");
-//        wo1.setName("Abs x2");
-//        wo2.setName("Abs x4");
-//        Equipment none = new Equipment("None");
-//        wo1.addExercise(new Exercise("test1", "description", "Abs", none));
-//        wo1.addExercise(new Exercise("test2", "description", "Abs", none));
-//        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
-//        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
-//        wo2.addExercise(new Exercise("test2", "description", "Abs", none));
-//        wo2.addExercise(new Exercise("test1", "description", "Abs", none));
-//        dss.addWorkout(username, wo1);
-//        dss.addWorkout(username, wo2);
-//    }
 
     private List<Workout> querySavedWorkouts() {
         return rp.getWorkoutList(username);
