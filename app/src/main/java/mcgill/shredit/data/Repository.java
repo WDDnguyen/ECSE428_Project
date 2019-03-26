@@ -51,6 +51,11 @@ public final class Repository implements DataSource {
     }
 
     @Override
+    public boolean userExists(String username) {
+        return dbs.userExists(username);
+    }
+
+    @Override
     public boolean addUser(String username, String password) {
         return dbs.addUser(username, password);
     }

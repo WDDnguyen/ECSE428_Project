@@ -542,6 +542,28 @@ public class DataSourceLite extends SQLiteOpenHelper implements DataSource {
     }
 
     @Override
+    public boolean userExists(String username) {
+        SQLiteDatabase db = null;
+        Cursor c = null;
+        String query = String.format("SELECT DISTINCT %s FROM %s WHERE %s='%s'",
+                USER_USERNAME, USER_TABLE, USER_USERNAME, username);
+        boolean userExists = false;
+        try {
+
+            db = this.getWritableDatabase();
+            c = db.rawQuery(query, null);
+            userExists = c.moveToFirst();
+        } catch (Exception e) {System.out.println(e.getMessage());}
+        finally {
+            if (c != null)
+                c.close();
+            if (db != null)
+                db.close();
+            return userExists;
+        }
+    }
+
+    @Override
     public boolean addUser(String username, String password) {
         removeUser(username);
         SQLiteDatabase db = null;
