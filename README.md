@@ -25,7 +25,7 @@ ShredIt
 * Effort taken to complete task
 * `Add tasks for the report as well`
 * `Keep format similar to sprint task lists in the drive`
-* `Submit these in the folder /project-docs/tasklists with the format "<name>_<id>_tasklist.xls"`
+* `Submit these in the folder /project-docs/tasklists with the format "<name>_<id>_tasklist.xlsx"`
 
 #### Form
 * Terse (no unnecessary details)
