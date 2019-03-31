@@ -46,7 +46,7 @@ Name | Student ID | Github
 --- | --- | ---
 Ben Willetts | 260610719 | @bendwilletts
 William Nguyen | 260638465 | @WDDNguyen
-Shi Yu Liu | 260683360 |
+Shi Yu Liu | 260683360 | @shiyu-mochi
 Jiawei Ni | 260615965 |@jiaweini
 Wiam El Ouadi | 260663710 |
 Aidan Sullivan | 260733921 | @aidssmcc
@@ -64,7 +64,16 @@ Hank Zhang | 260684347 |
 * Make sure you explain what your project is and what problem it is solving. Why was the project needed: is it solving a problem not solved by other products? is it improving over the existing products?
 
 ## Design Choices
-* Does it explain your design decisions, why you decided to choose one technology/framework/coding style/task distribution over the other `Shi Yu`
+We chose to implement our ShredIt idea into an mobile application, as we wanted the project to be mobile and portable, so that people can easily access it during their workouts at the gym. Since most of our team members were familiar with java and android development, it was then an easy choice to choose Android Studio to develop this project. Steaming from this decision, the coding style then adhered to the Google’s Java Style Guide and the Code Conventions for the Java TM Programming Language we have learned from prior classes.
+
+The Espresso test framework was chosen for android interface testing for our acceptances tests due to its ability to start the test on select activities and integration via JUnit testing. This meant that knowledge from prior class could be reused, and it cuts down test time for tests unrelated to the main activity.
+
+Github was used to share the code among all our team members, as it has inbuilt version control via Git. From this decision, the use of Travis CI for continuous integration purposes was then used due to its ease of integration to GitHub.
+The database portion of the project was first decided to be implemented via PostgreSQL, but it was actually implemented via SQLite, as it was the easiest alternative to implement and the most familiar to the team member that fulfilled the task. The section “Features Not Implemented Due to Time Limits, and Possible Extensions to Our Project” goes into more details as to why this decision was made.
+
+Task distribution was done on a scrum basis: first come first serve, people take tasks that they are confident their will finish. However, when people fail to finish their task due to unforeseen circumstances, they are then redistributed to someone to offers to complete it. At first, the task board was made via trello, however due to submission purposes, it was migrated into an excel spreadsheet for submission purposes. This trades off visualisation for distribution.
+
+To coordinate the team members, Google Drive was used to share documents and Slack was used in the beginning for communication, but we migrated towards Messenger as it was more accessible and more responsive.
 
 ## Use of External Technology
 * References/Links to every technology that you didn't create yourself (i.e. frameworks, IDEs, version control, issue tracker, cloud hosting platform) `Luke`
@@ -312,7 +321,11 @@ Simplicity means maximizing the amount of unnecessary work not done. During spri
 The project was of low complexity and requires low amount the testing. Manually testing the app only takes a couple of minutes, so we decided that implementing test automation was unnecessary. A lot of time and effort was saved by keeping testing simple.
 To keep communications simple, we set up a discord channel so during meetings, not all members are required to be physically present in the room to attend the meetings. Members could attend the meetings from anywhere that has internet connection and drop in or out at any time convenient.
 ### *"The best architectures, requirements, and designs emerge from self-organizing teams"*
-* `Shi Yu`
+* How did this apply? <br />
+Requirements were laid out during sprint planning, while architecture and designs were decided upon during team meetings. In other words, each of the three aspects were decided upon when a majority of the team members came to a consensus. To reach the agreement, each proposer would explain their point of view in why their proposal were the most beneficial to the project. We would then vote and note down in our weekly minutes, whichever direction the project would head towards.
+
+* How did this evolve? <br />
+At first, the choices were proposed from the people the most knowledgeable in their particular fields (i.e. database choice from people with database experiences). However, as the project went along, the people who were actually working on that aspect of the project would then drive or change the design according to needs or necessities.
 ### *"At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behaviour accordingly"*
 * `Samuel`
 
