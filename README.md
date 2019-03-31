@@ -76,9 +76,9 @@ The source code to develop the application includes multiple different files, ma
 Files included in this exact path are used to control the various UI views and obtain any releveant data for a given view. Each class has a corresponding xml file in _"src/main/res/layout/"_. Each xml file serves as the actual design of UI elements for that view, and additional xml files are also included for various popup dialogues needed within the app. The xml files are organized by the _"/app/src/main/AndroidManifest.xml"_ file, which dictates the initial view and relates all views with their corresponding Activity class.
 
 * _LoginActivity.java_<br/>
-This class controls the login page that is first presented to the user when the app opens. It includes a function to authenticate the entered username and password, and a function to handle signups. When the login button is pressed, the system queries for the list of users in the database and checks if the username password is correct. If it succeeds, the system is directed to _HomeActivity.java_ and the user is logged in. If it fails, an error prompt is shown. When the signup button is pressed, the system queries the list of users in the database and checks if the username already exists. If the username does not exist, the user is signed up with the entered username and password. If the username already exists, an error prompt is shown.<br/>
+This class controls the login page that is first presented to the user when the app opens. It includes a function to authenticate the entered username and password, and a function to handle signups. When the login button is pressed, the system queries for the list of users in the database and checks if the username and password is correct. If it succeeds, the system is directed to _HomeActivity.java_ and the user is logged in. If it fails, an error prompt is shown. When the signup button is pressed, the system queries the list of users in the database and checks if the username already exists. If the username does not exist, the user is signed up with the entered username and password. If the username already exists, an error prompt is shown.
 
-The login activity also facilitates admin users. By adding the string "@admin" to the end of a username, an admin account will be created when the signup button is pressed. If an admin username is entered and the login succeeds, the system is directed to _AdminHomeActivity.java_ instead.
+	The login activity also facilitates admin users. By adding the string "@admin" to the end of a username, an admin account will be created when the signup button is pressed. If an admin username is entered and the login succeeds, the system is directed to _AdminHomeActivity.java_ instead.
 
 * _HomeActivity.java_ <br/>
 This class controls the landing page for gym user . The user is presented with the following buttons to proceed with generating a workout:
@@ -120,24 +120,24 @@ This class controls the popup created when an admin wishes to add a new exercise
 ### _/app/src/main/java/mcgill/shredit/model/_
 Files included in this path are the data objects that are utilize within the application. These files were generated from an umple file located at _"/app/ShreditModel.ump"_ which describes the application model. The classes and their attributes/associations are listed as follows:
 
-* _User.java_ <br/>
+* _User.java_
 	- username
 	- password
 
-* _Gym.java_ <br/>
+* _Gym.java_
 	- name
 	- equipments
 
-* _Equipment.java_ <br/>
+* _Equipment.java_
 	- name
 
-* _Exercise.java_ <br/>
+* _Exercise.java_
 	- name
 	- description
 	- muscleGroup
 	- equipment
 
-* _Workout.java_ <br/>
+* _Workout.java_
 	- name
 	- exercises
 
@@ -151,7 +151,7 @@ This class initializes an SQLite database on the first run of the application on
 This class loads _DataSourceLite.java_ given the context of the activity that instantiated this class. Each activity creates an instance of Repository with the "getInstance()" function. Initially the repository was intended to serve as a singleton class that controls a PostgreSQL database. However given that PostgreSQL was not directly compatible with Android Studio due to security limitations, SQLite was used instead.
 
 * _DataSourceStub.java_ <br/>
-In order complete and test front-end tasks throughout the project, this stub was created to mock the database functions that were not implemented yet. This allowed test-driven development to be continued on the application activities, while the back-end systems were still under development.
+In order to complete and test front-end tasks throughout the project, this stub was created to mock the database functions that were not implemented yet. This allowed test-driven development to be continued on the application activities, while the back-end systems were still under development.
 
 ### _src/main/assets/_
 Here we store the initial datatables for our application. Each file is in csv format and represent a specific entity that should be stored in the database. On the first run of the application, _DataSourceLite.java_ runs an initial function to create an SQLite database from the csv files stored in this path. Subsequent runs of the application will read and write to the existing database instead of creating a new one. The csv files and column names are listed as follows:
@@ -267,7 +267,7 @@ We organized our initial planning to adhere to this philosophy by picking tasks 
 
 
 * How this evolved?<br/>
-As the sprints for our project went on, we still succeded in following this agile principle. Our initial plan was hindered by the many different commitments that our team had to other classes and projects. Many tasks were delayed due to varying work schedules and other commitments until the last week of the final sprint. However given the delays, the tasks developed went unchanged. Our team made sure to commit and push code frequently, with Travis-CI and unit tests checking if the software works as intended.
+As the sprints for our project went on, we still succeded in following this agile principle. Our initial plan was hindered by the many different commitments that our team had to other classes and projects. Many tasks were delayed due to varying work schedules and other commitments until the last week of the final sprint. However given the delays, the proposed tasks went unchanged. Our team made sure to commit and push code frequently, with Travis-CI and unit tests checking if the software works as intended.
 
 ### *"Business people and developers must work together daily throughout the project"*
 * `Wiam`
