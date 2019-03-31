@@ -51,7 +51,7 @@ Jiawei Ni | 260615965 |
 Wiam El Ouadi | 260663710 |
 Aidan Sullivan | 260733921 | @aidssmcc
 Patrick Ghazal | 260672468 |
-Brian Kim-Lim | 260636766 |
+Brian Kim-Lim | 260636766 | @briankimlim
 Samuel Genois | 260692287 |
 Julien Courbebaisse | 260614548 |
 Ebou Jobe | 260664278 |
@@ -78,17 +78,17 @@ Hank Zhang | 260684347 |
 
 ## Scrum Rituals
 ### Backlog Grooming
-* How this apply? <br />
+* How did this apply? <br />
 After forming the group, a meeting was done to discuss about the project and ideas for the android application. After the initial discussion and ideas of the workout application, we created user stories for the application in the product backlog based on the gym workout generating ideas. Many user stories were created for the product backlog. We decided to mark each of these user stories with high, medium or low priorities. We only kept the high priorities stories to create a functional application and functional requirement needed to implement these user stories. We also written acceptance tests related to the high priority stories to have better understanding of the requirements of the story.
 
-* How this evolve? <br />
+* How did this evolve? <br />
 When we worked on the application, some of the user stories needed to be revised after discovering additional details to these stories. The user stories were adjusted based on new details or user stories that weren’t there. We added and adjusted the product backlog for some user stories and added clarification to the user stories in the product backlog.
 
 ### Sprint Planning
-* How this apply? <br />
+* How did this apply? <br />
 Before each sprint, we set up a meeting to go through the product backlog and decide which user stories to accomplish for that sprint. Since we decided to only have 11 high priority user stories in the product backlog, we planned 6 user stories to be completed on the first sprint and 5 on the second sprint. The first sprint’s user stories focused on making a barebone android application that can log a user and generate a work. Also, the first sprint was to setup a database and initialize views for the application. The second sprint involved 5 user stories which new functionalities or refined sprint 1 functionality.
 
-* How this evolve? <br />
+* How did this evolve? <br />
 Based on the first sprint, some of the user stories could not be completed because of functional requirements that blocked these stories completion. On our second sprint, we decided to push the incomplete user stories with the sprint two stories. Some of these incomplete user stories were the base for some of the sprint 2 tasks. In the second sprint planning, we put more tasks to be done to complete the project by including the incomplete stories.
 
 ### Story Estimation
@@ -99,17 +99,17 @@ Initial Story estimations were intentionally over-estimations. Each story was sp
 The issue with the previous system of story estimation was that the amount of estimated work was off by several hours frequently, and as such people would be working an inconsistent amount of time. Estimations got more accurate since developers become more familiar with the codebase, but it was also understood that mistakes would still be made. At the beginning of the second sprint, each of the stories that pulled over from the first sprint, and the stories from the second sprint were brought together and time estimates were remade. For the most part these would be more accurate to actual time spent. In addition, not all tasks were immediately assigned for sprint 2, to allow people with unexpectedly short initial tasks to be able to achieve the required hours for their work. By week 3 of sprint 2, all tasks were properly assigned, with the best possible time estimation.
 
 ### Daily Stand-up Meeting
-* How this apply? <br />
+* How did this apply? <br />
 Because of scheduling issues and difficulty of gathering 14 members for a daily meeting, we decided that team members can update daily their task through online methods. However, there was a weekly meeting set up to gather the most number of members to discuss and clarify the tasks and progression of the project. In these meeting, members can communicate face to face or through voice chat their concerns, progression and upcoming task.
 
-* How this evolve? <br />
+* How did this evolve? <br />
 This stays reasonably the same throughout the entire project since team members were occupied with different classes and other commitments. The weekly meeting helped make sure clarification and update on the sprint planning were done. The daily online messaging helped members communicate their intentions and collaborate in different tasks. Most meetings were done on a Thursday but depending on members availability, the meeting can be change to another day of the week.
 
 ### Sprint Demo
-* How this apply? <br />
+* How did this apply? <br />
 At the end of each sprint, we ran the program and test if the application was working as intended through the use of the acceptance tests for each story. If the acceptance test passed, then the user story was completed. The acceptance tests were ran automatically and manual for each sprint. These tests involve running the program and checking if the normal, alternative and error flow for the story was respected. We also check if the application would crash as well. The tasks that couldn’t perform the acceptance tests, needed to be reviewed and implemented to pass.
 
-* How this evolve? <br />
+* How did this evolve? <br />
 For both sprints, we ran the acceptance tests to make sure all user stories were completed. However, there was also a demo with the teacher assistance for a demo of the entire application. Additional testing for corner cases and potential crashed were done to allow the teacher assistant to perform any necessary operations to demonstrate a working android application with all high priority user stories covered. All user stories and fixes were completed before this demo happened.
 
 ### Sprint Retrospective
@@ -118,20 +118,20 @@ For both sprints, we ran the acceptance tests to make sure all user stories were
 ## Scrum Objects
 * (how did this apply/evolve)
 ### Done Checklist
-* how this apply? <br />
+* How did this apply? <br />
 For each sprint, the checklist was performed to verify the status of the sprint. For each task in the sprint, the code was implemented and a pull request with the changes was done. Each pull request ran an automatic Travis CI build and code reviewed was necessary. If the build doesn’t fail and automatic tests pass then changes can be merged to the remote repository. Additional unit tests can be included with the code changes to increase test coverage. After each item was reviewed in the sprint, we checked if all story acceptance test passed and previous one still worked. The test coverage is checked to determined if it still the same or higher than previous sprints.
 
-* how this evolve? <br />
+* How did this evolve? <br />
 Throughout the project, a lot of tasks were done towards the end of the sprint. Some unit tests were not all included each task. However, acceptance tests were performed to confirm if the application still works. Some of the corner cases were not all completed for each sprint but the test coverage was relatively higher for each sprint.
 ### Product Backlog
 * `Patrick`
 ### Sprint Backlog
 * `Patrick`
 ### Sprint Backlog Tasks
-* how this apply? <br />
+* How did this apply? <br />
 In the sprint planning, we split the user stories for the sprint into multiple tasks. Depending on the user stories, there would be programming, testing or designing tasks. Each of the tasks were marked with different tags for team members to pick. The tasks were created from splitting the stories into small piece of work for each story. After splitting each user stories into tasks, we wrote the task into a sprint task list excel sheet. Each member can pick their own tasks they want to work on. Members working on a task for a user stories had to communicate with the other members working on the same user stories. Each task was picked by one member and executed by them.
 
-* how this evolve? <br />
+* How did this evolve? <br />
 Throughout the project, the approach stayed the same. The only difference is some tasks needed contribution from other members. These tasks picked from one member, but the contribution can be given to multiple people. Some of the tasks picked up from the members can be given to other members that had relative skills to complete the task. The previous member would pick another one that was aligned to their skill set.
 
 ### Story Point Burndown Chart
@@ -175,17 +175,21 @@ Throughout the project, the approach stayed the same. The only difference is som
 * `Samuel`
 
 ## Conclusion
-* `separate these into paragraphs yourselves`
-* what scenarios is the project not suitable for `Brian`
-* This is where you explain what you didn't implement or test `Brian`
-* The corner cases that you didn't test `Brian`
-* The UI/UX paths that you didn't test
+### Scenarios The Project Is Not Suitable For
+For this project, we implemented only the high priority stories. This is because they are the core functionalities which encompass a minimum viable product in terms of what we want our application to accomplish. Medium/low priority stories were not assigned for our sprints due to time constraints. Notably, these lower priority stories include additional admin activities, and ways for users to communicate with admins, and ultimately other users, labeled as feedback in the stories, among other minor features. As such, presently the application is standalone and functions locally only, and new features would come in newer versions of the application, with the current configuration of the project. This also means that the application is not appropriately implemented to scale up and handle a large amount of users, as this was a low priority in the scope of this project.
+
+In this project, a low amount of testing was done, in favour of having a mostly functioning build. User input validation and sanitization is not part of our testing suite at present. Also, acceptance testing was not automatically implemented. This was primarily due to time constraints, where we focused on high priority stories instead, and having a working application for the demo. After the unexpected amount of time that was spent in assignment B, it was deemed that too much time would be spent working on implementing thorough acceptance testing. Automatic acceptance testing was made to be a lower priority for implementation, to come after the high priority stories were implemented.
+
+* Untested Corner Cases <br />
+Most user inputs are not thoroughly validated and sanitized in the present implementation of the project. For example, when the user inputs the number of exercises for a muscle group that he/she would like to generate, if the input number contains to many digits (say, nine or above), then the application will stall and crash. This extends to the corner case when the user instead checkmarks every muscle group and asks for a 6-digit amount of exercises for each, in which case the application will also stall and crash. There are other cases demonstrating the lack of input validation, however these are mostly examples of edge cases. Considering the application is still relatively simple at this stage, there are less variables at play which could then constitute corner cases.
+
+* The UI/UX paths that you didn't test `Hank`
     - Ideally there should only be one way to do something `Hank`
-* What feature are you not implementing due to time limit or limitations
-* Possible extensions to your project
-    - This project only implemented the high priority stories. As such, many features would be implemented in future releases. Medium/low priority stories notably include additional admin activities, and ways for users to communicate with admins, and ultimately other users, labeled as feedback in the stories, among other minor features. Implementing these features was not required by the project, but would be implemented if more time was given.
-    - In addition, the database that was used in this implementation, SQLite, is a local database. This implementation is a far simpler one to the originally planned DB, which would use of a remotely hosted database running PostgreSQL. This remote database was partially implemented but it was decided to switch to a local implementation after issues with connection and the time crunch, the database being required in many functions within the project. While the SQLite database fulfills all the high priority stories adequately, it would fails the medium and low priority stories that would require communication between users. Ultimately the current local database would be replaced with a remote database. Whether this theoretical implementation would be a PostgreSQL or MySQL database or some other alternative was never finalized. Due to the modular implementation of the current database with an interface (see DataSource.java) for the database, this upgrade would be possible without rewriting the entire codebase.
-    - In this project acceptance testing was not automatically implemented. This was primarily due to a time constraint. After the unexpected amount of time that was spent in assignment B, it was deemed that too much time would be spent working on implementing it. Automatic acceptance testing was made to be a lower priority for implementation, to come after the high priority stories were implemented.
+
+### Features Not Implemented Due to Time Limits, and Possible Extensions to Our Project
+As mentioned earlier, this project only implemented the high priority stories and forewent medium/low priority stories, including thorough testing suites. Implementing these lower priority features was not required by the project, but would be implemented if more time was given.
+    
+In addition, the database that was used in this implementation, SQLite, is a local database. This implementation is a far simpler one compared to the originally planned database, which would use a remotely hosted database running PostgreSQL. This remote database was nearly fully implemented, but it was decided we would switch to a local implementation after issues with connecting to the database and the time crunch. Since the database is required in many functions within the project, we were forced to use an alternative. While the SQLite database fulfills all the high priority stories adequately, it would fails the medium and low priority stories that would require communication between users. Ultimately, the current local database would be replaced with a remote database. Whether this theoretical implementation would be a PostgreSQL or MySQL database or some other alternative was never finalized. Due to the modular implementation of the current database with an interface (see DataSource.java) for the database, this upgrade would be possible without rewriting the entire codebase.
 
 ## References
 * If needed
