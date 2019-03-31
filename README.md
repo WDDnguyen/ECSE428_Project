@@ -47,7 +47,7 @@ Name | Student ID | Github
 Ben Willetts | 260610719 | @bendwilletts
 William Nguyen | 260638465 | @WDDNguyen
 Shi Yu Liu | 260683360 |
-Jiawei Ni | 260615965 |
+Jiawei Ni | 260615965 |@jiaweini
 Wiam El Ouadi | 260663710 |
 Aidan Sullivan | 260733921 | @aidssmcc
 Patrick Ghazal | 260672468 | @PatrickGhazal
@@ -191,9 +191,12 @@ Throughout the project, the approach stayed the same. The only difference is som
 ### *"Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely"*
 * `Julien`
 ### *"Continuous attention to technical excellence and good design enhances agility"*
-* `Jiawei`
+In a meeting we surveyed the technical skills and experiences of our team and choose the tools that most members are comfortable working with. Using tools that we are experienced with ensures technical excellence.
+Whenever there is a change in design, or a commit to GitHub, it would require approval of other members. That means no design changes are allowed without peer review. Suggestions, discussions help ensure the design is good.
 ### *"Simplicity - the art of maximizing the amount of work not done - is essential"*
-* `Jiawei`
+Simplicity means maximizing the amount of unnecessary work not done. During sprint 1, our goal was to develop a shippable product before a deadline. We only made tasks for the high priority user stories and left medium and low priority user stories for the future. The view developed was minimalist, meaning every element is necessary.
+The project was of low complexity and requires low amount the testing. Manually testing the app only takes a couple of minutes, so we decided that implementing test automation was unnecessary. A lot of time and effort was saved by keeping testing simple.
+To keep communications simple, we set up a discord channel so during meetings, not all members are required to be physically present in the room to attend the meetings. Members could attend the meetings from anywhere that has internet connection and drop in or out at any time convenient.
 ### *"The best architectures, requirements, and designs emerge from self-organizing teams"*
 * `Shi Yu`
 ### *"At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behaviour accordingly"*
