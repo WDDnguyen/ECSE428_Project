@@ -73,6 +73,86 @@ Hank Zhang | 260684347 |
 * Does it explain your entire software architecture `Ben`
 * how is your code distributed among the module/packages/repos/
 
+The source code to develop the application includes multiple different files, many of which interact with other files and serve a certain use. For the purpose of coherently explaining the architecture, this section is split up into the different paths of the source code, and each path details how the files are utilized when running the application.
+
+### _src/main/java/mcgill/shredit/_
+Files included in this exact path are used to control the various UI views and obtain any releveant data for a given view. Each class has a corresponding xml file in _"src/main/res/layout/"_. Each xml file serves as the actual design of UI elements for that view, and additional xml files are also included for various popup dialogues needed within the app. The xml files are organized by the _"src/main/AndroidManifest.xml"_ file, which dictates the initial view and relates all views with their corresponding Activity class.
+
+* _LoginActivity.java_<br/>
+This class controls the login page that is first presented to the user when the app opens. It includes
+
+* _HomeActivity.java_ <br/>
+
+* _GymActivity.java_ <br/>
+
+* _GymPresetActivity.java_ <br/>
+
+* _MuscleGroupActivity.java_ <br/>
+
+* _WorkoutActivity.java_ <br/>
+
+* _WorkoutSwapPopupActivity.java_ <br/>
+
+* _CustomizeGymActivity.java_ <br/>
+
+* _SavedWorkoutActivity.java_ <br/>
+
+* _AdminHomeActivity.java_ <br/>
+
+* _AdminAddNewExerciseActivity.java_ <br/>
+
+* _AdminModifyExerciseActivity.java_ <br/>
+
+### _src/main/java/mcgill/shredit/model/_
+
+* _User.java_ <br/>
+
+* _Gym.java_ <br/>
+
+* _Equipment.java_ <br/>
+
+* _Exercise.java_ <br/>
+
+* _Workout.java_ <br/>
+
+### _src/main/java/mcgill/shredit/data/_
+
+* _DataSourceLite.java_ <br/>
+
+* _Repository.java_ <br/>
+
+* _MuscleGroup.java_ <br/>
+
+* _DataSourceStub.java_ <br/>
+
+### _src/main/assets/_
+Here we store the initial datatables for our application. Each file is in csv format and represent a specific entity that should be stored in the database. On the first run of the application, _DataSourceLite.java_ runs an initial function to create an SQLite database from the csv files stored in this path. Subsequent runs of the application will read and write to the existing database instead of creating a new one. The csv files and column names are listed as follows:
+
+* _equipment.csv_
+	- "eq_name"
+* _exercises.csv_
+	- "ex_name"
+	- "description"
+	- "musclegroup"
+	- "eq_name"
+* _gymequipment.csv_
+	- "g_name"
+	- "username"
+	- "eq_name"
+* _gyms.csv_
+	- "g_name"
+	- "username"
+* _users.csv_
+	- "username"
+	- "password"
+* _workoutexercises.csv_
+	- "w_name"
+	- "username"
+	- "ex_name"
+* _workouts.csv_
+	- "w_name"
+	- "username"
+
 ## Running/Testing the Application
 * Does it explain how to run and test your project `Hank`
 
@@ -154,7 +234,13 @@ Throughout the project, the approach stayed the same. The only difference is som
 ### *"Welcome changing requirements, even late in development, Agile processes harness change for the customer's competitive advantage"*
 * `Luke`
 ### *"Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale"*
-* `Ben`
+* How this applies?<br/>
+We organized our initial planning to adhere to this philosophy by picking tasks to complete a certain number of hours per week over the span of two months. This allowed us to continuously have topics to discuss during the weekly meetings. Another major benefit was that everyone was on the same page as to which tasks were currently complete and which tasks need to be completed before other tasks could be started. Since everyone was ideally working each week, we resolved any conflicts in the moment instead of dragging out conflicts, allowing a shorter timescale. Tasks were also broken down as small as possible. This made sure that each task required small additions of code, which allowed more frequent pull requests to the master branch. We also setup Travis-CI for continuous integration, which would help us validate any software changes made by a developer to ensure that the master branch is always a working application that is free of bugs.
+
+
+* How this evolved?<br/>
+As the sprints for our project went on, we still succeded in following this agile principle. Our initial plan was hindered by the many different commitments that our team had to other classes and projects. Many tasks were delayed due to varying work schedules and other commitments until the last week of the final sprint. However given the delays, the tasks developed went unchanged. Our team made sure to commit and push code frequently, with Travis-CI and unit tests checking if the software works as intended.
+
 ### *"Business people and developers must work together daily throughout the project"*
 * `Wiam`
 ### *"Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done"*
