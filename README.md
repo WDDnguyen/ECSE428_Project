@@ -51,7 +51,7 @@ Jiawei Ni | 260615965 |
 Wiam El Ouadi | 260663710 |
 Aidan Sullivan | 260733921 | @aidssmcc
 Patrick Ghazal | 260672468 |
-Brian Kim-Lim | 260636766 |
+Brian Kim-Lim | 260636766 | @briankimlim
 Samuel Genois | 260692287 |
 Julien Courbebaisse | 260614548 |
 Ebou Jobe | 260664278 |
