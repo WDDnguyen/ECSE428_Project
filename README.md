@@ -70,8 +70,116 @@ Hank Zhang | 260684347 |
 * References/Links to every technology that you didn't create yourself (i.e. frameworks, IDEs, version control, issue tracker, cloud hosting platform) `Luke`
 
 ## Software Architecture
-* Does it explain your entire software architecture `Ben`
-* how is your code distributed among the module/packages/repos/
+The source code to develop the application includes multiple different files, many of which interact with other files and serve a certain use. For the purpose of coherently explaining the architecture, this section is split up into the different paths of the source code, and each path details how the files are utilized when running the application.
+
+### _/app/src/main/java/mcgill/shredit/_
+Files included in this exact path are used to control the various UI views and obtain any releveant data for a given view. Each class has a corresponding xml file in _"src/main/res/layout/"_. Each xml file serves as the actual design of UI elements for that view, and additional xml files are also included for various popup dialogues needed within the app. The xml files are organized by the _"/app/src/main/AndroidManifest.xml"_ file, which dictates the initial view and relates all views with their corresponding Activity class.
+
+* _LoginActivity.java_<br/>
+This class controls the login page that is first presented to the user when the app opens. It includes a function to authenticate the entered username and password, and a function to handle signups. When the login button is pressed, the system queries for the list of users in the database and checks if the username and password is correct. If it succeeds, the system is directed to _HomeActivity.java_ and the user is logged in. If it fails, an error prompt is shown. When the signup button is pressed, the system queries the list of users in the database and checks if the username already exists. If the username does not exist, the user is signed up with the entered username and password. If the username already exists, an error prompt is shown.
+
+	The login activity also facilitates admin users. By adding the string "@admin" to the end of a username, an admin account will be created when the signup button is pressed. If an admin username is entered and the login succeeds, the system is directed to _AdminHomeActivity.java_ instead.
+
+* _HomeActivity.java_ <br/>
+This class controls the landing page for gym user . The user is presented with the following buttons to proceed with generating a workout:
+	- "Search Gyms" directs the system to _GymActivity.java_
+	- "Customize Gym" directs the system to _CustomizeGymActivity.java_
+	- "Load Workout" directs the system to _SavedWorkoutActivity.java_
+	- "Log Out" directs the system to _"LoginActivity.java"_
+
+* _GymActivity.java_ <br/>
+This class shows a list of preset Gyms by querying the database. If the user finds the gym they are working out at, pressing the list item will select the gym and direct the system to _GymPresetActivity.java_.
+
+* _GymPresetActivity.java_ <br/>
+This class shows the equipment available at the currently selected gym. When the activity is loaded, the system gets the Gym object passed from _GymActivity.java_ and stores it. The list is then created by getting the list of equipment from the Gym object. If the user is happy with the currently selected gym and presses the confirm button, the system is directed to _MuscleGroupActivity.java_.
+
+* _MuscleGroupActivity.java_ <br/>
+This class controls the muscle group selection activity. A list of muscle groups is generated from the values in _MuscleGroup.java_, with each list item having their own checkbox and input field for the number of exercises. The user can pick the muscle groups they would like to work on by pressing the checkbox. The user can also indicate how many exercises they would like for each muscle group. Once the user is happy with their selection, pressing the ok button will direct the system to _WorkoutActivty.java_. If no muscle groups are selected or all inputs indicate zero exercises, an error prompt is shown.
+
+* _WorkoutActivity.java_ <br/>
+This class is the main workout activity that lists the exercises generated from the selected MuscleGroups and Gym. When the activity is loaded, the system queries the database for the list of possible exercises, and filters them by the selected muscle groups. The system then picks a random exercise for each muscle group until the selected number of exercises for each muscle is satisfied. A workout object is created, and the list of exercises is displayed. If the user presses an exercise in the list, the system redirects to _WorkoutSwapPopupActivity.java_. If the user presses the save workout button, an alert is displayed requesting a unique name. If the entered name contains invalid characters or is not unique in the database, an error prompt is shown and the alert is closed. If the entered name is valid and unique, the workout object is saved in the database under the entered workout name. Once the user is completed their workout, pressing the home button will redirect the system to _HomeActivity.java_.
+
+* _WorkoutSwapPopupActivity.java_ <br/>
+This class controls the popup that is created when an exercise is selected in _WorkoutActivity.java_. This class allows the user to select a different exercises to swap with the currently selected exercise. The first list item is "Random Exercise", which will swap the current exercise with a random exercise in the list of all exercises. The user may also scroll through the rest of the list to pick an exercise to swap with the current exercise. Once an exercise is selected, the popup is closed, and the system is directed back to _WorkoutActivity.java_ with an updated exercise list. If the user changes their mind, pressing the cancel button will close the popup.
+
+* _CustomizeGymActivity.java_ <br/>
+This class controls the custom gym creation activity. This activity is useful for a user that cannot find their gym in the list of presets, or a user that works out at home. A list of workout equipment is displayed by querying the database. The user can select one or more gym equipments depending on their current gym setup. Once the user is satisfied with their selection, pressing the submit equipment button will direct the system to _MuscleGroupActivity.java_.
+
+* _SavedWorkoutActivity.java_ <br/>
+This class displays the list of workouts saved in the database and allows the user to load or delete a selected workout. If there are no currently saved workouts, an error dialog is shown, and the system is redirected to _HomeActivity.java_. When the user selects a workout in the list, the list item is highlighted. If the user presses the load button, the system is directed to _WorkoutActivity.java_ and the selected workout is loaded. If the user presses the delete button, an alert is shown confirming the operation. Once confirmed, the selected workout will be deleted from the list and on the database. If no item is selected when the load or delete button is pressed, an error prompt is shown.
+
+* _AdminHomeActivity.java_ <br/>
+This class controls the landing page for the admin. The admin is presented with the same buttons in _HomeActivity.java_ with the addition of a "Modify Exercise" button. If the admin presses the "Modify Exercise" button, the system is directed to _AdminModifyExerciseActivity.java_.
+
+* _AdminModifyExerciseActivity.java_ <br/>
+This class displays a list of all the exercises in the database for the admin to modify. If the admin selects an item and presses the delete button, the exercise is removed from the list and on the database. If the admin presses the add button, the system is redirected to _AdminAddNewExerciseActivity.java_. Once the admin is finished modifying exercises, pressing the done button will return the system to _HomeActivity.java_.
+
+* _AdminAddNewExerciseActivity.java_ <br/>
+This class controls the popup created when an admin wishes to add a new exercise. The popup allows the admin to enter a unique exercise name, enter the equipment associated with the exercise, and select the muscle group the exercise works on. Once the admin is satisfied, pressing the done button will attempt to add the exercise. If the exercise name is valid and unique and all fields have been filled, the exercise will be added to the database and the popup closes. If fields are missing or the exercise name is invalid, an error prompt is shown.
+
+### _/app/src/main/java/mcgill/shredit/model/_
+Files included in this path are the data objects that are utilize within the application. These files were generated from an umple file located at _"/app/ShreditModel.ump"_ which describes the application model. The classes and their attributes/associations are listed as follows:
+
+* _User.java_
+	- username
+	- password
+
+* _Gym.java_
+	- name
+	- equipments
+
+* _Equipment.java_
+	- name
+
+* _Exercise.java_
+	- name
+	- description
+	- muscleGroup
+	- equipment
+
+* _Workout.java_
+	- name
+	- exercises
+
+### _/app/src/main/java/mcgill/shredit/data/_
+The files included in this path handle the reading and writing of data for our database.
+
+* _DataSourceLite.java_ <br/>
+This class initializes an SQLite database on the first run of the application on a device. Subsequent runs of the application will utilize existing database instance to process incoming queries. All queries made in each application activity will call a function in this class to read/write to the database.
+
+* _Repository.java_ <br/>
+This class loads _DataSourceLite.java_ given the context of the activity that instantiated this class. Each activity creates an instance of Repository with the "getInstance()" function. Initially the repository was intended to serve as a singleton class that controls a PostgreSQL database. However given that PostgreSQL was not directly compatible with Android Studio due to security limitations, SQLite was used instead.
+
+* _DataSourceStub.java_ <br/>
+In order to complete and test front-end tasks throughout the project, this stub was created to mock the database functions that were not implemented yet. This allowed test-driven development to be continued on the application activities, while the back-end systems were still under development.
+
+### _src/main/assets/_
+Here we store the initial datatables for our application. Each file is in csv format and represent a specific entity that should be stored in the database. On the first run of the application, _DataSourceLite.java_ runs an initial function to create an SQLite database from the csv files stored in this path. Subsequent runs of the application will read and write to the existing database instead of creating a new one. The csv files and column names are listed as follows:
+
+* _equipment.csv_
+	- "eq_name"
+* _exercises.csv_
+	- "ex_name"
+	- "description"
+	- "musclegroup"
+	- "eq_name"
+* _gymequipment.csv_
+	- "g_name"
+	- "username"
+	- "eq_name"
+* _gyms.csv_
+	- "g_name"
+	- "username"
+* _users.csv_
+	- "username"
+	- "password"
+* _workoutexercises.csv_
+	- "w_name"
+	- "username"
+	- "ex_name"
+* _workouts.csv_
+	- "w_name"
+	- "username"
 
 ## Running/Testing the Application
 * Does it explain how to run and test your project `Hank`
@@ -183,7 +291,8 @@ Throughout the project, the approach stayed the same. The only difference is som
 ### *"Welcome changing requirements, even late in development, Agile processes harness change for the customer's competitive advantage"*
 * `Luke`
 ### *"Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale"*
-* `Ben`
+We organized our initial planning to adhere to this philosophy by picking tasks to complete a certain number of hours per week over the span of two months. This allowed us to continuously have topics to discuss during the weekly meetings. Another major benefit was that everyone was on the same page as to which tasks were currently complete and which tasks need to be completed before other tasks could be started. Since everyone was ideally working each week, we resolved any conflicts in the moment instead of dragging out conflicts, allowing a shorter timescale. Tasks were also broken down as small as possible. This made sure that each task required small additions of code, which allowed more frequent pull requests to the master branch. We also setup Travis-CI for continuous integration, which would help us validate any software changes made by a developer to ensure that the master branch is always a working application that is free of bugs. As the sprints for our project went on, our initial plan was hindered by the many different commitments that our team had to other classes and projects. Many tasks were delayed due to varying work schedules and other commitments until the last week of the final sprint. However given the delays, the proposed tasks went unchanged. Our team made sure to commit and push code frequently, with Travis-CI and unit tests checking if the software works as intended.
+
 ### *"Business people and developers must work together daily throughout the project"*
 * `Wiam`
 ### *"Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done"*
