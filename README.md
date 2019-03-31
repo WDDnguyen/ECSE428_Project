@@ -185,7 +185,6 @@ Most user inputs are not thoroughly validated and sanitized in the present imple
 
 * The UI/UX paths that you didn't test `Hank`
     - Ideally there should only be one way to do something `Hank`
-* What feature are you not implementing due to time limit or limitations
 
 ### Features Not Implemented Due to Time Limits, and Possible Extensions to Our Project
 As mentioned earlier, this project only implemented the high priority stories and forewent medium/low priority stories, including thorough testing suites. Implementing these lower priority features was not required by the project, but would be implemented if more time was given.
