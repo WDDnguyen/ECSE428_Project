@@ -113,6 +113,10 @@ At the end of each sprint, we ran the program and test if the application was wo
 For both sprints, we ran the acceptance tests to make sure all user stories were completed. However, there was also a demo with the teacher assistance for a demo of the entire application. Additional testing for corner cases and potential crashed were done to allow the teacher assistant to perform any necessary operations to demonstrate a working android application with all high priority user stories covered. All user stories and fixes were completed before this demo happened.
 
 ### Sprint Retrospective
+* How did this apply? <br />
+At the end of each sprint, the team collectively checked that tasks for the sprint were completed and that relevant tests passed. From this analysis, the team was able to identify key stress points to work on, which ultimately allowed us to ship a fully functional product.
+
+* How did this evolve? <br />
 Both sprints turned out to be well planned and well executed. In retrospect some improvements could have been made. In particular, a task should have been to research and identify the best way to implement a persistent database. Failing to recognize the high priority of this task caused some delays in project development as well as last minute fixes. Overall though the other high priority requirements were well identified and included in sprint 1 which in the end allowed for flexibility when unseen difficulties emerged.
 
 ## Scrum Objects
