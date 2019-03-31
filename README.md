@@ -53,7 +53,7 @@ Aidan Sullivan | 260733921 | @aidssmcc
 Patrick Ghazal | 260672468 | @PatrickGhazal
 Brian Kim-Lim | 260636766 | @briankimlim
 Samuel Genois | 260692287 |
-Julien Courbebaisse | 260614548 |
+Julien Courbebaisse | 260614548 | @allockicmoi
 Ebou Jobe | 260664278 |
 Luke Ma | 260745824 |
 Volen Mihaylov | 260746982 |
@@ -113,7 +113,11 @@ At the end of each sprint, we ran the program and test if the application was wo
 For both sprints, we ran the acceptance tests to make sure all user stories were completed. However, there was also a demo with the teacher assistance for a demo of the entire application. Additional testing for corner cases and potential crashed were done to allow the teacher assistant to perform any necessary operations to demonstrate a working android application with all high priority user stories covered. All user stories and fixes were completed before this demo happened.
 
 ### Sprint Retrospective
-* `Julien`
+* How did this apply? <br />
+At the end of each sprint, the team collectively checked that tasks for the sprint were completed and that relevant tests passed. From this analysis, the team was able to identify key stress points to work on, which ultimately allowed us to ship a fully functional product.
+
+* How did this evolve? <br />
+Both sprints turned out to be well planned and well executed. In retrospect some improvements could have been made. In particular, a task should have been to research and identify the best way to implement a persistent database. Failing to recognize the high priority of this task caused some delays in project development as well as last minute fixes. Overall though the other high priority requirements were well identified and included in sprint 1 which in the end allowed for flexibility when unseen difficulties emerged.
 
 ## Scrum Objects
 * (how did this apply/evolve)
@@ -187,9 +191,10 @@ Throughout the project, the approach stayed the same. The only difference is som
 ### *"The most efficient and effective method of conveying information to and within a development team is face-to-face conversation"*
 * `Samuel`
 ### *"Working software is the primary measure of progress"*
-* `Julien`
+The team's main objective was to ship a fully functional application in terms of our High-Priority User Stories. In that respect the team successfully accomplished this goal, set appart minor UI changes. The team recognized that a simple and functional 'MVP' would be favorable over a more complex (but potentially more error prone) design. At times where the software did not yet work, or issues arised, team members always reacted to help each other and rectify issues. Finally this aspect of agile development was implemented through travis builds, which were required to pass in order for a pull request to be merged into the main branch of our code. This ensured our main app would not get broken and would always be "working software";
+
 ### *"Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely"*
-* `Julien`
+Multiple agile processes were implemented during the development of the project. Our automatic travis builds allowed for continous testing, while github enabled continous and parallel development. Also our weekly meetings and continuous online discussions meant that everyone always had good sense of the project direction. This in turn enabled us to have pseudo continous deployment, where new working features would be merged into our main branch. In this regard the team could potentially keep developing the app indefinitly at the same pace.
 ### *"Continuous attention to technical excellence and good design enhances agility"*
 In a meeting we surveyed the technical skills and experiences of our team and choose the tools that most members are comfortable working with. Using tools that we are experienced with ensures technical excellence.
 Whenever there is a change in design, or a commit to GitHub, it would require approval of other members. That means no design changes are allowed without peer review. Suggestions, discussions help ensure the design is good.
