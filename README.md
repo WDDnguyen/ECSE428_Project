@@ -175,10 +175,14 @@ Throughout the project, the approach stayed the same. The only difference is som
 * `Samuel`
 
 ## Conclusion
-* `separate these into paragraphs yourselves`
-* what scenarios is the project not suitable for `Brian`
-* This is where you explain what you didn't implement or test `Brian`
-* The corner cases that you didn't test `Brian`
+### Scenarios The Project Is Not Suitable For
+For this project, we implemented only the high priority stories. This is because they are the core functionalities which encompass a minimum viable product in terms of what we want our application to accomplish. Medium/low priority stories were not assigned for our sprints due to time constraints. Notably, these lower priority stories include additional admin activities, and ways for users to communicate with admins, and ultimately other users, labeled as feedback in the stories, among other minor features. As such, presently the application is standalone and functions locally only, and new features would come in newer versions of the application with the current configuration. This also means that the application is not appropriately implemented to scale up and handle a large amount of users, as this was a low priority in the scope of this project.
+
+In this project, a low amount minimum of testing was done, in favour of having a mostly functioning build. User input validation and sanitization is not part of our testing suite at present. Also, acceptance testing was not automatically implemented. This was primarily due to time constraints, where we focused on high priority stories instead, and having a working application for the demo. After the unexpected amount of time that was spent in assignment B, it was deemed that too much time would be spent working on implementing thorough acceptance testing. Automatic acceptance testing was made to be a lower priority for implementation, to come after the high priority stories were implemented.
+
+* Untested Corner Cases
+Most user inputs are not thoroughly validated and sanitized in the present implementation of the project. For example, when the user inputs the number of exercises for a muscle group that he/she would like to generate, if the input number contains many digits (say, nine or above), then the application will stall and crash. This extends to the case when the user instead checkmarks every muscle group and asks for a 6-digit amount of exercises for each, in which case the application will also stall and crash. There are other cases demonstrating the lack of input validation, however these are mostly examples of edge cases. Considering the application is still relatively simple at this stage, there are less variables at play which could constitute corner cases.
+
 * The UI/UX paths that you didn't test
     - Ideally there should only be one way to do something `Hank`
 * What feature are you not implementing due to time limit or limitations
