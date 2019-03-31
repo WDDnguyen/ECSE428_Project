@@ -50,7 +50,7 @@ Shi Yu Liu | 260683360 |
 Jiawei Ni | 260615965 |
 Wiam El Ouadi | 260663710 |
 Aidan Sullivan | 260733921 | @aidssmcc
-Patrick Ghazal | 260672468 |
+Patrick Ghazal | 260672468 | @PatrickGhazal
 Brian Kim-Lim | 260636766 | @briankimlim
 Samuel Genois | 260692287 |
 Julien Courbebaisse | 260614548 |
@@ -124,9 +124,34 @@ For each sprint, the checklist was performed to verify the status of the sprint.
 * How did this evolve? <br />
 Throughout the project, a lot of tasks were done towards the end of the sprint. Some unit tests were not all included each task. However, acceptance tests were performed to confirm if the application still works. Some of the corner cases were not all completed for each sprint but the test coverage was relatively higher for each sprint.
 ### Product Backlog
-* `Patrick`
+* How did this apply? <br />
+The Product Backlog was an essential element of our project. During our first group meeting, after having decided our app, we had to determine the three components of the Backlog: actors, user stories and requirements.
+Determining the actors was a straightforward process: the primary users would be regular gym-goers, and the secondary users were the administrators/moderators, whose role would be to handle existing database content: creating pre-sets for existing gyms, modifying the exercise list, etc.
+Having found our users, we needed to write user stories for them, separating them in high-, medium-, and low-priority. 23 stories were written, 11 of which were categorized as high-priority. Given that the high-priority stories were the only ones to be implemented, we made sure to select stories that would cover varied uses of the app and that were relevant and necessary to its proper functioning. 
+Finally, we wrote our requirements. We decided to include only database requirements in our high-priority section, and left the more trivial specifications (allowing password changes, server timeout in case of inactivity…) to the medium and low-priority requirements.
+
+* How did this evolve? <br />
+The Product Backlog did not significantly change or evolve after the first specification. Trivially, the actors did not change, and neither did the requirements, given that the requirements were our own and were set in stone after the first meeting. More time was spent on the user stories, but even they were finalized quickly, which allowed us to move on to the Sprint Backlog.
 ### Sprint Backlog
-* `Patrick`
+* How did this apply? <br />
+Before building the sprint backlogs, we had to extract a series of tasks for each user story. Approximately 3-5 tasks were established for each story, divided in 4 sections:
+•	Data (generating mock data)
+•	Programming (writing the code for the app’s behaviour)
+•	Testing (writing tests for the code of the Programming section)
+•	Views (designing the Android views)
+A fifth section, Management, corresponded to the Scrum Master’s responsibilities. Finally, functional requirements were also added as tasks. 
+The next step was to determine which tasks would be assigned to each Sprint. To do so, we selected a subset of tasks that were critical for the proper functioning of the application (e.g. sign up, workout generation) and assigned them to Sprint 1, leaving the remaining tasks to Sprint 2.
+The Sprint Backlog was implemented as a shared Google Sheets document, allowing any group member to update their progress at any time. The Backlog consisted of the following entries for each task:
+•	Sprint number
+•	Task name
+•	Task story
+•	Team member name/ID
+•	Start/end dates
+•	Estimated/actual time spent on the task
+
+* How did this evolve? <br />
+Once determined, the backlog for Sprint 1 did not significantly evolve. The work was evenly split among team members, which allowed for each member to work at their own pace (notwithstanding cases where one member’s work was required for another to do theirs). The Sprint 2 backlog was thus quite straightforward: whatever had not been done in Sprint 1. That explains why some Sprint 1 tasks found themselves in Sprint 2 as well (some of the requirements for example).
+
 ### Sprint Backlog Tasks
 * How did this apply? <br />
 In the sprint planning, we split the user stories for the sprint into multiple tasks. Depending on the user stories, there would be programming, testing or designing tasks. Each of the tasks were marked with different tags for team members to pick. The tasks were created from splitting the stories into small piece of work for each story. After splitting each user stories into tasks, we wrote the task into a sprint task list excel sheet. Each member can pick their own tasks they want to work on. Members working on a task for a user stories had to communicate with the other members working on the same user stories. Each task was picked by one member and executed by them.
