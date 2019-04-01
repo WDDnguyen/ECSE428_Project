@@ -34,34 +34,34 @@ Task distribution was done on a scrum basis: first come first serve, people take
 To coordinate the team members, Google Drive was used to share documents and Slack was used in the beginning for communication, but we migrated towards Messenger as it was more accessible and more responsive.
 
 ## Use of External Technology
-https://github.com
-we used Github as a VCS service and as an issue tracker. Although we did not have that much in terms of tasks to complete, and with the format of the sprints, we did not have very specific tasks as we normally might have, we used it as a way to review any of the code being pushed or merged into master and to keep each other accountable with pull requests.
-https://discordapp.com/
-we used Discord as a group calling medium for people who couldn't make it to our meetings in person, since it can allow up to 8 people at a time with their free tier.
-https://developer.android.com/studio
-we used Android Studio as an IDE to test and build our app, and because not everybody owned a Mac to build in swift.
-https://aws.amazon.com/rds/?nc2=h_m1 & https://aws.amazon.com/ec2/?nc2=h_m1
-We initially used AWS to host a mySQL database, then changed it to PostgreSQL, before deciding to host it locally. We also had set up a web server to connect with the database, but had difficulties with the connection, so scrapped that in favor of using an SDBC driver, which didn't work finally. 
-https://developer.android.com/training/testing/espresso
-we used Espresso to help test the Android app's UI.
-https://slack.com/
-we had initially set up a slack for communication, but it didn't stay because not everyone was using it regularly
-https://www.messenger.com
-we used facebook messenger when we first formed the team and to find everyone, but it ended up becoming our defacto method of communication
-http://docs.google.com/
-we used Google Docs as a way to write out any documentation that we had to do, such as the project preparation document and for our task list.
-https://cruise.eecs.uottawa.ca/umpleonline/
-we used Umple as a way to set up the architecture of our code and to visualize it better, and also to use it to automatically generate some boilerplate code. 
-https://www.postgresql.org/docs/
-we had used a postgreSQL database at first, because it seemed easiest to use and because the client was much more lightweight than the mySQL one, but the connections didn't work, so we switched to SQLite
-https://www.sqlite.org/draft/
-we hosted a local version of the database within our app with SQLite.
-https://www.pgadmin.org/
-was our PostgreSQL client, used it to set everything up.
-https://travis-ci.org/
- we used Travis to ensure that no PRs would break anything, mostly by way of basic JUnit tests and simple acceptance testing. 
-https://trello.com/ 
-we used initially used trello to keep a task list, before changing to an excel document per the TA's request.
+https://github.com<br/>
+we used Github as a VCS service and as an issue tracker. Although we did not have that much in terms of tasks to complete, and with the format of the sprints, we did not have very specific tasks as we normally might have, we used it as a way to review any of the code being pushed or merged into master and to keep each other accountable with pull requests.<br/>
+https://discordapp.com/<br/>
+we used Discord as a group calling medium for people who couldn't make it to our meetings in person, since it can allow up to 8 people at a time with their free tier.<br/>
+https://developer.android.com/studio<br/>
+we used Android Studio as an IDE to test and build our app, and because not everybody owned a Mac to build in swift.<br/>
+https://aws.amazon.com/rds/?nc2=h_m1 & https://aws.amazon.com/ec2/?nc2=h_m1<br/>
+We initially used AWS to host a mySQL database, then changed it to PostgreSQL, before deciding to host it locally. We also had set up a web server to connect with the database, but had difficulties with the connection, so scrapped that in favor of using an SDBC driver, which didn't work finally. <br/>
+https://developer.android.com/training/testing/espresso<br/>
+we used Espresso to help test the Android app's UI.<br/>
+https://slack.com/<br/>
+we had initially set up a slack for communication, but it didn't stay because not everyone was using it regularly.<br/>
+https://www.messenger.com<br/>
+we used facebook messenger when we first formed the team and to find everyone, but it ended up becoming our defacto method of communication.<br/>
+http://docs.google.com/<br/>
+we used Google Docs as a way to write out any documentation that we had to do, such as the project preparation document and for our task list.<br/>
+https://cruise.eecs.uottawa.ca/umpleonline/<br/>
+we used Umple as a way to set up the architecture of our code and to visualize it better, and also to use it to automatically generate some boilerplate code. <br/>
+https://www.postgresql.org/docs/<br/>
+we had used a postgreSQL database at first, because it seemed easiest to use and because the client was much more lightweight than the mySQL one, but the connections didn't work, so we switched to SQLite<br/>
+https://www.sqlite.org/draft/<br/>
+we hosted a local version of the database within our app with SQLite.<br/>
+https://www.pgadmin.org/<br/>
+was our PostgreSQL client, used it to set everything up.<br/>
+https://travis-ci.org/<br/>
+ we used Travis to ensure that no PRs would break anything, mostly by way of basic JUnit tests and simple acceptance testing. <br/>
+https://trello.com/ <br/>
+we used initially used trello to keep a task list, before changing to an excel document per the TA's request.<br/>
 
 
 ## Software Architecture
@@ -234,7 +234,6 @@ At the end of each sprint, the team collectively checked that tasks for the spri
 Both sprints turned out to be well planned and well executed. In retrospect some improvements could have been made. In particular, a task should have been to research and identify the best way to implement a persistent database. Failing to recognize the high priority of this task caused some delays in project development as well as last minute fixes. Overall though the other high priority requirements were well identified and included in sprint 1 which in the end allowed for flexibility when unseen difficulties emerged.
 
 ## Scrum Objects
-* (how did this apply/evolve)
 ### Done Checklist
 * How did this apply? <br />
 For each sprint, the checklist was performed to verify the status of the sprint. For each task in the sprint, the code was implemented and a pull request with the changes was done. Each pull request ran an automatic Travis CI build and code reviewed was necessary. If the build doesn’t fail and automatic tests pass then changes can be merged to the remote repository. Additional unit tests can be included with the code changes to increase test coverage. After each item was reviewed in the sprint, we checked if all story acceptance test passed and previous one still worked. The test coverage is checked to determined if it still the same or higher than previous sprints.
