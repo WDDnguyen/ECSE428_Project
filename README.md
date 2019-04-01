@@ -260,6 +260,7 @@ Before building the sprint backlogs, we had to extract a series of tasks for eac
 •	Programming (writing the code for the app’s behaviour)<br />
 •	Testing (writing tests for the code of the Programming section)<br />
 •	Views (designing the Android views)<br />
+
 A fifth section, Management, corresponded to the Scrum Master’s responsibilities. Finally, functional requirements were also added as tasks. 
 The next step was to determine which tasks would be assigned to each Sprint. To do so, we selected a subset of tasks that were critical for the proper functioning of the application (e.g. sign up, workout generation) and assigned them to Sprint 1, leaving the remaining tasks to Sprint 2.
 The Sprint Backlog was implemented as a shared Google Sheets document, allowing any group member to update their progress at any time. The Backlog consisted of the following entries for each task:<br />
