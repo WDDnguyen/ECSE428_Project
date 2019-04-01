@@ -55,7 +55,7 @@ Brian Kim-Lim | 260636766 | @briankimlim
 Samuel Genois | 260692287 |
 Julien Courbebaisse | 260614548 |
 Ebou Jobe | 260664278 |
-Luke Ma | 260745824 |
+Luke Ma | 260745824 | @lukewma
 Volen Mihaylov | 260746982 |
 Hank Zhang | 260684347 |
 
@@ -63,11 +63,28 @@ Hank Zhang | 260684347 |
 * Motivation/Reason for why the project should exist in the world.  `Luke`
 * Make sure you explain what your project is and what problem it is solving. Why was the project needed: is it solving a problem not solved by other products? is it improving over the existing products?
 
+Shredit is an app designed for people who want to go to the gym and really enrich their experience by diversifying their workouts. This could be a seasoned gym goer who's looking for more variety in their workouts, or it could be a newbie who's overwhelemed by all of the options out there and needs the details to be taken care of for them, or event a personal trainer who's looking for some inspiration for a client. It is an app that is flexible, lightweight, and user centric. There are exercise databases out there, but no apps that allow for the customizability and variety that ours does. Shredit allows the user to base their workouts around the muscles they want to target, and will inject a sense of novelty into your workouts, preventing them from getting stale or repetitive.
+
 ## Design Choices
 * Does it explain your design decisions, why you decided to choose one technology/framework/coding style/task distribution over the other `Shi Yu`
 
 ## Use of External Technology
-* References/Links to every technology that you didn't create yourself (i.e. frameworks, IDEs, version control, issue tracker, cloud hosting platform) `Luke`
+* References/Links to every technology that you didn't create yourself (i.e. frameworks, IDEs, version control, issue tracker, cloud hosting platform) 
+
+Github: we used Github as a VCS service and as an issue tracker. Although we did not have that much in terms of tasks to complete, and with the format of the sprints, we did not have very specific tasks as we normally might have, we used it as a way to review any of the code being pushed or merged into master and to keep each other accountable with pull requests.
+Android Studio: we used Android Studio as an IDE to test and build our app, and because not everybody owned a Mac to build in swift.
+AWS: We initially used AWS to host a mySQL database, then changed it to PostgreSQL, before deciding to host it locally. We also had set up a web server to connect with the database, but had difficulties with the connection, so scrapped that in favor of using an SDBC driver, which didn't work finally. 
+Espresso: we used Espresso to help test the Android app's UI.
+Slack: we had initially set up a slack for communication, but it didn't stay because not everyone was using it regularly
+Facebook Messenger: we used facebook messenger when we first formed the team and to find everyone, but it ended up becoming our defacto method of communication
+Google Docs: we used Google Docs as a way to write out any documentation that we had to do, such as the project preparation document and for our task list.
+Umple: we used Umple as a way to set up the architecture of our code and to visualize it better, and also to use it to automatically generate some boilerplate code. 
+PostgreSQL: we had used a postgreSQL database at first, because it seemed easiest to use and because the client was much more lightweight than the mySQL one, but the connections didn't work, so we switched to SQLite
+SQLite: we hosted a local version of the database within our app with SQLite.
+PGAdmin: was our PostgreSQL client, used it to set everything up.
+Travis CI: we used Travis to ensure that no PRs would break anything, mostly by way of basic JUnit tests and simple acceptance testing. 
+trello: we used initially used trello to keep a task list, before changing to an excel document per the TA's request.
+
 
 ## Software Architecture
 * Does it explain your entire software architecture `Ben`
@@ -171,13 +188,15 @@ Throughout the project, the approach stayed the same. The only difference is som
 ### *"Customer collab over contract negotiation"*
 * `Samuel`
 ### *"Responding to change over following a plan"*
-* `Luke`
+A great example of a change that we came to is the realization in our 2nd sprint that we would not be able to finish our medium and low priority stories in time for this deliverable, which is why we decided to scrap them and focus on the high priority ones for this second sprint, in order to come out with a proper working product. At the end of the day, even that was difficult but we were very proud to see it carried through.
 
 ## Agile Principles
 ### *"Our highest priority is to satisfy the customer through early and continuous delivery of valuable software"*
 * `Samuel`
 ### *"Welcome changing requirements, even late in development, Agile processes harness change for the customer's competitive advantage"*
 * `Luke`
+
+
 ### *"Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale"*
 * `Ben`
 ### *"Business people and developers must work together daily throughout the project"*
@@ -197,7 +216,7 @@ Throughout the project, the approach stayed the same. The only difference is som
 ### *"The best architectures, requirements, and designs emerge from self-organizing teams"*
 * `Shi Yu`
 ### *"At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behaviour accordingly"*
-* `Samuel`
+* `Luke`
 
 ## Conclusion
 ### Scenarios The Project Is Not Suitable For
