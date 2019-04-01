@@ -80,20 +80,34 @@ To coordinate the team members, Google Drive was used to share documents and Sla
 ## Use of External Technology
 * References/Links to every technology that you didn't create yourself (i.e. frameworks, IDEs, version control, issue tracker, cloud hosting platform) 
 
-Github: we used Github as a VCS service and as an issue tracker. Although we did not have that much in terms of tasks to complete, and with the format of the sprints, we did not have very specific tasks as we normally might have, we used it as a way to review any of the code being pushed or merged into master and to keep each other accountable with pull requests.
-Discord: we used Discord as a group calling medium for people who couldn't make it to our meetings in person, since it can allow up to 8 people at a time with their free tier.
-Android Studio: we used Android Studio as an IDE to test and build our app, and because not everybody owned a Mac to build in swift.
-AWS: We initially used AWS to host a mySQL database, then changed it to PostgreSQL, before deciding to host it locally. We also had set up a web server to connect with the database, but had difficulties with the connection, so scrapped that in favor of using an SDBC driver, which didn't work finally. 
-Espresso: we used Espresso to help test the Android app's UI.
-Slack: we had initially set up a slack for communication, but it didn't stay because not everyone was using it regularly
-Facebook Messenger: we used facebook messenger when we first formed the team and to find everyone, but it ended up becoming our defacto method of communication
-Google Docs: we used Google Docs as a way to write out any documentation that we had to do, such as the project preparation document and for our task list.
-Umple: we used Umple as a way to set up the architecture of our code and to visualize it better, and also to use it to automatically generate some boilerplate code. 
-PostgreSQL: we had used a postgreSQL database at first, because it seemed easiest to use and because the client was much more lightweight than the mySQL one, but the connections didn't work, so we switched to SQLite
-SQLite: we hosted a local version of the database within our app with SQLite.
-PGAdmin: was our PostgreSQL client, used it to set everything up.
-Travis CI: we used Travis to ensure that no PRs would break anything, mostly by way of basic JUnit tests and simple acceptance testing. 
-trello: we used initially used trello to keep a task list, before changing to an excel document per the TA's request.
+https://github.com
+we used Github as a VCS service and as an issue tracker. Although we did not have that much in terms of tasks to complete, and with the format of the sprints, we did not have very specific tasks as we normally might have, we used it as a way to review any of the code being pushed or merged into master and to keep each other accountable with pull requests.
+https://discordapp.com/
+we used Discord as a group calling medium for people who couldn't make it to our meetings in person, since it can allow up to 8 people at a time with their free tier.
+https://developer.android.com/studio
+we used Android Studio as an IDE to test and build our app, and because not everybody owned a Mac to build in swift.
+https://aws.amazon.com/rds/?nc2=h_m1 & https://aws.amazon.com/ec2/?nc2=h_m1
+We initially used AWS to host a mySQL database, then changed it to PostgreSQL, before deciding to host it locally. We also had set up a web server to connect with the database, but had difficulties with the connection, so scrapped that in favor of using an SDBC driver, which didn't work finally. 
+https://developer.android.com/training/testing/espresso
+we used Espresso to help test the Android app's UI.
+https://slack.com/
+we had initially set up a slack for communication, but it didn't stay because not everyone was using it regularly
+https://www.messenger.com
+we used facebook messenger when we first formed the team and to find everyone, but it ended up becoming our defacto method of communication
+http://docs.google.com/
+we used Google Docs as a way to write out any documentation that we had to do, such as the project preparation document and for our task list.
+https://cruise.eecs.uottawa.ca/umpleonline/
+we used Umple as a way to set up the architecture of our code and to visualize it better, and also to use it to automatically generate some boilerplate code. 
+https://www.postgresql.org/docs/
+we had used a postgreSQL database at first, because it seemed easiest to use and because the client was much more lightweight than the mySQL one, but the connections didn't work, so we switched to SQLite
+https://www.sqlite.org/draft/
+we hosted a local version of the database within our app with SQLite.
+https://www.pgadmin.org/
+was our PostgreSQL client, used it to set everything up.
+https://travis-ci.org/
+ we used Travis to ensure that no PRs would break anything, mostly by way of basic JUnit tests and simple acceptance testing. 
+https://trello.com/ 
+we used initially used trello to keep a task list, before changing to an excel document per the TA's request.
 
 
 ## Software Architecture
@@ -330,8 +344,7 @@ A great example of a change that we came to is the realization in our 2nd sprint
 As previously stated above in our detailing of our compliance to the “Customer collaboration over contract negotiation” value of the Agile Manifesto, the success of our project in producing an application valuable to our customer greatly depended on our ability to discuss the customer’s needs with him regularly. Together with discussion of feature descriptions and user stories, our best method for obtaining regular customer feedback was to produce functioning, useful and demonstratable prototypes to our product owner. Whether it was using Android Studios’ Android Emulator and Espresso based automated tests for user interface related features, or plain JUnit automated tests of Android independent processes such as the data persistence related features, every instances of our codebase that successfully compiled was also executable, and its execution. As such, it was always possible to demonstrate the most recent progress in our application’s development to our product owner for him to provide feedback, and we used this advantage to obtain this crucial feedback early and frequent during development.
 
 ### *"Welcome changing requirements, even late in development, Agile processes harness change for the customer's competitive advantage"*
-* `Luke`
-
+A change in devlopment requirements that is relevant, despite the fact that we did not have a concrete customer, would be the inclusion of a login and admin privilege setup. Although we had originally set out to keep it all local, we realized that our users might have various kinds of devices and would want to keep some of their information consistent across the board. As such, we realized that changing our idea of having everything kept on the device would not be the best for the user, and added in a login feature as a story.
 
 ### *"Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale"*
 We organized our initial planning to adhere to this philosophy by picking tasks to complete a certain number of hours per week over the span of two months. This allowed us to continuously have topics to discuss during the weekly meetings. Another major benefit was that everyone was on the same page as to which tasks were currently complete and which tasks need to be completed before other tasks could be started. Since everyone was ideally working each week, we resolved any conflicts in the moment instead of dragging out conflicts, allowing a shorter timescale. Tasks were also broken down as small as possible. This made sure that each task required small additions of code, which allowed more frequent pull requests to the master branch. We also setup Travis-CI for continuous integration, which would help us validate any software changes made by a developer to ensure that the master branch is always a working application that is free of bugs. As the sprints for our project went on, our initial plan was hindered by the many different commitments that our team had to other classes and projects. Many tasks were delayed due to varying work schedules and other commitments until the last week of the final sprint. However given the delays, the proposed tasks went unchanged. Our team made sure to commit and push code frequently, with Travis-CI and unit tests checking if the software works as intended.
@@ -362,7 +375,7 @@ Requirements were laid out during sprint planning, while architecture and design
 * How did this evolve? <br />
 At first, the choices were proposed from the people the most knowledgeable in their particular fields (i.e. database choice from people with database experiences). However, as the project went along, the people who were actually working on that aspect of the project would then drive or change the design according to needs or necessities.
 ### *"At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behaviour accordingly"*
-* `Luke`
+After our first sprint, we realized that people had a tendency to put all their work off until the last minute, and that with such a large team, it wasn't always very well coordinated and that it was hard to hold each other accountable. So for the second part, we communicated with each other in sub teams, depending on the feature or the aspect of the app we worked on. We also set up a smaller schedule, aiming for blocks of a couple of days or so instead of one week, and gave ourselves a bit of slack time before the meetings, in order to catch up on any late work and to compensate for any last minute occurences that could have derailed us over the week.
 
 ## Conclusion
 ### Scenarios The Project Is Not Suitable For
