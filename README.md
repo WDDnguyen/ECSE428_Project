@@ -286,18 +286,20 @@ Throughout the project, the approach stayed the same. The only difference is som
 ## Agile Manifesto
 * (talk about application to project and evolution)
 ### *"Individuals and interactions over processes and tools"*
-* `Samuel`
+Our team is composed of 14 individuals with different experience and expertise regarding software development. Relying on processes and tools to guide our development process was impossible as their where little such processes and tools that every member of the team was familiar with. Moreover, development processes typically require regularity as to how the workload is tackled, which is ill suited for this student project, where all 14 of had drastically different, irregular and often unpredictable schedules. Instead, our development process relied heavily on our weekly face-to-face team meetings and our regular communications on our chat group.
+
 ### *"Working software over comprehensive documentation"*
 * The team prioritized a fully functional software over documentation throughout the semester. The team recognized that a working application and a less detailed documentation would be better than the opposite. 
 
-### *"Customer collab over contract negotiation"*
-* `Samuel`
+### *"Customer collaboration over contract negotiation"*
+We chose as a project to develop an application for gym users with unique features meant to enhance their workout experience. The idea stemmed from the desire of one of our team members who expressed his wish to use such an application himself for his own benefit. However, most of the other member of the team had little to no experience with regular exercising at a gym, and thus were on their own, unable to fully understand what kinds of features regular gym users wound potentially need, want or expect from an application such as the one we developed. Thus, both at the beginning of the project and throughout development, it was imperative that we regularly consult with the team member that originally envisioned our product - who served, for all intents and purposes, as our teams’ product owner and customer – remains true to his original vision, as our product’s value rests solely on the promise that he, and other gym users like him, will use it. We strongly believe that opting for a formal documented prescription of our customer’s needs instead of regular, face-to-face consultation would have resulted in multiple misinterpretations of our customers’ needs, which in turn would have resulted in the development of a final product or lesser value.
 ### *"Responding to change over following a plan"*
 * `Luke`
 
 ## Agile Principles
 ### *"Our highest priority is to satisfy the customer through early and continuous delivery of valuable software"*
-* `Samuel`
+As previously stated above in our detailing of our compliance to the “Customer collaboration over contract negotiation” value of the Agile Manifesto, the success of our project in producing an application valuable to our customer greatly depended on our ability to discuss the customer’s needs with him regularly. Together with discussion of feature descriptions and user stories, our best method for obtaining regular customer feedback was to produce functioning, useful and demonstratable prototypes to our product owner. Whether it was using Android Studios’ Android Emulator and Espresso based automated tests for user interface related features, or plain JUnit automated tests of Android independent processes such as the data persistence related features, every instances of our codebase that successfully compiled was also executable, and its execution. As such, it was always possible to demonstrate the most recent progress in our application’s development to our product owner for him to provide feedback, and we used this advantage to obtain this crucial feedback early and frequent during development.
+
 ### *"Welcome changing requirements, even late in development, Agile processes harness change for the customer's competitive advantage"*
 * `Luke`
 ### *"Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale"*
@@ -308,7 +310,8 @@ We organized our initial planning to adhere to this philosophy by picking tasks 
 ### *"Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done"*
 * The team was managed in a way that was not stressful. Team members could chose the tasks that they wanted to perform and whenever a problem arised, the rest of the team would always help each other to solve the issue. 
 ### *"The most efficient and effective method of conveying information to and within a development team is face-to-face conversation"*
-* `Samuel`
+There was no collective understanding of any convention that we could have used as a shorthand to speed up collaboration. Our best option was to ensure a deepened mutual understanding of our project’s goals, tasks and the progress of each individual member’s contribution through face-to-face dialog. This was achieved with the planning of weekly team meetings. Understandably, it was impossible for all 14 members to physically attend every meeting, yet member that could not made the commitment to participate remotely. Of course, we had other means of communication. For instance, we also extensively used a Messenger chat group, which we could use more frequently and which did not require any time commitment. However, in our experience, throughout this project our in-person meetings were much more reliable and effective at resolving misunderstandings, sharing information on each other’s project, discussing features and user stories, and defining and distributing tasks.
+
 ### *"Working software is the primary measure of progress"*
 The team's main objective was to ship a fully functional application in terms of our High-Priority User Stories. In that respect the team successfully accomplished this goal, set appart minor UI changes. The team recognized that a simple and functional 'MVP' would be favorable over a more complex (but potentially more error prone) design. At times where the software did not yet work, or issues arised, team members always reacted to help each other and rectify issues. Finally this aspect of agile development was implemented through travis builds, which were required to pass in order for a pull request to be merged into the main branch of our code. This ensured our main app would not get broken and would always be "working software";
 
