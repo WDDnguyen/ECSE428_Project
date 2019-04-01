@@ -81,6 +81,7 @@ To coordinate the team members, Google Drive was used to share documents and Sla
 * References/Links to every technology that you didn't create yourself (i.e. frameworks, IDEs, version control, issue tracker, cloud hosting platform) 
 
 Github: we used Github as a VCS service and as an issue tracker. Although we did not have that much in terms of tasks to complete, and with the format of the sprints, we did not have very specific tasks as we normally might have, we used it as a way to review any of the code being pushed or merged into master and to keep each other accountable with pull requests.
+Discord: we used Discord as a group calling medium for people who couldn't make it to our meetings in person, since it can allow up to 8 people at a time with their free tier.
 Android Studio: we used Android Studio as an IDE to test and build our app, and because not everybody owned a Mac to build in swift.
 AWS: We initially used AWS to host a mySQL database, then changed it to PostgreSQL, before deciding to host it locally. We also had set up a web server to connect with the database, but had difficulties with the connection, so scrapped that in favor of using an SDBC driver, which didn't work finally. 
 Espresso: we used Espresso to help test the Android app's UI.
