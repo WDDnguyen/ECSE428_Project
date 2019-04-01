@@ -288,7 +288,8 @@ Throughout the project, the approach stayed the same. The only difference is som
 ### *"Individuals and interactions over processes and tools"*
 * `Samuel`
 ### *"Working software over comprehensive documentation"*
-* `Wiam`
+* The team prioritized a fully functional software over documentation throughout the semester. The team recognized that a working application and a less detailed documentation would be better than the opposite. 
+
 ### *"Customer collab over contract negotiation"*
 * `Samuel`
 ### *"Responding to change over following a plan"*
@@ -303,9 +304,9 @@ Throughout the project, the approach stayed the same. The only difference is som
 We organized our initial planning to adhere to this philosophy by picking tasks to complete a certain number of hours per week over the span of two months. This allowed us to continuously have topics to discuss during the weekly meetings. Another major benefit was that everyone was on the same page as to which tasks were currently complete and which tasks need to be completed before other tasks could be started. Since everyone was ideally working each week, we resolved any conflicts in the moment instead of dragging out conflicts, allowing a shorter timescale. Tasks were also broken down as small as possible. This made sure that each task required small additions of code, which allowed more frequent pull requests to the master branch. We also setup Travis-CI for continuous integration, which would help us validate any software changes made by a developer to ensure that the master branch is always a working application that is free of bugs. As the sprints for our project went on, our initial plan was hindered by the many different commitments that our team had to other classes and projects. Many tasks were delayed due to varying work schedules and other commitments until the last week of the final sprint. However given the delays, the proposed tasks went unchanged. Our team made sure to commit and push code frequently, with Travis-CI and unit tests checking if the software works as intended.
 
 ### *"Business people and developers must work together daily throughout the project"*
-* `Wiam`
+* Not applicable 
 ### *"Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done"*
-* `Wiam`
+* The team was managed in a way that was not stressful. Team members could chose the tasks that they wanted to perform and whenever a problem arised, the rest of the team would always help each other to solve the issue. 
 ### *"The most efficient and effective method of conveying information to and within a development team is face-to-face conversation"*
 * `Samuel`
 ### *"Working software is the primary measure of progress"*
