@@ -11,7 +11,7 @@ Wiam El Ouadi | 260663710 |
 Aidan Sullivan | 260733921 | @aidssmcc
 Patrick Ghazal | 260672468 | @PatrickGhazal
 Brian Kim-Lim | 260636766 | @briankimlim
-Samuel Genois | 260692287 |
+Samuel Genois | 260692287 | @SamuelGenois
 Julien Courbebaisse | 260614548 | @allockicmoi
 Ebou Jobe | 260664278 |
 Luke Ma | 260745824 | @lukewma
