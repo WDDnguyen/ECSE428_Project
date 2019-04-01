@@ -191,7 +191,18 @@ Here we store the initial datatables for our application. Each file is in csv fo
 	- "username"
 
 ## Running/Testing the Application
-* Does it explain how to run and test your project `Hank`
+
+Before running and testing the project, click on 'Sync project with Gradle files' to perform a Gralde symc. Then, we need to create and start a virtual device using the AVD manager.
+
+- Run project:
+
+In AndroidStudio, select the AndroidApp run configuration 'app' and click on 'run the selected configuration'.
+- Unit tests:
+
+In AndroidStudio, right click on the package app.src.test.java.mcgill.shredit and choose Run 'Tests in 'shredit''.
+- UI tests:
+
+In AndroidStudio, right click on the package app.src.androidTest.java.mcgill.shredit and choose Run 'Tests in 'mcgill.shredit''.
 
 ## Scrum Rituals
 ### Backlog Grooming
@@ -342,8 +353,9 @@ In this project, a low amount of testing was done, in favour of having a mostly 
 * Untested Corner Cases <br />
 Most user inputs are not thoroughly validated and sanitized in the present implementation of the project. For example, when the user inputs the number of exercises for a muscle group that he/she would like to generate, if the input number contains to many digits (say, nine or above), then the application will stall and crash. This extends to the corner case when the user instead checkmarks every muscle group and asks for a 6-digit amount of exercises for each, in which case the application will also stall and crash. There are other cases demonstrating the lack of input validation, however these are mostly examples of edge cases. Considering the application is still relatively simple at this stage, there are less variables at play which could then constitute corner cases.
 
-* The UI/UX paths that you didn't test `Hank`
-    - Ideally there should only be one way to do something `Hank`
+* The UI/UX paths that we didn't test<br>
+For UI testing, we have implemented automated tests on two pages: login activity and customize gym activity. For the rest of the pages, testing was done manually because those pages were completed close to the deadline and time did not allow us to make automated tests.
+The UX of our application focuses on simplicity. We tried to give the user a clear navigation system where there is only one way to do things. In that aspect, the implementation is succesful with exception that the user is allowed to go to the previous page using the back button from Android's OS.
 
 ### Features Not Implemented Due to Time Limits, and Possible Extensions to Our Project
 As mentioned earlier, this project only implemented the high priority stories and forewent medium/low priority stories, including thorough testing suites. Implementing these lower priority features was not required by the project, but would be implemented if more time was given.
