@@ -255,20 +255,20 @@ Finally, we wrote our requirements. We decided to include only database requirem
 The Product Backlog did not significantly change or evolve after the first specification. Trivially, the actors did not change, and neither did the requirements, given that the requirements were our own and were set in stone after the first meeting. More time was spent on the user stories, but even they were finalized quickly, which allowed us to move on to the Sprint Backlog.
 ### Sprint Backlog
 * How did this apply? <br />
-Before building the sprint backlogs, we had to extract a series of tasks for each user story. Approximately 3-5 tasks were established for each story, divided in 4 sections:
-•	Data (generating mock data)
-•	Programming (writing the code for the app’s behaviour)
-•	Testing (writing tests for the code of the Programming section)
-•	Views (designing the Android views)
+Before building the sprint backlogs, we had to extract a series of tasks for each user story. Approximately 3-5 tasks were established for each story, divided in 4 sections:<br />
+•	Data (generating mock data)<br />
+•	Programming (writing the code for the app’s behaviour)<br />
+•	Testing (writing tests for the code of the Programming section)<br />
+•	Views (designing the Android views)<br />
 A fifth section, Management, corresponded to the Scrum Master’s responsibilities. Finally, functional requirements were also added as tasks. 
 The next step was to determine which tasks would be assigned to each Sprint. To do so, we selected a subset of tasks that were critical for the proper functioning of the application (e.g. sign up, workout generation) and assigned them to Sprint 1, leaving the remaining tasks to Sprint 2.
-The Sprint Backlog was implemented as a shared Google Sheets document, allowing any group member to update their progress at any time. The Backlog consisted of the following entries for each task:
-•	Sprint number
-•	Task name
-•	Task story
-•	Team member name/ID
-•	Start/end dates
-•	Estimated/actual time spent on the task
+The Sprint Backlog was implemented as a shared Google Sheets document, allowing any group member to update their progress at any time. The Backlog consisted of the following entries for each task:<br />
+•	Sprint number<br />
+•	Task name<br />
+•	Task story<br />
+•	Team member name/ID<br />
+•	Start/end dates<br />
+•	Estimated/actual time spent on the task<br />
 
 * How did this evolve? <br />
 Once determined, the backlog for Sprint 1 did not significantly evolve. The work was evenly split among team members, which allowed for each member to work at their own pace (notwithstanding cases where one member’s work was required for another to do theirs). The Sprint 2 backlog was thus quite straightforward: whatever had not been done in Sprint 1. That explains why some Sprint 1 tasks found themselves in Sprint 2 as well (some of the requirements for example).
@@ -281,7 +281,7 @@ In the sprint planning, we split the user stories for the sprint into multiple t
 Throughout the project, the approach stayed the same. The only difference is some tasks needed contribution from other members. These tasks picked from one member, but the contribution can be given to multiple people. Some of the tasks picked up from the members can be given to other members that had relative skills to complete the task. The previous member would pick another one that was aligned to their skill set.
 
 ### Story Point Burndown Chart
-* `Patrick`
+This is the [burndown chart](https://i.ibb.co/khYqcyz/report-graph.png) for our two combined sprints (4 weeks each).
 
 ## Agile Manifesto
 * (talk about application to project and evolution)
