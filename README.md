@@ -1,44 +1,3 @@
-# Previous readme
-* Delete stuff above the line break before submission
-ShredIt
-
-
-### android application configuration
-* Using Android Studio 3.3
-    - Java 8
-    - SDK 28
-    - Build tools 28.0.3
-
-### Some Report Guidelines
-
-#### Report Headers
-* For each header in the report, explain the following
-- How did this apply?
-- How did this evolve?
-
-#### Log of Work done (EACH PERSON MUST DO THEIR OWN)
-* One xls per team member
-* Task relationship to story
-* Who did the task
-* When did it start
-* When did it end
-* Effort taken to complete task
-* `Add tasks for the report as well`
-* `Keep format similar to sprint task lists in the drive`
-* `Submit these in the folder /project-docs/tasklists with the format "<name>_<id>_tasklist.xlsx"`
-
-#### Form
-* Terse (no unnecessary details)
-* Generalizations (avoid)
-* Spelling and grammar
-* Format (consistent and not awkward)
-* Flow (complete)
-* Student names and IDs
-* References (2 or more correctly identified)
-
-
-***
-
 # ECSE428-Group9 Project Report
 
 ### List of Contributors
@@ -60,9 +19,6 @@ Volen Mihaylov | 260746982 |
 Hank Zhang | 260684347 |
 
 ## Project Motivation
-* Motivation/Reason for why the project should exist in the world.  `Luke`
-* Make sure you explain what your project is and what problem it is solving. Why was the project needed: is it solving a problem not solved by other products? is it improving over the existing products?
-
 Shredit is an app designed for people who want to go to the gym and really enrich their experience by diversifying their workouts. This could be a seasoned gym goer who's looking for more variety in their workouts, or it could be a newbie who's overwhelemed by all of the options out there and needs the details to be taken care of for them, or event a personal trainer who's looking for some inspiration for a client. It is an app that is flexible, lightweight, and user centric. There are exercise databases out there, but no apps that allow for the customizability and variety that ours does. Shredit allows the user to base their workouts around the muscles they want to target, and will inject a sense of novelty into your workouts, preventing them from getting stale or repetitive.
 
 ## Design Choices
@@ -78,8 +34,6 @@ Task distribution was done on a scrum basis: first come first serve, people take
 To coordinate the team members, Google Drive was used to share documents and Slack was used in the beginning for communication, but we migrated towards Messenger as it was more accessible and more responsive.
 
 ## Use of External Technology
-* References/Links to every technology that you didn't create yourself (i.e. frameworks, IDEs, version control, issue tracker, cloud hosting platform) 
-
 Github: we used Github as a VCS service and as an issue tracker. Although we did not have that much in terms of tasks to complete, and with the format of the sprints, we did not have very specific tasks as we normally might have, we used it as a way to review any of the code being pushed or merged into master and to keep each other accountable with pull requests.
 Discord: we used Discord as a group calling medium for people who couldn't make it to our meetings in person, since it can allow up to 8 people at a time with their free tier.
 Android Studio: we used Android Studio as an IDE to test and build our app, and because not everybody owned a Mac to build in swift.
@@ -313,7 +267,6 @@ Throughout the project, the approach stayed the same. The only difference is som
 This is the [burndown chart](https://i.ibb.co/khYqcyz/report-graph.png) for our two combined sprints (4 weeks each).
 
 ## Agile Manifesto
-* (talk about application to project and evolution)
 ### *"Individuals and interactions over processes and tools"*
 Our team is composed of 14 individuals with different experience and expertise regarding software development. Relying on processes and tools to guide our development process was impossible as their where little such processes and tools that every member of the team was familiar with. Moreover, development processes typically require regularity as to how the workload is tackled, which is ill suited for this student project, where all 14 of had drastically different, irregular and often unpredictable schedules. Instead, our development process relied heavily on our weekly face-to-face team meetings and our regular communications on our chat group.
 
@@ -337,9 +290,9 @@ As previously stated above in our detailing of our compliance to the “Customer
 We organized our initial planning to adhere to this philosophy by picking tasks to complete a certain number of hours per week over the span of two months. This allowed us to continuously have topics to discuss during the weekly meetings. Another major benefit was that everyone was on the same page as to which tasks were currently complete and which tasks need to be completed before other tasks could be started. Since everyone was ideally working each week, we resolved any conflicts in the moment instead of dragging out conflicts, allowing a shorter timescale. Tasks were also broken down as small as possible. This made sure that each task required small additions of code, which allowed more frequent pull requests to the master branch. We also setup Travis-CI for continuous integration, which would help us validate any software changes made by a developer to ensure that the master branch is always a working application that is free of bugs. As the sprints for our project went on, our initial plan was hindered by the many different commitments that our team had to other classes and projects. Many tasks were delayed due to varying work schedules and other commitments until the last week of the final sprint. However given the delays, the proposed tasks went unchanged. Our team made sure to commit and push code frequently, with Travis-CI and unit tests checking if the software works as intended.
 
 ### *"Business people and developers must work together daily throughout the project"*
-* Not applicable 
+Not applicable.
 ### *"Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done"*
-* The team was managed in a way that was not stressful. Team members could chose the tasks that they wanted to perform and whenever a problem arised, the rest of the team would always help each other to solve the issue. 
+The team was managed in a way that was not stressful. Team members could chose the tasks that they wanted to perform and whenever a problem arised, the rest of the team would always help each other to solve the issue. 
 ### *"The most efficient and effective method of conveying information to and within a development team is face-to-face conversation"*
 There was no collective understanding of any convention that we could have used as a shorthand to speed up collaboration. Our best option was to ensure a deepened mutual understanding of our project’s goals, tasks and the progress of each individual member’s contribution through face-to-face dialog. This was achieved with the planning of weekly team meetings. Understandably, it was impossible for all 14 members to physically attend every meeting, yet member that could not made the commitment to participate remotely. Of course, we had other means of communication. For instance, we also extensively used a Messenger chat group, which we could use more frequently and which did not require any time commitment. However, in our experience, throughout this project our in-person meetings were much more reliable and effective at resolving misunderstandings, sharing information on each other’s project, discussing features and user stories, and defining and distributing tasks.
 
@@ -356,10 +309,7 @@ Simplicity means maximizing the amount of unnecessary work not done. During spri
 The project was of low complexity and requires low amount the testing. Manually testing the app only takes a couple of minutes, so we decided that implementing test automation was unnecessary. A lot of time and effort was saved by keeping testing simple.
 To keep communications simple, we set up a discord channel so during meetings, not all members are required to be physically present in the room to attend the meetings. Members could attend the meetings from anywhere that has internet connection and drop in or out at any time convenient.
 ### *"The best architectures, requirements, and designs emerge from self-organizing teams"*
-* How did this apply? <br />
 Requirements were laid out during sprint planning, while architecture and designs were decided upon during team meetings. In other words, each of the three aspects were decided upon when a majority of the team members came to a consensus. To reach the agreement, each proposer would explain their point of view in why their proposal were the most beneficial to the project. We would then vote and note down in our weekly minutes, whichever direction the project would head towards.
-
-* How did this evolve? <br />
 At first, the choices were proposed from the people the most knowledgeable in their particular fields (i.e. database choice from people with database experiences). However, as the project went along, the people who were actually working on that aspect of the project would then drive or change the design according to needs or necessities.
 ### *"At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behaviour accordingly"*
 * `Luke`
@@ -382,8 +332,3 @@ As mentioned earlier, this project only implemented the high priority stories an
     
 In addition, the database that was used in this implementation, SQLite, is a local database. This implementation is a far simpler one compared to the originally planned database, which would use a remotely hosted database running PostgreSQL. This remote database was nearly fully implemented, but it was decided we would switch to a local implementation after issues with connecting to the database and the time crunch. Since the database is required in many functions within the project, we were forced to use an alternative. While the SQLite database fulfills all the high priority stories adequately, it would fails the medium and low priority stories that would require communication between users. Ultimately, the current local database would be replaced with a remote database. Whether this theoretical implementation would be a PostgreSQL or MySQL database or some other alternative was never finalized. Due to the modular implementation of the current database with an interface (see DataSource.java) for the database, this upgrade would be possible without rewriting the entire codebase.
 
-## References
-* If needed
-
-## Appendix
-* If needed
