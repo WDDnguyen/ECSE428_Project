@@ -46,14 +46,14 @@ Name | Student ID | Github
 --- | --- | ---
 Ben Willetts | 260610719 | @bendwilletts
 William Nguyen | 260638465 | @WDDNguyen
-Shi Yu Liu | 260683360 |
-Jiawei Ni | 260615965 |
+Shi Yu Liu | 260683360 | @shiyu-mochi
+Jiawei Ni | 260615965 |@jiaweini
 Wiam El Ouadi | 260663710 |
 Aidan Sullivan | 260733921 | @aidssmcc
 Patrick Ghazal | 260672468 | @PatrickGhazal
 Brian Kim-Lim | 260636766 | @briankimlim
 Samuel Genois | 260692287 |
-Julien Courbebaisse | 260614548 |
+Julien Courbebaisse | 260614548 | @allockicmoi
 Ebou Jobe | 260664278 |
 Luke Ma | 260745824 | @lukewma
 Volen Mihaylov | 260746982 |
@@ -66,7 +66,16 @@ Hank Zhang | 260684347 |
 Shredit is an app designed for people who want to go to the gym and really enrich their experience by diversifying their workouts. This could be a seasoned gym goer who's looking for more variety in their workouts, or it could be a newbie who's overwhelemed by all of the options out there and needs the details to be taken care of for them, or event a personal trainer who's looking for some inspiration for a client. It is an app that is flexible, lightweight, and user centric. There are exercise databases out there, but no apps that allow for the customizability and variety that ours does. Shredit allows the user to base their workouts around the muscles they want to target, and will inject a sense of novelty into your workouts, preventing them from getting stale or repetitive.
 
 ## Design Choices
-* Does it explain your design decisions, why you decided to choose one technology/framework/coding style/task distribution over the other `Shi Yu`
+We chose to implement our ShredIt idea into an mobile application, as we wanted the project to be mobile and portable, so that people can easily access it during their workouts at the gym. Since most of our team members were familiar with java and android development, it was then an easy choice to choose Android Studio to develop this project. Steaming from this decision, the coding style then adhered to the Google’s Java Style Guide and the Code Conventions for the Java TM Programming Language we have learned from prior classes.
+
+The Espresso test framework was chosen for android interface testing for our acceptances tests due to its ability to start the test on select activities and integration via JUnit testing. This meant that knowledge from prior class could be reused, and it cuts down test time for tests unrelated to the main activity.
+
+Github was used to share the code among all our team members, as it has inbuilt version control via Git. From this decision, the use of Travis CI for continuous integration purposes was then used due to its ease of integration to GitHub.
+The database portion of the project was first decided to be implemented via PostgreSQL, but it was actually implemented via SQLite, as it was the easiest alternative to implement and the most familiar to the team member that fulfilled the task. The section “Features Not Implemented Due to Time Limits, and Possible Extensions to Our Project” goes into more details as to why this decision was made.
+
+Task distribution was done on a scrum basis: first come first serve, people take tasks that they are confident their will finish. However, when people fail to finish their task due to unforeseen circumstances, they are then redistributed to someone to offers to complete it. At first, the task board was made via trello, however due to submission purposes, it was migrated into an excel spreadsheet for submission purposes. This trades off visualisation for distribution.
+
+To coordinate the team members, Google Drive was used to share documents and Slack was used in the beginning for communication, but we migrated towards Messenger as it was more accessible and more responsive.
 
 ## Use of External Technology
 * References/Links to every technology that you didn't create yourself (i.e. frameworks, IDEs, version control, issue tracker, cloud hosting platform) 
@@ -87,8 +96,116 @@ trello: we used initially used trello to keep a task list, before changing to an
 
 
 ## Software Architecture
-* Does it explain your entire software architecture `Ben`
-* how is your code distributed among the module/packages/repos/
+The source code to develop the application includes multiple different files, many of which interact with other files and serve a certain use. For the purpose of coherently explaining the architecture, this section is split up into the different paths of the source code, and each path details how the files are utilized when running the application.
+
+### _/app/src/main/java/mcgill/shredit/_
+Files included in this exact path are used to control the various UI views and obtain any releveant data for a given view. Each class has a corresponding xml file in _"src/main/res/layout/"_. Each xml file serves as the actual design of UI elements for that view, and additional xml files are also included for various popup dialogues needed within the app. The xml files are organized by the _"/app/src/main/AndroidManifest.xml"_ file, which dictates the initial view and relates all views with their corresponding Activity class.
+
+* _LoginActivity.java_<br/>
+This class controls the login page that is first presented to the user when the app opens. It includes a function to authenticate the entered username and password, and a function to handle signups. When the login button is pressed, the system queries for the list of users in the database and checks if the username and password is correct. If it succeeds, the system is directed to _HomeActivity.java_ and the user is logged in. If it fails, an error prompt is shown. When the signup button is pressed, the system queries the list of users in the database and checks if the username already exists. If the username does not exist, the user is signed up with the entered username and password. If the username already exists, an error prompt is shown.
+
+	The login activity also facilitates admin users. By adding the string "@admin" to the end of a username, an admin account will be created when the signup button is pressed. If an admin username is entered and the login succeeds, the system is directed to _AdminHomeActivity.java_ instead.
+
+* _HomeActivity.java_ <br/>
+This class controls the landing page for gym user . The user is presented with the following buttons to proceed with generating a workout:
+	- "Search Gyms" directs the system to _GymActivity.java_
+	- "Customize Gym" directs the system to _CustomizeGymActivity.java_
+	- "Load Workout" directs the system to _SavedWorkoutActivity.java_
+	- "Log Out" directs the system to _"LoginActivity.java"_
+
+* _GymActivity.java_ <br/>
+This class shows a list of preset Gyms by querying the database. If the user finds the gym they are working out at, pressing the list item will select the gym and direct the system to _GymPresetActivity.java_.
+
+* _GymPresetActivity.java_ <br/>
+This class shows the equipment available at the currently selected gym. When the activity is loaded, the system gets the Gym object passed from _GymActivity.java_ and stores it. The list is then created by getting the list of equipment from the Gym object. If the user is happy with the currently selected gym and presses the confirm button, the system is directed to _MuscleGroupActivity.java_.
+
+* _MuscleGroupActivity.java_ <br/>
+This class controls the muscle group selection activity. A list of muscle groups is generated from the values in _MuscleGroup.java_, with each list item having their own checkbox and input field for the number of exercises. The user can pick the muscle groups they would like to work on by pressing the checkbox. The user can also indicate how many exercises they would like for each muscle group. Once the user is happy with their selection, pressing the ok button will direct the system to _WorkoutActivty.java_. If no muscle groups are selected or all inputs indicate zero exercises, an error prompt is shown.
+
+* _WorkoutActivity.java_ <br/>
+This class is the main workout activity that lists the exercises generated from the selected MuscleGroups and Gym. When the activity is loaded, the system queries the database for the list of possible exercises, and filters them by the selected muscle groups. The system then picks a random exercise for each muscle group until the selected number of exercises for each muscle is satisfied. A workout object is created, and the list of exercises is displayed. If the user presses an exercise in the list, the system redirects to _WorkoutSwapPopupActivity.java_. If the user presses the save workout button, an alert is displayed requesting a unique name. If the entered name contains invalid characters or is not unique in the database, an error prompt is shown and the alert is closed. If the entered name is valid and unique, the workout object is saved in the database under the entered workout name. Once the user is completed their workout, pressing the home button will redirect the system to _HomeActivity.java_.
+
+* _WorkoutSwapPopupActivity.java_ <br/>
+This class controls the popup that is created when an exercise is selected in _WorkoutActivity.java_. This class allows the user to select a different exercises to swap with the currently selected exercise. The first list item is "Random Exercise", which will swap the current exercise with a random exercise in the list of all exercises. The user may also scroll through the rest of the list to pick an exercise to swap with the current exercise. Once an exercise is selected, the popup is closed, and the system is directed back to _WorkoutActivity.java_ with an updated exercise list. If the user changes their mind, pressing the cancel button will close the popup.
+
+* _CustomizeGymActivity.java_ <br/>
+This class controls the custom gym creation activity. This activity is useful for a user that cannot find their gym in the list of presets, or a user that works out at home. A list of workout equipment is displayed by querying the database. The user can select one or more gym equipments depending on their current gym setup. Once the user is satisfied with their selection, pressing the submit equipment button will direct the system to _MuscleGroupActivity.java_.
+
+* _SavedWorkoutActivity.java_ <br/>
+This class displays the list of workouts saved in the database and allows the user to load or delete a selected workout. If there are no currently saved workouts, an error dialog is shown, and the system is redirected to _HomeActivity.java_. When the user selects a workout in the list, the list item is highlighted. If the user presses the load button, the system is directed to _WorkoutActivity.java_ and the selected workout is loaded. If the user presses the delete button, an alert is shown confirming the operation. Once confirmed, the selected workout will be deleted from the list and on the database. If no item is selected when the load or delete button is pressed, an error prompt is shown.
+
+* _AdminHomeActivity.java_ <br/>
+This class controls the landing page for the admin. The admin is presented with the same buttons in _HomeActivity.java_ with the addition of a "Modify Exercise" button. If the admin presses the "Modify Exercise" button, the system is directed to _AdminModifyExerciseActivity.java_.
+
+* _AdminModifyExerciseActivity.java_ <br/>
+This class displays a list of all the exercises in the database for the admin to modify. If the admin selects an item and presses the delete button, the exercise is removed from the list and on the database. If the admin presses the add button, the system is redirected to _AdminAddNewExerciseActivity.java_. Once the admin is finished modifying exercises, pressing the done button will return the system to _HomeActivity.java_.
+
+* _AdminAddNewExerciseActivity.java_ <br/>
+This class controls the popup created when an admin wishes to add a new exercise. The popup allows the admin to enter a unique exercise name, enter the equipment associated with the exercise, and select the muscle group the exercise works on. Once the admin is satisfied, pressing the done button will attempt to add the exercise. If the exercise name is valid and unique and all fields have been filled, the exercise will be added to the database and the popup closes. If fields are missing or the exercise name is invalid, an error prompt is shown.
+
+### _/app/src/main/java/mcgill/shredit/model/_
+Files included in this path are the data objects that are utilize within the application. These files were generated from an umple file located at _"/app/ShreditModel.ump"_ which describes the application model. The classes and their attributes/associations are listed as follows:
+
+* _User.java_
+	- username
+	- password
+
+* _Gym.java_
+	- name
+	- equipments
+
+* _Equipment.java_
+	- name
+
+* _Exercise.java_
+	- name
+	- description
+	- muscleGroup
+	- equipment
+
+* _Workout.java_
+	- name
+	- exercises
+
+### _/app/src/main/java/mcgill/shredit/data/_
+The files included in this path handle the reading and writing of data for our database.
+
+* _DataSourceLite.java_ <br/>
+This class initializes an SQLite database on the first run of the application on a device. Subsequent runs of the application will utilize existing database instance to process incoming queries. All queries made in each application activity will call a function in this class to read/write to the database.
+
+* _Repository.java_ <br/>
+This class loads _DataSourceLite.java_ given the context of the activity that instantiated this class. Each activity creates an instance of Repository with the "getInstance()" function. Initially the repository was intended to serve as a singleton class that controls a PostgreSQL database. However given that PostgreSQL was not directly compatible with Android Studio due to security limitations, SQLite was used instead.
+
+* _DataSourceStub.java_ <br/>
+In order to complete and test front-end tasks throughout the project, this stub was created to mock the database functions that were not implemented yet. This allowed test-driven development to be continued on the application activities, while the back-end systems were still under development.
+
+### _src/main/assets/_
+Here we store the initial datatables for our application. Each file is in csv format and represent a specific entity that should be stored in the database. On the first run of the application, _DataSourceLite.java_ runs an initial function to create an SQLite database from the csv files stored in this path. Subsequent runs of the application will read and write to the existing database instead of creating a new one. The csv files and column names are listed as follows:
+
+* _equipment.csv_
+	- "eq_name"
+* _exercises.csv_
+	- "ex_name"
+	- "description"
+	- "musclegroup"
+	- "eq_name"
+* _gymequipment.csv_
+	- "g_name"
+	- "username"
+	- "eq_name"
+* _gyms.csv_
+	- "g_name"
+	- "username"
+* _users.csv_
+	- "username"
+	- "password"
+* _workoutexercises.csv_
+	- "w_name"
+	- "username"
+	- "ex_name"
+* _workouts.csv_
+	- "w_name"
+	- "username"
 
 ## Running/Testing the Application
 * Does it explain how to run and test your project `Hank`
@@ -130,7 +247,11 @@ At the end of each sprint, we ran the program and test if the application was wo
 For both sprints, we ran the acceptance tests to make sure all user stories were completed. However, there was also a demo with the teacher assistance for a demo of the entire application. Additional testing for corner cases and potential crashed were done to allow the teacher assistant to perform any necessary operations to demonstrate a working android application with all high priority user stories covered. All user stories and fixes were completed before this demo happened.
 
 ### Sprint Retrospective
-* `Julien`
+* How did this apply? <br />
+At the end of each sprint, the team collectively checked that tasks for the sprint were completed and that relevant tests passed. From this analysis, the team was able to identify key stress points to work on, which ultimately allowed us to ship a fully functional product.
+
+* How did this evolve? <br />
+Both sprints turned out to be well planned and well executed. In retrospect some improvements could have been made. In particular, a task should have been to research and identify the best way to implement a persistent database. Failing to recognize the high priority of this task caused some delays in project development as well as last minute fixes. Overall though the other high priority requirements were well identified and included in sprint 1 which in the end allowed for flexibility when unseen difficulties emerged.
 
 ## Scrum Objects
 * (how did this apply/evolve)
@@ -182,39 +303,52 @@ Throughout the project, the approach stayed the same. The only difference is som
 ## Agile Manifesto
 * (talk about application to project and evolution)
 ### *"Individuals and interactions over processes and tools"*
-* `Samuel`
+Our team is composed of 14 individuals with different experience and expertise regarding software development. Relying on processes and tools to guide our development process was impossible as their where little such processes and tools that every member of the team was familiar with. Moreover, development processes typically require regularity as to how the workload is tackled, which is ill suited for this student project, where all 14 of had drastically different, irregular and often unpredictable schedules. Instead, our development process relied heavily on our weekly face-to-face team meetings and our regular communications on our chat group.
+
 ### *"Working software over comprehensive documentation"*
-* `Wiam`
-### *"Customer collab over contract negotiation"*
-* `Samuel`
+* The team prioritized a fully functional software over documentation throughout the semester. The team recognized that a working application and a less detailed documentation would be better than the opposite. 
+
+### *"Customer collaboration over contract negotiation"*
+We chose as a project to develop an application for gym users with unique features meant to enhance their workout experience. The idea stemmed from the desire of one of our team members who expressed his wish to use such an application himself for his own benefit. However, most of the other member of the team had little to no experience with regular exercising at a gym, and thus were on their own, unable to fully understand what kinds of features regular gym users wound potentially need, want or expect from an application such as the one we developed. Thus, both at the beginning of the project and throughout development, it was imperative that we regularly consult with the team member that originally envisioned our product - who served, for all intents and purposes, as our teams’ product owner and customer – remains true to his original vision, as our product’s value rests solely on the promise that he, and other gym users like him, will use it. We strongly believe that opting for a formal documented prescription of our customer’s needs instead of regular, face-to-face consultation would have resulted in multiple misinterpretations of our customers’ needs, which in turn would have resulted in the development of a final product or lesser value.
 ### *"Responding to change over following a plan"*
 A great example of a change that we came to is the realization in our 2nd sprint that we would not be able to finish our medium and low priority stories in time for this deliverable, which is why we decided to scrap them and focus on the high priority ones for this second sprint, in order to come out with a proper working product. At the end of the day, even that was difficult but we were very proud to see it carried through.
 
 ## Agile Principles
 ### *"Our highest priority is to satisfy the customer through early and continuous delivery of valuable software"*
-* `Samuel`
+As previously stated above in our detailing of our compliance to the “Customer collaboration over contract negotiation” value of the Agile Manifesto, the success of our project in producing an application valuable to our customer greatly depended on our ability to discuss the customer’s needs with him regularly. Together with discussion of feature descriptions and user stories, our best method for obtaining regular customer feedback was to produce functioning, useful and demonstratable prototypes to our product owner. Whether it was using Android Studios’ Android Emulator and Espresso based automated tests for user interface related features, or plain JUnit automated tests of Android independent processes such as the data persistence related features, every instances of our codebase that successfully compiled was also executable, and its execution. As such, it was always possible to demonstrate the most recent progress in our application’s development to our product owner for him to provide feedback, and we used this advantage to obtain this crucial feedback early and frequent during development.
+
 ### *"Welcome changing requirements, even late in development, Agile processes harness change for the customer's competitive advantage"*
 * `Luke`
 
 
 ### *"Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale"*
-* `Ben`
+We organized our initial planning to adhere to this philosophy by picking tasks to complete a certain number of hours per week over the span of two months. This allowed us to continuously have topics to discuss during the weekly meetings. Another major benefit was that everyone was on the same page as to which tasks were currently complete and which tasks need to be completed before other tasks could be started. Since everyone was ideally working each week, we resolved any conflicts in the moment instead of dragging out conflicts, allowing a shorter timescale. Tasks were also broken down as small as possible. This made sure that each task required small additions of code, which allowed more frequent pull requests to the master branch. We also setup Travis-CI for continuous integration, which would help us validate any software changes made by a developer to ensure that the master branch is always a working application that is free of bugs. As the sprints for our project went on, our initial plan was hindered by the many different commitments that our team had to other classes and projects. Many tasks were delayed due to varying work schedules and other commitments until the last week of the final sprint. However given the delays, the proposed tasks went unchanged. Our team made sure to commit and push code frequently, with Travis-CI and unit tests checking if the software works as intended.
+
 ### *"Business people and developers must work together daily throughout the project"*
-* `Wiam`
+* Not applicable 
 ### *"Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done"*
-* `Wiam`
+* The team was managed in a way that was not stressful. Team members could chose the tasks that they wanted to perform and whenever a problem arised, the rest of the team would always help each other to solve the issue. 
 ### *"The most efficient and effective method of conveying information to and within a development team is face-to-face conversation"*
-* `Samuel`
+There was no collective understanding of any convention that we could have used as a shorthand to speed up collaboration. Our best option was to ensure a deepened mutual understanding of our project’s goals, tasks and the progress of each individual member’s contribution through face-to-face dialog. This was achieved with the planning of weekly team meetings. Understandably, it was impossible for all 14 members to physically attend every meeting, yet member that could not made the commitment to participate remotely. Of course, we had other means of communication. For instance, we also extensively used a Messenger chat group, which we could use more frequently and which did not require any time commitment. However, in our experience, throughout this project our in-person meetings were much more reliable and effective at resolving misunderstandings, sharing information on each other’s project, discussing features and user stories, and defining and distributing tasks.
+
 ### *"Working software is the primary measure of progress"*
-* `Julien`
+The team's main objective was to ship a fully functional application in terms of our High-Priority User Stories. In that respect the team successfully accomplished this goal, set appart minor UI changes. The team recognized that a simple and functional 'MVP' would be favorable over a more complex (but potentially more error prone) design. At times where the software did not yet work, or issues arised, team members always reacted to help each other and rectify issues. Finally this aspect of agile development was implemented through travis builds, which were required to pass in order for a pull request to be merged into the main branch of our code. This ensured our main app would not get broken and would always be "working software";
+
 ### *"Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely"*
-* `Julien`
+Multiple agile processes were implemented during the development of the project. Our automatic travis builds allowed for continous testing, while github enabled continous and parallel development. Also our weekly meetings and continuous online discussions meant that everyone always had good sense of the project direction. This in turn enabled us to have pseudo continous deployment, where new working features would be merged into our main branch. In this regard the team could potentially keep developing the app indefinitly at the same pace.
 ### *"Continuous attention to technical excellence and good design enhances agility"*
-* `Jiawei`
+In a meeting we surveyed the technical skills and experiences of our team and choose the tools that most members are comfortable working with. Using tools that we are experienced with ensures technical excellence.
+Whenever there is a change in design, or a commit to GitHub, it would require approval of other members. That means no design changes are allowed without peer review. Suggestions, discussions help ensure the design is good.
 ### *"Simplicity - the art of maximizing the amount of work not done - is essential"*
-* `Jiawei`
+Simplicity means maximizing the amount of unnecessary work not done. During sprint 1, our goal was to develop a shippable product before a deadline. We only made tasks for the high priority user stories and left medium and low priority user stories for the future. The view developed was minimalist, meaning every element is necessary.
+The project was of low complexity and requires low amount the testing. Manually testing the app only takes a couple of minutes, so we decided that implementing test automation was unnecessary. A lot of time and effort was saved by keeping testing simple.
+To keep communications simple, we set up a discord channel so during meetings, not all members are required to be physically present in the room to attend the meetings. Members could attend the meetings from anywhere that has internet connection and drop in or out at any time convenient.
 ### *"The best architectures, requirements, and designs emerge from self-organizing teams"*
-* `Shi Yu`
+* How did this apply? <br />
+Requirements were laid out during sprint planning, while architecture and designs were decided upon during team meetings. In other words, each of the three aspects were decided upon when a majority of the team members came to a consensus. To reach the agreement, each proposer would explain their point of view in why their proposal were the most beneficial to the project. We would then vote and note down in our weekly minutes, whichever direction the project would head towards.
+
+* How did this evolve? <br />
+At first, the choices were proposed from the people the most knowledgeable in their particular fields (i.e. database choice from people with database experiences). However, as the project went along, the people who were actually working on that aspect of the project would then drive or change the design according to needs or necessities.
 ### *"At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behaviour accordingly"*
 * `Luke`
 
